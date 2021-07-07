@@ -102,6 +102,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
+
                                           hintText: "First Name",
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
@@ -116,10 +117,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                       ),
                                     ),
                                     Container(
-                                      autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
+                                        autovalidateMode: AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "Last Name",
                                           hintStyle:
@@ -134,10 +135,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                       ),
                                     ),
                                     Container(
-                                      autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
+                                      autovalidateMode:AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "Email",
                                           hintStyle:
@@ -156,10 +157,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                       ),
                                     ),
                                     Container(
-                                      autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
+                                      autovalidateMode:AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "Password",
                                           hintStyle:
