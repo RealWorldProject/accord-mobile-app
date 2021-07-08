@@ -187,21 +187,25 @@ class _SignupScreenState extends State<SignupScreen> {
                           height: 40,
                         ),
                         FadeAnimation(
-                            1.5,
-                            Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                  color: Colors.blue),
-                              child: ElevatedButton(
-                                child: Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
+                            1.6,
+                            InkWell(
+                              onTap: () {
+                                validate();
+                                RegistrationService().registerUser(
+                                    '$firstName $lastName', email, password);
+                              },
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(40),
+                                    color: Colors.blue),
+                                child: Center(
+                                  child: Text(
+                                    "Sign up",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
                                 ),
-                                onPressed: () => RegistrationService()
-                                    .registerUser('$firstName $lastName', email,
-                                        password),
                               ),
                             )),
                         SizedBox(
