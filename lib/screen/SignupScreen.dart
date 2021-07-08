@@ -1,3 +1,4 @@
+import 'package:accord/services/registrationService.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
 import 'package:accord/screen/LoginScreen.dart';
@@ -10,6 +11,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  var firstName, lastName, email, password;
 
   void validate() {
     if (formKey.currentState.validate()) {
@@ -93,16 +95,14 @@ class _SignupScreenState extends State<SignupScreen> {
                             1.3,
                             Container(
                               child: Form(
-
                                 key: formKey,
                                 child: Column(
                                   children: <Widget>[
                                     Container(
                                       child: TextFormField(
                                         autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                            AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
-
                                           hintText: "First Name",
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
@@ -111,16 +111,17 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 BorderSide(color: Colors.grey),
                                           ),
                                         ),
+                                        onChanged: (val) => firstName = val,
                                         validator: RequiredValidator(
                                             errorText:
                                                 "First Name is required"),
                                       ),
                                     ),
                                     Container(
-
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
-                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "Last Name",
                                           hintStyle:
@@ -130,15 +131,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 BorderSide(color: Colors.grey),
                                           ),
                                         ),
+                                        onChanged: (val) => lastName = val,
                                         validator: RequiredValidator(
                                             errorText: "Last Name is required"),
                                       ),
                                     ),
                                     Container(
-
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
-                                      autovalidateMode:AutovalidateMode.onUserInteraction,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "Email",
                                           hintStyle:
@@ -148,6 +150,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 BorderSide(color: Colors.grey),
                                           ),
                                         ),
+                                        onChanged: (val) => email = val,
                                         validator: MultiValidator([
                                           RequiredValidator(
                                               errorText: "Email is required"),
@@ -159,7 +162,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
-                                      autovalidateMode:AutovalidateMode.onUserInteraction,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "Password",
                                           hintStyle:
@@ -171,6 +175,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                           suffixIcon:
                                               Icon(Icons.remove_red_eye),
                                         ),
+                                        onChanged: (val) => password = val,
                                         validator: validatePassword,
                                       ),
                                     ),
@@ -188,12 +193,15 @@ class _SignupScreenState extends State<SignupScreen> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(40),
                                   color: Colors.blue),
-                              child: Center(
+                              child: ElevatedButton(
                                 child: Text(
                                   "Sign Up",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 ),
+                                onPressed: () => RegistrationService()
+                                    .registerUser('$firstName $lastName', email,
+                                        password),
                               ),
                             )),
                         SizedBox(
