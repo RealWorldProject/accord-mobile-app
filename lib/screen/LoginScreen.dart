@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           suffixIcon: InkWell(
                                               onTap: _toggle,
                                               child:
-                                                  Icon(Icons.remove_red_eye)),
+                                                  (_obscureText) ?Icon(Icons.visibility_off): Icon(Icons.visibility)),
                                         ),
                                         textInputAction: TextInputAction.done,
                                         onChanged: (val) => password = val,

@@ -218,6 +218,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                             ),
                                             suffixIcon: InkWell(
                                                 onTap: _toggle,
+                                                child:
+                                                (_obscureText) ?Icon(Icons.visibility_off): Icon(Icons.visibility))
+                                        ),
                                                 child: Icon(
                                                     Icons.remove_red_eye))),
                                         textInputAction: TextInputAction.done,
