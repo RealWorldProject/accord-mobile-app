@@ -1,10 +1,9 @@
 import 'package:accord/screen/SignupScreen.dart';
+import 'package:accord/service/loginService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,24 +12,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  var email, password, loginResult;
 
-  void validate() {
-    if (formKey.currentState.validate()) {
-      print("Validated");
-    } else {
-      print("Not Validated");
-    }
-  }
-
-  String validatePassword(value) {
-    if (value.isEmpty) {
-      return "Password is required";
-    } else if (value.length < 6) {
-      return "Should be at least 6 characters";
-    } else {
-      return null;
-    }
-  }
+  final requireEmail = RequiredValidator(errorText: 'Email is required!');
+  final requirePassword = RequiredValidator(errorText: 'Password is required!');
 
   bool _obscureText = true;
 
@@ -39,6 +24,41 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  SnackBar displayErrorMessage() {
+    return SnackBar(
+      content: Text(
+        loginResult['message'],
+        style: TextStyle(
+            color: Colors.red, fontSize: 17, fontStyle: FontStyle.italic),
+      ),
+      action: SnackBarAction(
+        label: 'Try Again',
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+    );
+  }
+
+  void validate() async {
+    if (formKey.currentState.validate()) {
+      // api request
+      loginResult = await LoginService().loginUser(email, password);
+      // navigating to dashboard if successful login,
+      //else displaying corresponding error messages.
+      if (loginResult['success']) {
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => SignupScreen()));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(loginResult['token'])));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(displayErrorMessage());
+      }
+    } else {
+      return;
+    }
   }
 
   @override
@@ -111,12 +131,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 BorderSide(color: Colors.grey),
                                           ),
                                         ),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "Email is required"),
-                                          EmailValidator(
-                                              errorText: "Not a valid Email")
-                                        ]),
+                                        textInputAction: TextInputAction.next,
+                                        onChanged: (val) => email = val,
+                                        validator: requireEmail,
                                       ),
                                     ),
                                     Container(
@@ -137,12 +154,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                               child:
                                                   (_obscureText) ?Icon(Icons.visibility_off): Icon(Icons.visibility)),
                                         ),
-                                        validator: validatePassword,
-                                        // validator: MultiValidator([
-                                        //   MinLengthValidator(6, errorText: "Password should contain at least 6 characters"),
-                                        //   RequiredValidator(errorText: "Password is required"),
-                                        //
-                                        // ]),
+                                        textInputAction: TextInputAction.done,
+                                        onChanged: (val) => password = val,
+                                        validator: requirePassword,
                                       ),
                                     ),
                                   ],
