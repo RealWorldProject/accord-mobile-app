@@ -1,3 +1,4 @@
+import 'package:accord/service/registrationService.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
 import 'package:accord/screen/LoginScreen.dart';
@@ -10,6 +11,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  var firstName, lastName, email, password;
 
   void validate() {
     if (formKey.currentState.validate()) {
@@ -27,6 +29,14 @@ class _SignupScreenState extends State<SignupScreen> {
     } else {
       return null;
     }
+  }
+  bool _obscureText = true;
+
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
   }
 
   @override
@@ -93,14 +103,13 @@ class _SignupScreenState extends State<SignupScreen> {
                             1.3,
                             Container(
                               child: Form(
-
                                 key: formKey,
                                 child: Column(
                                   children: <Widget>[
                                     Container(
                                       child: TextFormField(
                                         autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                            AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "First Name",
                                           hintStyle:
@@ -110,16 +119,17 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 BorderSide(color: Colors.grey),
                                           ),
                                         ),
+                                        onChanged: (val) => firstName = val,
                                         validator: RequiredValidator(
                                             errorText:
                                                 "First Name is required"),
                                       ),
                                     ),
                                     Container(
-
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
-                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "Last Name",
                                           hintStyle:
@@ -129,15 +139,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 BorderSide(color: Colors.grey),
                                           ),
                                         ),
+                                        onChanged: (val) => lastName = val,
                                         validator: RequiredValidator(
                                             errorText: "Last Name is required"),
                                       ),
                                     ),
                                     Container(
-
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
-                                      autovalidateMode:AutovalidateMode.onUserInteraction,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "Email",
                                           hintStyle:
@@ -147,6 +158,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 BorderSide(color: Colors.grey),
                                           ),
                                         ),
+                                        onChanged: (val) => email = val,
                                         validator: MultiValidator([
                                           RequiredValidator(
                                               errorText: "Email is required"),
@@ -158,10 +170,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
-                                        
-                                      autovalidateMode:AutovalidateMode.onUserInteraction,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        obscureText: _obscureText,
                                         decoration: InputDecoration(
-
                                           hintText: "Password",
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
@@ -169,9 +181,12 @@ class _SignupScreenState extends State<SignupScreen> {
                                             borderSide:
                                                 BorderSide(color: Colors.grey),
                                           ),
-                                          suffixIcon:
-                                              Icon(Icons.remove_red_eye),
+                                            suffixIcon: InkWell(
+                                                onTap: _toggle,
+                                                child:
+                                                Icon(Icons.remove_red_eye))
                                         ),
+                                        onChanged: (val) => password = val,
                                         validator: validatePassword,
                                       ),
                                     ),
@@ -183,17 +198,24 @@ class _SignupScreenState extends State<SignupScreen> {
                           height: 40,
                         ),
                         FadeAnimation(
-                            1.5,
-                            Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                  color: Colors.blue),
-                              child: Center(
-                                child: Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
+                            1.6,
+                            InkWell(
+                              onTap: () {
+                                validate();
+                                RegistrationService().registerUser(
+                                    '$firstName $lastName', email, password);
+                              },
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(40),
+                                    color: Colors.blue),
+                                child: Center(
+                                  child: Text(
+                                    "Sign up",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
                                 ),
                               ),
                             )),

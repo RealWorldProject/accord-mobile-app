@@ -25,12 +25,20 @@ class _LoginScreenState extends State<LoginScreen> {
   String validatePassword(value) {
     if (value.isEmpty) {
       return "Password is required";
-    } else if(value.length<6){
+    } else if (value.length < 6) {
       return "Should be at least 6 characters";
-    }
-    else {
+    } else {
       return null;
     }
+  }
+
+  bool _obscureText = true;
+
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
   }
 
   @override
@@ -87,13 +95,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             1.4,
                             Container(
                               child: Form(
-
                                 key: formKey,
                                 child: Column(
                                   children: <Widget>[
                                     Container(
                                       child: TextFormField(
-                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
                                           hintText: "Email ",
                                           hintStyle:
@@ -101,23 +109,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                           border: UnderlineInputBorder(
                                             borderSide:
                                                 BorderSide(color: Colors.grey),
-
                                           ),
-
                                         ),
-                                        validator: MultiValidator(
-                                          [
-                                            RequiredValidator(errorText: "Email is required"),
-                                            EmailValidator(errorText: "Not a valid Email")
-                                          ]
-                                        ),
-
+                                        validator: MultiValidator([
+                                          RequiredValidator(
+                                              errorText: "Email is required"),
+                                          EmailValidator(
+                                              errorText: "Not a valid Email")
+                                        ]),
                                       ),
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(top: 8),
                                       child: TextFormField(
-                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        obscureText: _obscureText,
                                         decoration: InputDecoration(
                                           hintText: "Password",
                                           hintStyle:
@@ -125,8 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                           border: UnderlineInputBorder(
                                               borderSide: BorderSide(
                                                   color: Colors.grey)),
-                                          suffixIcon:
-                                              Icon(Icons.remove_red_eye),
+                                          suffixIcon: InkWell(
+                                              onTap: _toggle,
+                                              child:
+                                                  Icon(Icons.remove_red_eye)),
                                         ),
                                         validator: validatePassword,
                                         // validator: MultiValidator([
