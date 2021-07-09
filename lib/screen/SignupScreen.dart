@@ -11,25 +11,25 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  var firstName, lastName, email, password;
+  var firstName, lastName, email, password, registrationResult;
 
-  void validate() {
-    if (formKey.currentState.validate()) {
-      print("Validated");
-    } else {
-      print("Not Validated");
-    }
-  }
+  final validateFirstName =
+      RequiredValidator(errorText: 'First name is required!');
 
-  String validatePassword(value) {
-    if (value.isEmpty) {
-      return "Password is required";
-    } else if (value.length < 6) {
-      return "Should be at least 6 characters";
-    } else {
-      return null;
-    }
-  }
+  final validateLastName =
+      RequiredValidator(errorText: 'Last name is required!');
+
+  final validateEmail = MultiValidator([
+    RequiredValidator(errorText: 'Email is required!'),
+    EmailValidator(
+        errorText: 'Invalid email, please update it and check again!')
+  ]);
+
+  final validatePassword = MultiValidator([
+    RequiredValidator(errorText: 'Password is required!'),
+    MinLengthValidator(6, errorText: 'Password must be atleast 6 character!')
+  ]);
+
   bool _obscureText = true;
 
   // Toggles the password show status
@@ -37,6 +37,46 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  Future displayServerMessage() async {
+    // connecting and waitng for response from api
+    registrationResult = await RegistrationService()
+        .registerUser('$firstName $lastName', email, password);
+
+    // checking resoponse and displaing customized error of success message
+    if (registrationResult['success']) {
+      // snackbar for successful response
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          registrationResult['message'],
+          style: TextStyle(
+              color: Colors.green, fontSize: 16, fontStyle: FontStyle.italic),
+        ),
+        action: SnackBarAction(
+          label: 'To Login',
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LoginScreen()));
+          },
+        ),
+      ));
+    } else {
+      // snackbar for failed response
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          registrationResult['message'],
+          style: TextStyle(
+              color: Colors.red, fontSize: 17, fontStyle: FontStyle.italic),
+        ),
+        action: SnackBarAction(
+          label: 'Try again',
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ));
+    }
   }
 
   @override
@@ -108,22 +148,21 @@ class _SignupScreenState extends State<SignupScreen> {
                                   children: <Widget>[
                                     Container(
                                       child: TextFormField(
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        decoration: InputDecoration(
-                                          hintText: "First Name",
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          border: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.grey),
+                                          autofocus: true,
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
+                                          decoration: InputDecoration(
+                                            hintText: "First Name",
+                                            hintStyle:
+                                                TextStyle(color: Colors.grey),
+                                            border: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.grey),
+                                            ),
                                           ),
-                                        ),
-                                        onChanged: (val) => firstName = val,
-                                        validator: RequiredValidator(
-                                            errorText:
-                                                "First Name is required"),
-                                      ),
+                                          textInputAction: TextInputAction.next,
+                                          onChanged: (val) => firstName = val,
+                                          validator: validateFirstName),
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
@@ -139,9 +178,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 BorderSide(color: Colors.grey),
                                           ),
                                         ),
+                                        textInputAction: TextInputAction.next,
                                         onChanged: (val) => lastName = val,
-                                        validator: RequiredValidator(
-                                            errorText: "Last Name is required"),
+                                        validator: validateLastName,
                                       ),
                                     ),
                                     Container(
@@ -158,13 +197,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 BorderSide(color: Colors.grey),
                                           ),
                                         ),
+                                        textInputAction: TextInputAction.next,
                                         onChanged: (val) => email = val,
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: "Email is required"),
-                                          EmailValidator(
-                                              errorText: "Not a valid Email")
-                                        ]),
+                                        validator: validateEmail,
                                       ),
                                     ),
                                     Container(
@@ -174,18 +209,18 @@ class _SignupScreenState extends State<SignupScreen> {
                                             AutovalidateMode.onUserInteraction,
                                         obscureText: _obscureText,
                                         decoration: InputDecoration(
-                                          hintText: "Password",
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          border: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.grey),
-                                          ),
+                                            hintText: "Password",
+                                            hintStyle:
+                                                TextStyle(color: Colors.grey),
+                                            border: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.grey),
+                                            ),
                                             suffixIcon: InkWell(
                                                 onTap: _toggle,
-                                                child:
-                                                Icon(Icons.remove_red_eye))
-                                        ),
+                                                child: Icon(
+                                                    Icons.remove_red_eye))),
+                                        textInputAction: TextInputAction.done,
                                         onChanged: (val) => password = val,
                                         validator: validatePassword,
                                       ),
@@ -201,9 +236,10 @@ class _SignupScreenState extends State<SignupScreen> {
                             1.6,
                             InkWell(
                               onTap: () {
-                                validate();
-                                RegistrationService().registerUser(
-                                    '$firstName $lastName', email, password);
+                                // form validation. if successful proceeds to api connection.
+                                if (formKey.currentState.validate()) {
+                                  displayServerMessage();
+                                }
                               },
                               child: Container(
                                 height: 50,
