@@ -1,3 +1,4 @@
+import 'package:accord/screen/DashboardScreen.dart';
 import 'package:accord/screen/SignupScreen.dart';
 import 'package:accord/service/loginService.dart';
 import 'package:accord/service/storage.dart';
@@ -43,23 +44,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void validate() async {
+  Future<void> validateLogin() async {
     if (formKey.currentState.validate()) {
       // api request
       loginResult = await LoginService().loginUser(email, password);
-      // navigating to dashboard if successful login,
+      // storing token and navigating to dashboard if successful login,
       //else displaying corresponding error messages.
       if (loginResult['success']) {
         Storage().storeToken(loginResult['token']);
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => SignupScreen()));
-        // ScaffoldMessenger.of(context)
-        //     .showSnackBar(SnackBar(content: Text(loginResult['token'])));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DashboardScreen()));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(displayErrorMessage());
       }
-    } else {
-      return;
     }
   }
 
@@ -189,14 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             1.6,
                             InkWell(
                               onTap: () {
-                                validate();
-                                // showTopSnackBar(
-                                //   context,
-                                //   CustomSnackBar.error(
-                                //     message:
-                                //         "Something went wrong. Please check your credentials and try again",
-                                //   ),
-                                // );
+                                validateLogin();
                               },
                               child: Container(
                                 height: 50,
