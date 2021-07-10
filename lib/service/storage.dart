@@ -6,4 +6,8 @@ class Storage {
   void storeToken(myToken) async {
     await tokenStorage.write(key: 'userToken', value: myToken);
   }
+
+  Future fetchToken() async {
+    return await tokenStorage.read(key: 'userToken');
+  }
 }
