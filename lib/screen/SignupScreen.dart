@@ -1,4 +1,5 @@
 import 'package:accord/service/registrationService.dart';
+import 'package:accord/service/messageHolder.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
 import 'package:accord/screen/LoginScreen.dart';
@@ -39,43 +40,20 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
-  Future<void> displayServerMessage() async {
+  Future<void> registerUser() async {
     // connecting and waitng for response from api
     registrationResult = await RegistrationService()
         .registerUser('$firstName $lastName', email, password);
 
     // checking resoponse and displaing customized error or success message
     if (registrationResult['success']) {
-      // snackbar for successful response
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          registrationResult['message'],
-          style: TextStyle(
-              color: Colors.green, fontSize: 16, fontStyle: FontStyle.italic),
-        ),
-        action: SnackBarAction(
-          label: 'To Login',
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginScreen()));
-          },
-        ),
-      ));
+      // snackbar for successful user registration response
+      ScaffoldMessenger.of(context).showSnackBar(MessageHolder().popSnackbar(
+          registrationResult['message'], 'To Login', this.context));
     } else {
-      // snackbar for failed response
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          registrationResult['message'],
-          style: TextStyle(
-              color: Colors.red, fontSize: 17, fontStyle: FontStyle.italic),
-        ),
-        action: SnackBarAction(
-          label: 'Try again',
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          },
-        ),
-      ));
+      // snackbar for failed user registration response
+      ScaffoldMessenger.of(context).showSnackBar(MessageHolder().popSnackbar(
+          registrationResult['message'], 'Try Again', this.context));
     }
   }
 
@@ -239,7 +217,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               onTap: () {
                                 // form validation. if successful proceeds to api connection.
                                 if (formKey.currentState.validate()) {
-                                  displayServerMessage();
+                                  registerUser();
                                 }
                               },
                               child: Container(
@@ -270,20 +248,22 @@ class _SignupScreenState extends State<SignupScreen> {
                                       color: Colors.grey[900], fontSize: 16),
                                 )),
                             FadeAnimation(
-                                1.8,
-                                GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginScreen()));
-                                    },
-                                    child: Text(
-                                      "Login",
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.blue),
-                                    )))
+                              1.8,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LoginScreen(),
+                                      ));
+                                },
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.blue),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ],

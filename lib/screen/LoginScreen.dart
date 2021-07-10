@@ -1,6 +1,7 @@
 import 'package:accord/screen/DashboardScreen.dart';
 import 'package:accord/screen/SignupScreen.dart';
 import 'package:accord/service/loginService.dart';
+import 'package:accord/service/messageHolder.dart';
 import 'package:accord/service/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,34 +29,20 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  SnackBar displayErrorMessage() {
-    return SnackBar(
-      content: Text(
-        loginResult['message'],
-        style: TextStyle(
-            color: Colors.red, fontSize: 17, fontStyle: FontStyle.italic),
-      ),
-      action: SnackBarAction(
-        label: 'Try Again',
-        onPressed: () {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        },
-      ),
-    );
-  }
-
   Future<void> validateLogin() async {
     if (formKey.currentState.validate()) {
       // api request
       loginResult = await LoginService().loginUser(email, password);
-      // storing token and navigating to dashboard if successful login,
-      //else displaying corresponding error messages.
       if (loginResult['success']) {
+        // storing token
         Storage().storeToken(loginResult['token']);
+        // navigating to dashboard
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => DashboardScreen()));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(displayErrorMessage());
+        //else displaying error messages.
+        ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+            .popSnackbar(loginResult['message'], 'Try Again', this.context));
       }
     }
   }
@@ -232,8 +219,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     )))
                           ],
                         ),
-
-                        // Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom))
                       ],
                     ),
                   ),
