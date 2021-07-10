@@ -218,11 +218,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                             ),
                                             suffixIcon: InkWell(
                                                 onTap: _toggle,
-                                                child:
-                                                (_obscureText) ?Icon(Icons.visibility_off): Icon(Icons.visibility))
-                                        ),
-                                                child: Icon(
-                                                    Icons.remove_red_eye))),
+                                                child: (_obscureText)
+                                                    ? Icon(Icons.visibility_off)
+                                                    : Icon(Icons.visibility))),
                                         textInputAction: TextInputAction.done,
                                         onChanged: (val) => password = val,
                                         validator: validatePassword,
