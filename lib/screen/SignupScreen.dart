@@ -39,12 +39,12 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
-  Future displayServerMessage() async {
+  Future<void> displayServerMessage() async {
     // connecting and waitng for response from api
     registrationResult = await RegistrationService()
         .registerUser('$firstName $lastName', email, password);
 
-    // checking resoponse and displaing customized error of success message
+    // checking resoponse and displaing customized error or success message
     if (registrationResult['success']) {
       // snackbar for successful response
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
