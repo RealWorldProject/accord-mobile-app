@@ -1,5 +1,6 @@
 import 'package:accord/screen/SignupScreen.dart';
 import 'package:accord/service/loginService.dart';
+import 'package:accord/service/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
@@ -49,10 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
       // navigating to dashboard if successful login,
       //else displaying corresponding error messages.
       if (loginResult['success']) {
+        Storage().storeToken(loginResult['token']);
         // Navigator.push(
         //     context, MaterialPageRoute(builder: (context) => SignupScreen()));
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(loginResult['token'])));
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(loginResult['token'])));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(displayErrorMessage());
       }
@@ -151,8 +153,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   color: Colors.grey)),
                                           suffixIcon: InkWell(
                                               onTap: _toggle,
-                                              child:
-                                                  (_obscureText) ?Icon(Icons.visibility_off): Icon(Icons.visibility)),
+                                              child: (_obscureText)
+                                                  ? Icon(Icons.visibility_off)
+                                                  : Icon(Icons.visibility)),
                                         ),
                                         textInputAction: TextInputAction.done,
                                         onChanged: (val) => password = val,
