@@ -1,4 +1,4 @@
-import 'package:accord/service/storage.dart';
+import 'package:accord/services/storage.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatefulWidget {

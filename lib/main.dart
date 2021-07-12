@@ -1,4 +1,4 @@
-import 'package:accord/screen/GetStartedScreen.dart';
+import 'package:accord/screens/GetStartedScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,15 +11,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily:"Poppins"
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
       debugShowCheckedModeBanner: false,
       home: GetStartedScreen(),
-
-
     );
   }
 }
-
