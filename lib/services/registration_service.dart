@@ -1,4 +1,4 @@
-import 'package:accord/service/baseURL.dart';
+import 'package:accord/services/baseURL.dart';
 import 'package:dio/dio.dart';
 
 class RegistrationService {
