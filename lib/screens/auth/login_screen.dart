@@ -1,6 +1,6 @@
-import 'package:accord/screens/DashboardScreen.dart';
+import 'package:accord/screens/dashboard_screen.dart';
 import 'package:accord/screens/auth/register_screen.dart';
-import 'package:accord/services/loginService.dart';
+import 'package:accord/services/login_service.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/services/storage.dart';
 import 'package:flutter/cupertino.dart';
