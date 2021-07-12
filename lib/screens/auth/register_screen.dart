@@ -1,4 +1,4 @@
-import 'package:accord/services/registrationService.dart';
+import 'package:accord/services/registration_service.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
