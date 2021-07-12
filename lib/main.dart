@@ -1,5 +1,5 @@
-import 'package:accord/screen/GetStartedScreen.dart';
-import 'package:accord/screen/LoginScreen.dart';
+import 'package:accord/screen/login_creen.dart';
+import 'package:accord/screens/get_started_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,5 +30,6 @@ class MyApp extends StatelessWidget {
           'home': (context) => LoginScreen(),
           'onboard': (context) => GetStartedScreen()
         });
+    );
   }
 }

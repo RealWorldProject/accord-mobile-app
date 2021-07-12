@@ -1,8 +1,8 @@
-import 'package:accord/screen/DashboardScreen.dart';
-import 'package:accord/screen/SignupScreen.dart';
-import 'package:accord/service/loginService.dart';
-import 'package:accord/service/messageHolder.dart';
-import 'package:accord/service/storage.dart';
+import 'package:accord/screens/DashboardScreen.dart';
+import 'package:accord/screens/auth/register_screen.dart';
+import 'package:accord/services/loginService.dart';
+import 'package:accord/screens/widgets/custom_snackbar.dart';
+import 'package:accord/services/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';

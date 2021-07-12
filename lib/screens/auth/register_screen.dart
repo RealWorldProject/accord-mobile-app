@@ -1,8 +1,8 @@
-import 'package:accord/service/registrationService.dart';
-import 'package:accord/service/messageHolder.dart';
+import 'package:accord/services/registrationService.dart';
+import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
-import 'package:accord/screen/LoginScreen.dart';
+import 'package:accord/screens/auth/login_screen.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 class SignupScreen extends StatefulWidget {
