@@ -144,7 +144,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   children: <Widget>[
                                     Container(
                                       child: TextFormField(
-                                          // autofocus: true,
+                                          key: Key("firstName"),
+                                          autofocus: true,
                                           autovalidateMode: AutovalidateMode
                                               .onUserInteraction,
                                           decoration: InputDecoration(
@@ -164,6 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
+                                        key: Key("lastName"),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
@@ -183,6 +185,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
+                                        key: Key("email"),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
@@ -202,6 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
+                                        key: Key("password"),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         obscureText: _obscureText,
@@ -233,6 +237,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         FadeAnimation(
                             1.6,
                             InkWell(
+                              key: Key("register"),
                               onTap: () {
                                 // form validation. if successful proceeds to api connection.
                                 if (formKey.currentState.validate()) {
