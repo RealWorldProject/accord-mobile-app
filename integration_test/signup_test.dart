@@ -42,7 +42,7 @@ void main(){
       await tester.tap(registerButton);
       await tester.pumpAndSettle();
 
-      final toast = find.byKey(key)
+      // final toast = find.byKey(key)
 
       // expect()
 
