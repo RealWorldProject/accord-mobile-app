@@ -126,6 +126,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   children: <Widget>[
                                     Container(
                                       child: TextFormField(
+                                        key:Key("firstName"),
                                           autofocus: true,
                                           autovalidateMode: AutovalidateMode
                                               .onUserInteraction,
@@ -145,6 +146,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
+                                        key:Key("lastName"),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
@@ -164,6 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
+                                        key:Key("email"),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
@@ -183,6 +186,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
+                                        key:Key("password"),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         obscureText: _obscureText,
@@ -214,6 +218,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         FadeAnimation(
                             1.6,
                             InkWell(
+                              key: Key("register"),
                               onTap: () {
                                 // form validation. if successful proceeds to api connection.
                                 if (formKey.currentState.validate()) {

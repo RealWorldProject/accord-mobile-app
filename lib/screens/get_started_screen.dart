@@ -54,6 +54,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             ),
             Container(
               child: GestureDetector(
+                key: Key("getstarted"),
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));

@@ -172,6 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         FadeAnimation(
                             1.6,
                             InkWell(
+                              key: Key("login"),
                               onTap: () {
                                 validateLogin();
                               },
@@ -205,6 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             FadeAnimation(
                                 1.8,
                                 GestureDetector(
+                                  key: Key("signup"),
                                     onTap: () {
                                       Navigator.push(
                                           context,
