@@ -1,8 +1,9 @@
+import 'package:accord/responses/login_response.dart';
 import 'package:accord/screens/dashboard_screen.dart';
 import 'package:accord/screens/auth/register_screen.dart';
-import 'package:accord/services/login_service.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/services/storage.dart';
+import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
@@ -15,14 +16,14 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  var email, password, loginResult;
+  var inpEmail, inpPassword;
 
+  // input field validation
   final requireEmail = RequiredValidator(errorText: 'Email is required!');
   final requirePassword = RequiredValidator(errorText: 'Password is required!');
 
-  bool _obscureText = true;
-
   // Toggles the password show status
+  bool _obscureText = true;
   void _toggle() {
     setState(() {
       _obscureText = !_obscureText;
@@ -30,19 +31,22 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> validateLogin() async {
+    UserViewModel userViewModel = new UserViewModel();
+    LoginResponse loginResponse;
     if (formKey.currentState.validate()) {
-      // api request
-      loginResult = await LoginService().loginUser(email, password);
-      if (loginResult['success']) {
+      // viewModel makes api request and returns response
+      loginResponse = await userViewModel.loginUser(inpEmail, inpPassword);
+
+      if (loginResponse.success) {
         // storing token
-        Storage().storeToken(loginResult['token']);
+        Storage().storeToken("Bearer ${loginResponse.token}");
         // navigating to dashboard
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => DashboardScreen()));
       } else {
         //else displaying error messages.
         ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(loginResult['message'], 'Try Again', this.context));
+            .popSnackbar(loginResponse.message, 'Try Again', this.context));
       }
     }
   }
@@ -118,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                         ),
                                         textInputAction: TextInputAction.next,
-                                        onChanged: (val) => email = val,
+                                        onChanged: (val) => inpEmail = val,
                                         validator: requireEmail,
                                       ),
                                     ),
@@ -142,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   : Icon(Icons.visibility)),
                                         ),
                                         textInputAction: TextInputAction.done,
-                                        onChanged: (val) => password = val,
+                                        onChanged: (val) => inpPassword = val,
                                         validator: requirePassword,
                                       ),
                                     ),
@@ -212,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  SignupScreen()));
+                                                  RegisterScreen()));
                                     },
                                     child: Text(
                                       "Sign Up",

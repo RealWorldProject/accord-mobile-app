@@ -1,19 +1,24 @@
-import 'package:accord/services/registration_service.dart';
+import 'dart:convert';
+
+import 'package:accord/models/user.dart';
+import 'package:accord/responses/register_response.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
+import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
 import 'package:accord/screens/auth/login_screen.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-class SignupScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  var firstName, lastName, email, password, registrationResult;
+  String inpFirstName, inpLastName, inpEmail, inpPassword;
 
+  // input field validations
   final validateFirstName =
       RequiredValidator(errorText: 'First name is required!');
 
@@ -31,9 +36,8 @@ class _SignupScreenState extends State<SignupScreen> {
     MinLengthValidator(6, errorText: 'Password must be atleast 6 character!')
   ]);
 
-  bool _obscureText = true;
-
   // Toggles the password show status
+  bool _obscureText = true;
   void _toggle() {
     setState(() {
       _obscureText = !_obscureText;
@@ -41,19 +45,33 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> registerUser() async {
-    // connecting and waitng for response from api
-    registrationResult = await RegistrationService()
-        .registerUser('$firstName $lastName', email, password);
+    UserViewModel userViewModel = new UserViewModel();
+    RegisterResponse registerResponse;
+
+    // user object
+    User user = User(
+      firstName: inpFirstName,
+      lastName: inpLastName,
+      email: inpEmail,
+      password: inpPassword,
+    );
+
+    // user object to json file conversion
+    String userJSON = jsonEncode(user);
+
+    // connecting and waitng for response from api through viewModel,
+    //also returns response of type `RegisterResponse`
+    registerResponse = await userViewModel.registerUser(userJSON);
 
     // checking resoponse and displaing customized error or success message
-    if (registrationResult['success']) {
+    if (registerResponse.success) {
       // snackbar for successful user registration response
-      ScaffoldMessenger.of(context).showSnackBar(MessageHolder().popSnackbar(
-          registrationResult['message'], 'To Login', this.context));
+      ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+          .popSnackbar(registerResponse.message, 'To Login', this.context));
     } else {
       // snackbar for failed user registration response
-      ScaffoldMessenger.of(context).showSnackBar(MessageHolder().popSnackbar(
-          registrationResult['message'], 'Try Again', this.context));
+      ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+          .popSnackbar(registerResponse.message, 'Try Again', this.context));
     }
   }
 
@@ -126,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   children: <Widget>[
                                     Container(
                                       child: TextFormField(
-                                        key:Key("firstName"),
+                                          key: Key("firstName"),
                                           autofocus: true,
                                           autovalidateMode: AutovalidateMode
                                               .onUserInteraction,
@@ -140,13 +158,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                             ),
                                           ),
                                           textInputAction: TextInputAction.next,
-                                          onChanged: (val) => firstName = val,
+                                          onChanged: (val) =>
+                                              inpFirstName = val,
                                           validator: validateFirstName),
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
-                                        key:Key("lastName"),
+                                        key: Key("lastName"),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
@@ -159,14 +178,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                           ),
                                         ),
                                         textInputAction: TextInputAction.next,
-                                        onChanged: (val) => lastName = val,
+                                        onChanged: (val) => inpLastName = val,
                                         validator: validateLastName,
                                       ),
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
-                                        key:Key("email"),
+                                        key: Key("email"),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         decoration: InputDecoration(
@@ -179,14 +198,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                           ),
                                         ),
                                         textInputAction: TextInputAction.next,
-                                        onChanged: (val) => email = val,
+                                        onChanged: (val) => inpEmail = val,
                                         validator: validateEmail,
                                       ),
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: TextFormField(
-                                        key:Key("password"),
+                                        key: Key("password"),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         obscureText: _obscureText,
@@ -204,7 +223,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                     ? Icon(Icons.visibility_off)
                                                     : Icon(Icons.visibility))),
                                         textInputAction: TextInputAction.done,
-                                        onChanged: (val) => password = val,
+                                        onChanged: (val) => inpPassword = val,
                                         validator: validatePassword,
                                       ),
                                     ),
