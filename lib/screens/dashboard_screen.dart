@@ -1,3 +1,4 @@
+
 import 'package:accord/services/storage.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           },
         ),
       ),
-    ));
+    ),
+    );
   }
 }

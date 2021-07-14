@@ -1,6 +1,6 @@
 import 'package:accord/responses/login_response.dart';
-import 'package:accord/screens/dashboard_screen.dart';
 import 'package:accord/screens/auth/register_screen.dart';
+import 'package:accord/screens/widgets/navigation_bar.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/services/storage.dart';
 import 'package:accord/viewModel/user_view_model.dart';
@@ -41,8 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
         // storing token
         Storage().storeToken("Bearer ${loginResponse.token}");
         // navigating to dashboard
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DashboardScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NavigationBar()));
       } else {
         //else displaying error messages.
         ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             FadeAnimation(
                                 1.8,
                                 GestureDetector(
-                                  key: Key("signup"),
+                                    key: Key("signup"),
                                     onTap: () {
                                       Navigator.push(
                                           context,
