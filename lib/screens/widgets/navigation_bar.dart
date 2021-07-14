@@ -4,9 +4,11 @@ import 'package:accord/screens/home_screen.dart';
 import 'package:accord/screens/notification_page.dart';
 import 'package:accord/screens/order_screen.dart';
 import 'package:accord/screens/profile_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 
 class NavigationBar extends StatefulWidget {
   @override
@@ -61,22 +63,23 @@ class _NavigationBarState extends State<NavigationBar> {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               duration: Duration(milliseconds: 400),
               tabBackgroundColor: Colors.lightBlue,
-              color: Colors.blue[400],
+              color: Colors.blue[300],
               tabs: [
                 GButton(
-                  icon: LineIcons.home,
+                  // icon: LineIcons.home,
+                  icon: CupertinoIcons.house_fill,
                   text: 'Home',
                 ),
                 GButton(
-                  icon: LineIcons.shoppingCart,
+                  icon: CupertinoIcons.cart_fill,
                   text: 'Orders',
                 ),
                 GButton(
-                  icon: LineIcons.bellAlt,
+                  icon: CupertinoIcons.bell_fill,
                   text: 'Notifications',
                 ),
                 GButton(
-                  icon: LineIcons.user,
+                  icon: CupertinoIcons.person_solid,
                   text: 'Profile',
                 ),
               ],
