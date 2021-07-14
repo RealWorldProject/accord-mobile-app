@@ -4,7 +4,6 @@ import 'package:accord/screens/home_screen.dart';
 import 'package:accord/screens/notification_page.dart';
 import 'package:accord/screens/order_screen.dart';
 import 'package:accord/screens/profile_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -63,23 +62,22 @@ class _NavigationBarState extends State<NavigationBar> {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               duration: Duration(milliseconds: 400),
               tabBackgroundColor: Colors.lightBlue,
-              color: Colors.blue[300],
+              color: Colors.blue[400],
               tabs: [
                 GButton(
-                  // icon: LineIcons.home,
-                  icon: CupertinoIcons.house_fill,
+                  icon: LineIcons.home,
                   text: 'Home',
                 ),
                 GButton(
-                  icon: CupertinoIcons.cart_fill,
+                  icon: LineIcons.shoppingCart,
                   text: 'Orders',
                 ),
                 GButton(
-                  icon: CupertinoIcons.bell_fill,
+                  icon: LineIcons.bellAlt,
                   text: 'Notifications',
                 ),
                 GButton(
-                  icon: CupertinoIcons.person_solid,
+                  icon: LineIcons.user,
                   text: 'Profile',
                 ),
               ],
