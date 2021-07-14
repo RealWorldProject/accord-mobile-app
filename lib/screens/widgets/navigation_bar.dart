@@ -1,5 +1,3 @@
-import 'package:accord/screens/auth/login_screen.dart';
-import 'package:accord/screens/dashboard_screen.dart';
 import 'package:accord/screens/home_screen.dart';
 import 'package:accord/screens/notification_page.dart';
 import 'package:accord/screens/order_screen.dart';
@@ -15,8 +13,8 @@ class NavigationBar extends StatefulWidget {
 
 class _NavigationBarState extends State<NavigationBar> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
+  // static const TextStyle optionStyle =
+  //     TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
   static List<Widget> _screens = [
     // DashboardScreen(),
     // ProfileScreen(),
