@@ -236,24 +236,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         FadeAnimation(
                             1.6,
-                            InkWell(
-                              key: Key("register"),
-                              onTap: () {
-                                // form validation. if successful proceeds to api connection.
-                                if (formKey.currentState.validate()) {
-                                  registerUser();
-                                }
-                              },
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40),
-                                    color: Colors.blue),
-                                child: Center(
-                                  child: Text(
-                                    "Sign up",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                            Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  color: Colors.blue),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  key: Key("register"),
+                                  onTap: () {
+                                    // form validation. if successful proceeds to api connection.
+                                    if (formKey.currentState.validate()) {
+                                      registerUser();
+                                    }
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      "Sign up",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
                                   ),
                                 ),
                               ),

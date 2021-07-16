@@ -175,21 +175,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         FadeAnimation(
                             1.6,
-                            InkWell(
-                              key: Key("login"),
-                              onTap: () {
-                                validateLogin();
-                              },
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40),
-                                    color: Colors.blue),
-                                child: Center(
-                                  child: Text(
-                                    "Login",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                            Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  color: Colors.blue),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  key: Key("login"),
+                                  onTap: () {
+                                    validateLogin();
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      "Login",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
                                   ),
                                 ),
                               ),

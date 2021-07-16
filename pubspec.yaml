@@ -31,8 +31,10 @@ dependencies:
   bottom_navy_bar: ^6.0.0
   google_nav_bar: ^5.0.5
   line_icons: ^2.0.0
-
-
+  image_picker: ^0.6.6+5
+#  image_picker: ^0.8.1+4
+  multi_image_picker: ^4.7.14
+  advance_image_picker: ^0.0.2+2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
