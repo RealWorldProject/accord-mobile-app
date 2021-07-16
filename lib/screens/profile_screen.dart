@@ -1,7 +1,5 @@
-import 'package:accord/screens/add_book.dart';
-import 'package:accord/screens/widgets/multi_image.dart';
+import 'package:accord/screens/post_book.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -9,18 +7,21 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Center(
         child: Column(
           children: [
-            TextButton(child: Text("Add Book"), onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddBook()));
-            }),
-            SizedBox(height: 30,),
+            TextButton(
+                child: Text("Post Book"),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AddBook()));
+                }),
+            SizedBox(
+              height: 30,
+            ),
             // TextButton(child: Text("Multi Image Book"), onPressed: () {
             //   Navigator.push(
             //       context, MaterialPageRoute(builder: (context) => MultiImage()));
