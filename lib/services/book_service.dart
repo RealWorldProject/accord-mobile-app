@@ -5,7 +5,7 @@ class BookService {
   final dio = new Dio();
   final baseURL = Constant.baseURL;
 
-  Future<Map<String, dynamic>> postBook(String book) async {
+  Future<String> postBook(String book) async {
     try {
       final res = await dio.post(
         '$baseURL/book',
