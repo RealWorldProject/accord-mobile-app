@@ -17,7 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Text("Post Book"),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddBook()));
+                      MaterialPageRoute(builder: (context) => PostBook()));
                 }),
             SizedBox(
               height: 30,

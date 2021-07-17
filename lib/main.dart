@@ -21,17 +21,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
-        debugShowCheckedModeBanner: false,
-        home: NavigationBar()
+      title: 'Flutter Demo',
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
+      debugShowCheckedModeBanner: false,
+      // home: NavigationBar(),
 
-        // initialRoute:
-        //     initScreen == 0 || initScreen == null ? 'onboard' : 'home',
-        // routes: {
-        //   'home': (context) => LoginScreen(),
-        //   'onboard': (context) => GetStartedScreen()
-        // },
+      initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
+      routes: {
+        "home": (context) => LoginScreen(),
+        "onboard": (context) => GetStartedScreen()
+      },
     );
   }
 }

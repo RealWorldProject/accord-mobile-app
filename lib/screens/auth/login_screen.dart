@@ -1,5 +1,9 @@
 import 'package:accord/responses/login_response.dart';
 import 'package:accord/screens/auth/register_screen.dart';
+import 'package:accord/screens/widgets/conceal_password.dart';
+import 'package:accord/screens/widgets/custom_button.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/screens/widgets/custom_text_field.dart';
 import 'package:accord/screens/widgets/navigation_bar.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/services/storage.dart';
@@ -15,38 +19,44 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  var inpEmail, inpPassword;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordcontroller = TextEditingController();
 
   // input field validation
-  final requireEmail = RequiredValidator(errorText: 'Email is required!');
-  final requirePassword = RequiredValidator(errorText: 'Password is required!');
+  final _requireEmail =
+      MultiValidator([RequiredValidator(errorText: "Email is required!")]);
+
+  final _requirePassword =
+      MultiValidator([RequiredValidator(errorText: "Password is required!")]);
 
   // Toggles the password show status
-  bool _obscureText = true;
+  bool _obscurePassword = true;
   void _toggle() {
     setState(() {
-      _obscureText = !_obscureText;
+      _obscurePassword = !_obscurePassword;
     });
   }
 
-  Future<void> validateLogin() async {
-    UserViewModel userViewModel = new UserViewModel();
-    LoginResponse loginResponse;
-    if (formKey.currentState.validate()) {
+  Future<void> _validateLogin() async {
+    String _email = _emailController.text;
+    String _password = _passwordcontroller.text;
+    UserViewModel _userViewModel = new UserViewModel();
+    LoginResponse _loginResponse;
+    if (_formKey.currentState.validate()) {
       // viewModel makes api request and returns response
-      loginResponse = await userViewModel.loginUser(inpEmail, inpPassword);
+      _loginResponse = await _userViewModel.loginUser(_email, _password);
 
-      if (loginResponse.success) {
+      if (_loginResponse.success) {
         // storing token
-        Storage().storeToken("Bearer ${loginResponse.token}");
+        Storage().storeToken("Bearer ${_loginResponse.token}");
         // navigating to dashboard
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => NavigationBar()));
       } else {
         //else displaying error messages.
         ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(loginResponse.message, 'Try Again', this.context));
+            .popSnackbar(_loginResponse.message, "Try Again", this.context));
       }
     }
   }
@@ -85,19 +95,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         FadeAnimation(
-                            1,
-                            Text(
-                              "Welcome Back",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 30),
-                            )),
+                          1,
+                          CustomText(
+                            holderKey: "grtUser",
+                            textToShow: "Welcome Back!",
+                          ),
+                        ),
                         FadeAnimation(
-                            1.3,
-                            Text(
-                              "Login to your Account",
-                              style:
-                                  TextStyle(color: Colors.blue, fontSize: 18),
-                            )),
+                          1.3,
+                          CustomText(
+                            holderKey: "gidLogin",
+                            textToShow: "Login to the Accord!",
+                          ),
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -105,50 +115,31 @@ class _LoginScreenState extends State<LoginScreen> {
                             1.4,
                             Container(
                               child: Form(
-                                key: formKey,
+                                key: _formKey,
                                 child: Column(
                                   children: <Widget>[
                                     Container(
-                                      child: TextFormField(
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        decoration: InputDecoration(
-                                          hintText: "Email ",
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          border: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.grey),
-                                          ),
-                                        ),
-                                        textInputAction: TextInputAction.next,
-                                        onChanged: (val) => inpEmail = val,
-                                        validator: requireEmail,
+                                      child: CustomTextField(
+                                        fieldController: _emailController,
+                                        obscureText: _obscurePassword,
+                                        hintText: "Email",
+                                        fieldValidator: _requireEmail,
                                       ),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 8),
-                                      child: TextFormField(
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        obscureText: _obscureText,
-                                        decoration: InputDecoration(
+                                    Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: <Widget>[
+                                        CustomTextField(
+                                          fieldController: _passwordcontroller,
+                                          obscureText: _obscurePassword,
                                           hintText: "Password",
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          border: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.grey)),
-                                          suffixIcon: InkWell(
-                                              onTap: _toggle,
-                                              child: (_obscureText)
-                                                  ? Icon(Icons.visibility_off)
-                                                  : Icon(Icons.visibility)),
+                                          fieldValidator: _requirePassword,
                                         ),
-                                        textInputAction: TextInputAction.done,
-                                        onChanged: (val) => inpPassword = val,
-                                        validator: requirePassword,
-                                      ),
+                                        ConcealPassword(
+                                          obscurePassword: _obscurePassword,
+                                          toggleConceal: _toggle,
+                                        )
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -162,10 +153,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             FadeAnimation(
                               1.5,
-                              Text(
-                                "Forgot Password?",
-                                style: TextStyle(
-                                    color: Colors.grey[900], fontSize: 16),
+                              CustomText(
+                                holderKey: "ask",
+                                textToShow: "Forgot Password?",
                               ),
                             ),
                           ],
@@ -174,29 +164,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 10,
                         ),
                         FadeAnimation(
-                            1.6,
-                            Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                  color: Colors.blue),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  key: Key("login"),
-                                  onTap: () {
-                                    validateLogin();
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      "Login",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )),
+                          1.6,
+                          CustomButton(
+                            buttonKey: "btnLogin",
+                            buttonText: "Login",
+                            triggerAction: _validateLogin,
+                          ),
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -204,28 +178,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             FadeAnimation(
-                                1.7,
-                                Text(
-                                  "Don't have an account? ",
-                                  style: TextStyle(
-                                      color: Colors.grey[900], fontSize: 16),
-                                )),
+                              1.7,
+                              CustomText(
+                                holderKey: "askRegister",
+                                textToShow: "Don't have an account? ",
+                              ),
+                            ),
                             FadeAnimation(
-                                1.8,
-                                GestureDetector(
-                                    key: Key("signup"),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  RegisterScreen()));
-                                    },
-                                    child: Text(
-                                      "Sign Up",
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.blue),
-                                    )))
+                              1.8,
+                              GestureDetector(
+                                key: Key("lnkRegister"),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RegisterScreen()));
+                                },
+                                child: CustomText(
+                                  holderKey: "lnkRegister",
+                                  textToShow: "Register",
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ],
