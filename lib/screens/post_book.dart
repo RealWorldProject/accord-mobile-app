@@ -1,34 +1,50 @@
 import 'dart:io';
 
+import 'package:accord/models/book.dart';
+import 'package:accord/responses/book_post_response.dart';
+import 'package:accord/screens/widgets/custom_button.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/screens/widgets/custom_radio_button.dart';
+import 'package:accord/screens/widgets/custom_text_field.dart';
+import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddBook extends StatefulWidget {
-  const AddBook({Key key}) : super(key: key);
-
+class PostBook extends StatefulWidget {
   @override
-  _AddBookState createState() => _AddBookState();
+  _PostBookState createState() => _PostBookState();
 }
 
-class _AddBookState extends State<AddBook> {
-  File _image;
-  int _conditionValue = 0;
-  int _exchangeValue = 0;
+class _PostBookState extends State<PostBook> {
   final _formKey = GlobalKey<FormState>();
+  File _image;
+  String _conditionValue;
+  String _exchangableValue;
+  final _bookNameController = TextEditingController();
+  final _authorNameController = TextEditingController();
+  final _priceController = TextEditingController();
+  final _descriptionController = TextEditingController();
 
-  void _handleRadioValueForCondition(int value) {
-    setState(() {
-      _conditionValue = value;
-      print(_conditionValue);
-    });
+  // field validations
+  final _acquireBookName =
+      MultiValidator([RequiredValidator(errorText: "Book Name is required!")]);
+
+  final _acquireAuthorName = MultiValidator(
+      [RequiredValidator(errorText: "Author Name is required!")]);
+
+  final _acquirePrice =
+      MultiValidator([RequiredValidator(errorText: "Price is required!")]);
+
+  final _acquireDescription = MultiValidator(
+      [RequiredValidator(errorText: "Description is required!")]);
+
+  ValueChanged<String> _conditionValueChangedHandler() {
+    return (value) => setState(() => _conditionValue = value);
   }
 
-  void _handleRadioValueForExchange(int value) {
-    setState(() {
-      _exchangeValue = value;
-      print(_exchangeValue);
-    });
+  ValueChanged<String> _exchangableValueChangedHandler() {
+    return (value) => setState(() => _exchangableValue = value);
   }
 
   Future getImagefromcamera() async {
@@ -68,19 +84,21 @@ class _AddBookState extends State<AddBook> {
                         leading: Icon(
                           Icons.photo_library,
                         ),
-                        title: Text(
-                          'Choose from Gallery',
-                          style: TextStyle(fontSize: 18),
+                        title: CustomText(
+                          textToShow: "Choose from Gallery",
+                          textColor: Colors.grey.shade700,
                         ),
                         onTap: () {
                           getImagefromGallery();
                           Navigator.of(context).pop();
                         }),
                     ListTile(
-                      leading: Icon(Icons.photo_camera),
-                      title: Text(
-                        'Open Camera',
-                        style: TextStyle(fontSize: 18),
+                      leading: Icon(
+                        Icons.photo_camera,
+                      ),
+                      title: CustomText(
+                        textToShow: "Open Camera",
+                        textColor: Colors.grey.shade700,
                       ),
                       onTap: () {
                         getImagefromcamera();
@@ -98,6 +116,17 @@ class _AddBookState extends State<AddBook> {
         });
   }
 
+  Future<void> validatePostBook() async {
+    BookViewModel _bookViewModel = new BookViewModel();
+    BookPostResponse _bookPostResponse;
+
+    if (_formKey.currentState.validate()) {
+      // Book book = Book(name: _bookNameController, author: _authorNameController, category: )
+    }
+
+    await print('posting book');
+  }
+
   String valueChoose;
   List category = ["Cat 1", "Cat 2", "Cat 3", "Cat 4"];
 
@@ -108,9 +137,9 @@ class _AddBookState extends State<AddBook> {
         iconTheme: IconThemeData(color: Colors.blue),
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: Text(
-          "Add a Book",
-          style: TextStyle(color: Colors.blue),
+        title: CustomText(
+          textToShow: "Add a Book",
+          textColor: Colors.blue,
         ),
       ),
       body: SingleChildScrollView(
@@ -154,7 +183,7 @@ class _AddBookState extends State<AddBook> {
                                     color: Colors.grey[800],
                                     size: 50,
                                   ),
-                                  Text("Add Image")
+                                  Text("Add Image"),
                                 ],
                               ),
                             ),
@@ -221,79 +250,44 @@ class _AddBookState extends State<AddBook> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Text(
-                          "Name",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                        child: CustomText(
+                          textToShow: "Book Name",
                         ),
                       ),
                       SizedBox(
                         height: 4,
                       ),
-                      TextFormField(
-                        key: Key("bookName"),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          hintText: "Book's Name",
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        validator:
-                            RequiredValidator(errorText: "Name is required"),
-                        textInputAction: TextInputAction.next,
+                      CustomTextField(
+                        formType: "PostBook",
+                        fieldController: _bookNameController,
+                        hintText: "Book Name",
+                        fieldValidator: _acquireBookName,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Text(
-                          "Author's Name",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                        child: CustomText(
+                          textToShow: "Author`s Name",
                         ),
                       ),
                       SizedBox(
                         height: 4,
                       ),
-                      TextFormField(
-                        key: Key("authorName"),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          hintText: "Author's Name",
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        textInputAction: TextInputAction.next,
-                        validator: RequiredValidator(
-                            errorText: "Author Name is required"),
+                      CustomTextField(
+                        formType: "PostBook",
+                        fieldController: _authorNameController,
+                        hintText: "Author's Name",
+                        fieldValidator: _acquireAuthorName,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Text(
-                          "Category",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                        child: CustomText(
+                          textToShow: "Category",
                         ),
                       ),
                       SizedBox(
@@ -336,185 +330,93 @@ class _AddBookState extends State<AddBook> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Text(
-                          "Price",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                        child: CustomText(
+                          textToShow: "Price",
                         ),
                       ),
                       SizedBox(
                         height: 4,
                       ),
-                      TextFormField(
-                        key: Key("price"),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          hintText: "Price",
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        validator:
-                            RequiredValidator(errorText: "Price is required"),
-                        textInputAction: TextInputAction.next,
+                      CustomTextField(
+                        formType: "PostBook",
+                        fieldController: _priceController,
+                        hintText: "Price",
+                        fieldValidator: _acquirePrice,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Text(
-                          "Description",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                        child: CustomText(
+                          textToShow: "Description",
                         ),
                       ),
                       SizedBox(
                         height: 4,
                       ),
-                      TextFormField(
-                        key: Key("description"),
-                        maxLines: 7,
-                        keyboardType: TextInputType.multiline,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 6,
-                          ),
-                          hintText: "Description",
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        textInputAction: TextInputAction.next,
-                        validator: RequiredValidator(
-                            errorText: "Description is required"),
+                      CustomTextField(
+                        formType: "PostBook",
+                        fieldController: _descriptionController,
+                        hintText: "Description",
+                        fieldValidator: _acquireDescription,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Text(
-                          "Condition",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                        child: CustomText(
+                          textToShow: "Condition",
                         ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Radio(
-                            value: 0,
+                          CustomRadioButton<String>(
+                            value: "New",
                             groupValue: _conditionValue,
-                            onChanged: _handleRadioValueForCondition,
+                            onChanged: _conditionValueChangedHandler(),
+                            text: "New",
                           ),
-                          Text(
-                            'New',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Radio(
-                            value: 1,
+                          CustomRadioButton<String>(
+                            value: "Old",
                             groupValue: _conditionValue,
-                            onChanged: _handleRadioValueForCondition,
-                          ),
-                          Text(
-                            'Old',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
+                            onChanged: _conditionValueChangedHandler(),
+                            text: "Old",
                           ),
                         ],
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Text(
-                          "Exchange",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                        child: CustomText(
+                          textToShow: "Exchangable",
                         ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Radio(
-                            value: 0,
-                            groupValue: _exchangeValue,
-                            onChanged: _handleRadioValueForExchange,
+                          CustomRadioButton<String>(
+                            value: "Yes",
+                            groupValue: _exchangableValue,
+                            onChanged: _exchangableValueChangedHandler(),
+                            text: "Yes",
                           ),
-                          Text(
-                            'Yes',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Radio(
-                            value: 1,
-                            groupValue: _exchangeValue,
-                            onChanged: _handleRadioValueForExchange,
-                          ),
-                          Text(
-                            'No',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
+                          CustomRadioButton<String>(
+                            value: "No",
+                            groupValue: _exchangableValue,
+                            onChanged: _exchangableValueChangedHandler(),
+                            text: "No",
                           ),
                         ],
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.blue,
-                        ),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              print("1");
-                            },
-                            child: Center(
-                              child: Text(
-                                "Add Book",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                      CustomButton(
+                        buttonKey: "btnPostBook",
+                        buttonText: "Post Book",
+                        triggerAction: validatePostBook,
                       ),
                     ],
                   ),

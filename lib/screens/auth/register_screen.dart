@@ -2,7 +2,11 @@ import 'dart:convert';
 
 import 'package:accord/models/user.dart';
 import 'package:accord/responses/register_response.dart';
+import 'package:accord/screens/widgets/conceal_password.dart';
+import 'package:accord/screens/widgets/custom_button.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
+import 'package:accord/screens/widgets/custom_text_field.dart';
 import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
@@ -15,25 +19,28 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  String inpFirstName, inpLastName, inpEmail, inpPassword;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   // input field validations
-  final validateFirstName =
-      RequiredValidator(errorText: 'First name is required!');
+  final _validateFirstName =
+      MultiValidator([RequiredValidator(errorText: "First name is required!")]);
 
-  final validateLastName =
-      RequiredValidator(errorText: 'Last name is required!');
+  final _validateLastName =
+      MultiValidator([RequiredValidator(errorText: "Last name is required!")]);
 
-  final validateEmail = MultiValidator([
-    RequiredValidator(errorText: 'Email is required!'),
+  final _validateEmail = MultiValidator([
+    RequiredValidator(errorText: "Email is required!"),
     EmailValidator(
-        errorText: 'Invalid email, please update it and check again!')
+        errorText: "Invalid email, please update it and check again!")
   ]);
 
-  final validatePassword = MultiValidator([
-    RequiredValidator(errorText: 'Password is required!'),
-    MinLengthValidator(6, errorText: 'Password must be atleast 6 character!')
+  final _validatePassword = MultiValidator([
+    RequiredValidator(errorText: "Password is required!"),
+    MinLengthValidator(6, errorText: "Password must be atleast 6 character!")
   ]);
 
   // Toggles the password show status
@@ -44,34 +51,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  Future<void> registerUser() async {
-    UserViewModel userViewModel = new UserViewModel();
-    RegisterResponse registerResponse;
+  Future<void> _registerUser() async {
+    UserViewModel _userViewModel = new UserViewModel();
+    RegisterResponse _registerResponse;
 
-    // user object
-    User user = User(
-      firstName: inpFirstName,
-      lastName: inpLastName,
-      email: inpEmail,
-      password: inpPassword,
-    );
+    if (_formKey.currentState.validate()) {
+      // user object
+      User user = User(
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
 
-    // user object to json file conversion
-    String userJSON = jsonEncode(user);
+      // user object to json file conversion
+      String userJSON = jsonEncode(user);
 
-    // connecting and waitng for response from api through viewModel,
-    //also returns response of type `RegisterResponse`
-    registerResponse = await userViewModel.registerUser(userJSON);
+      // connecting and waitng for response from api through viewModel,
+      //also returns response of type `RegisterResponse`
+      _registerResponse = await _userViewModel.registerUser(userJSON);
 
-    // checking resoponse and displaing customized error or success message
-    if (registerResponse.success) {
-      // snackbar for successful user registration response
-      ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-          .popSnackbar(registerResponse.message, 'To Login', this.context));
-    } else {
-      // snackbar for failed user registration response
-      ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-          .popSnackbar(registerResponse.message, 'Try Again', this.context));
+      // checking resoponse and displaing customized error or success message
+      if (_registerResponse.success) {
+        // snackbar for successful user registration response
+        ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+            .popSnackbar(_registerResponse.message, "To Login", this.context));
+      } else {
+        // snackbar for failed user registration response
+        ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+            .popSnackbar(_registerResponse.message, "Try Again", this.context));
+      }
     }
   }
 
@@ -105,20 +114,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   FadeAnimation(
-                      1,
-                      Text(
-                        "Sign Up",
-                        style: TextStyle(color: Colors.white, fontSize: 30),
-                      )),
+                    1,
+                    CustomText(
+                      holderKey: "ttlRegister",
+                      textToShow: "Register",
+                    ),
+                  ),
                   SizedBox(
                     height: 10,
                   ),
                   FadeAnimation(
-                      1.2,
-                      Text(
-                        "Create an Account",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      )),
+                    1.2,
+                    CustomText(
+                      holderKey: "tagRegister",
+                      textToShow: "Get yourself a new Account.",
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -139,93 +150,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             1.3,
                             Container(
                               child: Form(
-                                key: formKey,
+                                key: _formKey,
                                 child: Column(
                                   children: <Widget>[
                                     Container(
-                                      child: TextFormField(
-                                          key: Key("firstName"),
-                                          autofocus: true,
-                                          autovalidateMode: AutovalidateMode
-                                              .onUserInteraction,
-                                          decoration: InputDecoration(
-                                            hintText: "First Name",
-                                            hintStyle:
-                                                TextStyle(color: Colors.grey),
-                                            border: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.grey),
-                                            ),
-                                          ),
-                                          textInputAction: TextInputAction.next,
-                                          onChanged: (val) =>
-                                              inpFirstName = val,
-                                          validator: validateFirstName),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: TextFormField(
-                                        key: Key("lastName"),
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        decoration: InputDecoration(
-                                          hintText: "Last Name",
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          border: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.grey),
-                                          ),
-                                        ),
-                                        textInputAction: TextInputAction.next,
-                                        onChanged: (val) => inpLastName = val,
-                                        validator: validateLastName,
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: TextFormField(
-                                        key: Key("email"),
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        decoration: InputDecoration(
-                                          hintText: "Email",
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          border: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.grey),
-                                          ),
-                                        ),
-                                        textInputAction: TextInputAction.next,
-                                        onChanged: (val) => inpEmail = val,
-                                        validator: validateEmail,
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: TextFormField(
-                                        key: Key("password"),
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
+                                      child: CustomTextField(
+                                        fieldController: _firstNameController,
                                         obscureText: _obscureText,
-                                        decoration: InputDecoration(
-                                            hintText: "Password",
-                                            hintStyle:
-                                                TextStyle(color: Colors.grey),
-                                            border: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.grey),
-                                            ),
-                                            suffixIcon: InkWell(
-                                                onTap: _toggle,
-                                                child: (_obscureText)
-                                                    ? Icon(Icons.visibility_off)
-                                                    : Icon(Icons.visibility))),
-                                        textInputAction: TextInputAction.done,
-                                        onChanged: (val) => inpPassword = val,
-                                        validator: validatePassword,
+                                        hintText: "First Name",
+                                        fieldValidator: _validateFirstName,
                                       ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 5),
+                                      child: CustomTextField(
+                                        fieldController: _lastNameController,
+                                        obscureText: _obscureText,
+                                        hintText: "Last Name",
+                                        fieldValidator: _validateLastName,
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 5),
+                                      child: CustomTextField(
+                                        fieldController: _emailController,
+                                        obscureText: _obscureText,
+                                        hintText: "Email",
+                                        fieldValidator: _validateEmail,
+                                      ),
+                                    ),
+                                    Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: <Widget>[
+                                        CustomTextField(
+                                          fieldController: _passwordController,
+                                          obscureText: _obscureText,
+                                          hintText: "Password",
+                                          fieldValidator: _validatePassword,
+                                        ),
+                                        ConcealPassword(
+                                          obscurePassword: _obscureText,
+                                          toggleConceal: _toggle,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -235,32 +202,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           height: 40,
                         ),
                         FadeAnimation(
-                            1.6,
-                            Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                  color: Colors.blue),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  key: Key("register"),
-                                  onTap: () {
-                                    // form validation. if successful proceeds to api connection.
-                                    if (formKey.currentState.validate()) {
-                                      registerUser();
-                                    }
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      "Sign up",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )),
+                          1.6,
+                          CustomButton(
+                            buttonKey: "btnRegister",
+                            buttonText: "Register",
+                            triggerAction: _registerUser,
+                          ),
+                        ),
                         SizedBox(
                           height: 20,
                         ),
@@ -268,12 +216,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             FadeAnimation(
-                                1.7,
-                                Text(
-                                  "Already have an account? ",
-                                  style: TextStyle(
-                                      color: Colors.grey[900], fontSize: 16),
-                                )),
+                              1.7,
+                              CustomText(
+                                holderKey: "askLogin",
+                                textToShow: "Already have an account? ",
+                              ),
+                            ),
                             FadeAnimation(
                               1.8,
                               GestureDetector(
@@ -284,10 +232,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         builder: (context) => LoginScreen(),
                                       ));
                                 },
-                                child: Text(
-                                  "Login",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.blue),
+                                child: CustomText(
+                                  holderKey: "lnkLogin",
+                                  textToShow: "Login",
                                 ),
                               ),
                             )
