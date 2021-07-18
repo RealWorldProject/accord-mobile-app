@@ -106,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomText(
                             holderKey: "gidLogin",
                             textToShow: "Login to the Accord!",
+                            textColor: Colors.grey.shade700,
                           ),
                         ),
                         SizedBox(
@@ -156,6 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               CustomText(
                                 holderKey: "ask",
                                 textToShow: "Forgot Password?",
+                                textColor: Colors.grey.shade700,
                               ),
                             ),
                           ],
@@ -182,6 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               CustomText(
                                 holderKey: "askRegister",
                                 textToShow: "Don't have an account? ",
+                                textColor: Colors.grey.shade700,
                               ),
                             ),
                             FadeAnimation(
@@ -198,6 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: CustomText(
                                   holderKey: "lnkRegister",
                                   textToShow: "Register",
+                                  textColor: Colors.blue,
                                 ),
                               ),
                             )
