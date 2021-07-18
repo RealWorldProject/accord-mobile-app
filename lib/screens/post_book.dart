@@ -37,7 +37,9 @@ class _PostBookState extends State<PostBook> {
   @override
   void initState() {
     super.initState();
-    _getCategories();
+    _getCategories().then((categories) => setState(() {
+          _category = categories;
+        }));
   }
 
   // field validations
@@ -78,13 +80,14 @@ class _PostBookState extends State<PostBook> {
     });
   }
 
-  Future<void> _getCategories() async {
+  Future<List<Category>> _getCategories() async {
     CategoryViewModel categoryViewModel = new CategoryViewModel();
     FetchCategoryResponse fetchCategoryResponse =
         await categoryViewModel.fetchCategories();
     if (fetchCategoryResponse.success) {
-      _category = fetchCategoryResponse.result;
+      return fetchCategoryResponse.result;
     }
+    return fetchCategoryResponse.result;
   }
 
   Future<void> _validatePostBook() async {
@@ -98,7 +101,7 @@ class _PostBookState extends State<PostBook> {
         category: _chosenValue,
         price: double.parse(_priceController.text),
         description: _descriptionController.text,
-        images: _image.toString(),
+        images: _image.path,
         isNEW: (_conditionValue == "New") ? true : false,
         isAvailableForExchange: (_exchangableValue == "Yes") ? true : false,
       );
@@ -118,9 +121,6 @@ class _PostBookState extends State<PostBook> {
         ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
             .popSnackbar(bookPostResponse.message, "Try Again", this.context));
       }
-
-      print(
-          "${book.images}\n${book.category}\n${book.isNEW}\n${book.isAvailableForExchange}");
     }
   }
 
@@ -296,6 +296,7 @@ class _PostBookState extends State<PostBook> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 1.0),
                         child: DropdownButtonFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           dropdownColor: Colors.grey[200],
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
