@@ -75,7 +75,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (_registerResponse.success) {
         // snackbar for successful user registration response
         ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(_registerResponse.message, "To Login", this.context));
+            .popSnackbar(_registerResponse.message, "Okay", this.context));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
       } else {
         // snackbar for failed user registration response
         ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
@@ -118,6 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     CustomText(
                       holderKey: "ttlRegister",
                       textToShow: "Register",
+                      textColor: Colors.white,
                     ),
                   ),
                   SizedBox(
@@ -128,6 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     CustomText(
                       holderKey: "tagRegister",
                       textToShow: "Get yourself a new Account.",
+                      textColor: Colors.grey.shade50,
                     ),
                   ),
                 ],
@@ -220,6 +224,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               CustomText(
                                 holderKey: "askLogin",
                                 textToShow: "Already have an account? ",
+                                textColor: Colors.grey.shade700,
                               ),
                             ),
                             FadeAnimation(
@@ -235,6 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 child: CustomText(
                                   holderKey: "lnkLogin",
                                   textToShow: "Login",
+                                  textColor: Colors.blue,
                                 ),
                               ),
                             )

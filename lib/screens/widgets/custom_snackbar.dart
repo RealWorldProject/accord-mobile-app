@@ -24,7 +24,7 @@ class MessageHolder {
           },
         ),
       );
-    } else if (actionLabel == 'Try Again') {
+    } else {
       return SnackBar(
         content: Text(
           displayMessage,
