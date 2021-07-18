@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 class CustomTextField<T> extends StatelessWidget {
@@ -25,20 +26,25 @@ class CustomTextField<T> extends StatelessWidget {
     return TextFormField(
       controller: fieldController,
       // hiding texts if the text field is password
-      obscureText: (() {
-        if (hintText == "Password") {
-          return obscureText;
-        } else {
-          return false;
-        }
-      }()),
+      obscureText: (hintText == "Password") ? obscureText : false,
+      // separately defining number of lines for description
+      maxLines: (hintText == "Description") ? 7 : 1,
+      // separately defining keyboard type for price
+      keyboardType: (hintText == "Price")
+          ? TextInputType.numberWithOptions(decimal: true)
+          : null,
+      // allowing only one dot in price field.
+      inputFormatters: (hintText == "Price")
+          ? [FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*"))]
+          : [],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: fieldValidator,
       decoration: (() {
+        // defining separate styles for fields in post book form
         if (formType == "PostBook") {
           return InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
-            hintText: "Book's Name",
+            hintText: hintText,
             hintStyle: TextStyle(color: Colors.grey),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),

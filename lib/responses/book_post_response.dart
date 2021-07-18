@@ -18,7 +18,7 @@ class BookPostResponse {
       success: parsedJson['success'],
       message: parsedJson['message'],
       developerMessage: parsedJson['developerMessage'],
-      // result: Book.fromJson(parsedJson['result']),
+      result: Book.fromJson(parsedJson['result']),
     );
   }
 }
