@@ -10,7 +10,6 @@ class BookService {
 
   Future<String> postBook(String book) async {
     final userToken = await Storage().fetchToken();
-    print(book);
     try {
       final res = await dio.post(
         '$baseURL/book',
@@ -22,10 +21,8 @@ class BookService {
           },
         ),
       );
-      print(res.data['result']);
       return res.data;
     } on DioError catch (e) {
-      print(e.response.data);
       return e.response.data;
     }
   }
