@@ -24,13 +24,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
       debugShowCheckedModeBanner: false,
-      // home: NavigationBar(),
+      home: NavigationBar(),
 
-      initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
-      routes: {
-        "home": (context) => LoginScreen(),
-        "onboard": (context) => GetStartedScreen()
-      },
+      // initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
+      // routes: {
+      //   "home": (context) => LoginScreen(),
+      //   "onboard": (context) => GetStartedScreen()
+      // },
     );
   }
 }
