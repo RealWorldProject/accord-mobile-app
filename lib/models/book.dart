@@ -1,21 +1,23 @@
 class Book {
   final String id;
   final String name;
-  final String images;
-  final String description;
   final String author;
   final String category;
-  final bool isNew;
+  final double price;
+  final String description;
+  final String images;
+  final bool isNEW;
   final bool isAvailableForExchange;
 
   Book({
     this.id,
     this.name,
-    this.images,
-    this.description,
     this.author,
     this.category,
-    this.isNew,
+    this.price,
+    this.description,
+    this.images,
+    this.isNEW,
     this.isAvailableForExchange,
   });
 
@@ -24,11 +26,12 @@ class Book {
     return Book(
       id: json['_id'],
       name: json['name'],
-      images: json['images'],
-      description: json['description'],
       author: json['author'],
       category: json['category'],
-      isNew: json['isNew'],
+      price: json['price'],
+      description: json['description'],
+      images: json['images'],
+      isNEW: json['isNEW'],
       isAvailableForExchange: json['isAvailableForExchange'],
     );
   }
@@ -36,11 +39,12 @@ class Book {
   // object to json file
   Map<String, dynamic> toJson() => {
         'name': name,
-        'images': images,
-        'description': description,
         'author': author,
         'category': category,
-        'isNew': isNew,
+        'price': price,
+        'description': description,
+        'images': images,
+        'isNEW': isNEW,
         'isAvailableForExchange': isAvailableForExchange,
       };
 }

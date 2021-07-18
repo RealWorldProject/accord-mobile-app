@@ -13,12 +13,12 @@ class BookPostResponse {
     this.result,
   });
 
-  factory BookPostResponse.fromJson(Map<String, dynamic> json) {
+  factory BookPostResponse.fromJson(Map<String, dynamic> parsedJson) {
     return BookPostResponse(
-      success: json['success'],
-      message: json['message'],
-      developerMessage: json['developerMessage'],
-      result: Book.fromJson(json['result']),
+      success: parsedJson['success'],
+      message: parsedJson['message'],
+      developerMessage: parsedJson['developerMessage'],
+      // result: Book.fromJson(parsedJson['result']),
     );
   }
 }

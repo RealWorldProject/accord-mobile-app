@@ -42,7 +42,7 @@ class BookModelReader {
   }
 
   bool get isNew {
-    return this.book.isNew;
+    return this.book.isNEW;
   }
 
   bool get isAvailableForExchange {
