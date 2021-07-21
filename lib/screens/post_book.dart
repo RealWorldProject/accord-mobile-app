@@ -2,13 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:accord/models/book.dart';
+import 'package:accord/models/category.dart';
 import 'package:accord/responses/book_post_response.dart';
+import 'package:accord/responses/fetch_category_response.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_radio_button.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/screens/widgets/custom_text_field.dart';
+import 'package:accord/screens/widgets/image_uploader.dart';
 import 'package:accord/viewModel/book_view_model.dart';
+import 'package:accord/viewModel/category_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,13 +24,23 @@ class PostBook extends StatefulWidget {
 
 class _PostBookState extends State<PostBook> {
   final _formKey = GlobalKey<FormState>();
-  File _image;
-  String _conditionValue;
-  String _exchangableValue;
+  XFile _image;
+  String _chosenValue;
+  List<Category> _category = [];
+  String _conditionValue = "New";
+  String _exchangableValue = "No";
   final _bookNameController = TextEditingController();
   final _authorNameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getCategories().then((categories) => setState(() {
+          _category = categories;
+        }));
+  }
 
   // field validations
   final _acquireBookName =
@@ -41,6 +55,7 @@ class _PostBookState extends State<PostBook> {
   final _acquireDescription = MultiValidator(
       [RequiredValidator(errorText: "Description is required!")]);
 
+  // active radio button change handlers.
   ValueChanged<String> _conditionValueChangedHandler() {
     return (value) => setState(() => _conditionValue = value);
   }
@@ -49,81 +64,35 @@ class _PostBookState extends State<PostBook> {
     return (value) => setState(() => _exchangableValue = value);
   }
 
-  Future _getImagefromcamera() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+  // image upload options.
+
+  Future<void> _getImagefromcamera() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
     });
   }
 
-  Future _getImagefromGallery() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future<void> _getImagefromGallery() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       _image = image;
     });
   }
 
-  void _showPicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Wrap(children: [
-            Container(
-              color: Color(0xFF737373),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    )),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 5,
-                    ),
-                    ListTile(
-                        leading: Icon(
-                          Icons.photo_library,
-                        ),
-                        title: CustomText(
-                          textToShow: "Choose from Gallery",
-                          textColor: Colors.grey.shade700,
-                        ),
-                        onTap: () {
-                          _getImagefromGallery();
-                          Navigator.of(context).pop();
-                        }),
-                    ListTile(
-                      leading: Icon(
-                        Icons.photo_camera,
-                      ),
-                      title: CustomText(
-                        textToShow: "Open Camera",
-                        textColor: Colors.grey.shade700,
-                      ),
-                      onTap: () {
-                        _getImagefromcamera();
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ]);
-        });
+  Future<List<Category>> _getCategories() async {
+    CategoryViewModel categoryViewModel = new CategoryViewModel();
+    FetchCategoryResponse fetchCategoryResponse =
+        await categoryViewModel.fetchCategories();
+    if (fetchCategoryResponse.success) {
+      return fetchCategoryResponse.result;
+    }
+    return fetchCategoryResponse.result;
   }
-
-  String _chosenValue;
-  List _category = ["Cat 1", "Cat 2", "Cat 3", "Cat 4"];
 
   Future<void> _validatePostBook() async {
-    BookViewModel _bookViewModel = new BookViewModel();
-    BookPostResponse _bookPostResponse;
+    BookViewModel bookViewModel = new BookViewModel();
+    BookPostResponse bookPostResponse;
 
     if (_formKey.currentState.validate()) {
       Book book = Book(
@@ -132,7 +101,7 @@ class _PostBookState extends State<PostBook> {
         category: _chosenValue,
         price: double.parse(_priceController.text),
         description: _descriptionController.text,
-        images: _image.toString(),
+        images: _image.path,
         isNEW: (_conditionValue == "New") ? true : false,
         isAvailableForExchange: (_exchangableValue == "Yes") ? true : false,
       );
@@ -142,19 +111,16 @@ class _PostBookState extends State<PostBook> {
 
       // connecting and waiting for response from api through bookViewModel.
       // response will be object of BookPostResponse.
-      _bookPostResponse = await _bookViewModel.postBook(bookJSON);
+      bookPostResponse = await bookViewModel.postBook(bookJSON);
 
       // displaying success or error message depending on response.
-      if (_bookPostResponse.success) {
+      if (bookPostResponse.success) {
         ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(_bookPostResponse.message, "Okay", this.context));
+            .popSnackbar(bookPostResponse.message, "Okay", this.context));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(_bookPostResponse.message, "Try Again", this.context));
+            .popSnackbar(bookPostResponse.message, "Try Again", this.context));
       }
-
-      print(
-          "${book.images}\n${book.category}\n${book.isNEW}\n${book.isAvailableForExchange}");
     }
   }
 
@@ -200,7 +166,13 @@ class _PostBookState extends State<PostBook> {
                           ),
                           child: InkWell(
                             onTap: () {
-                              _showPicker(context);
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => ImageUploader(
+                                  galleryOption: _getImagefromGallery,
+                                  cameraOption: _getImagefromcamera,
+                                ),
+                              );
                             },
                             child: Center(
                               child: Column(
@@ -227,7 +199,7 @@ class _PostBookState extends State<PostBook> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(8.0),
                                     child: Image.file(
-                                      _image,
+                                      File(_image.path),
                                       height: 200,
                                       width: 150,
                                       fit: BoxFit.cover,
@@ -322,8 +294,9 @@ class _PostBookState extends State<PostBook> {
                         height: 4,
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
                         child: DropdownButtonFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           dropdownColor: Colors.grey[200],
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
@@ -335,20 +308,24 @@ class _PostBookState extends State<PostBook> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          hint: Text("Select Category"),
+                          hint: Text(
+                            _category.isEmpty
+                                ? "No categories available!"
+                                : "Select Category",
+                          ),
                           icon: Icon(Icons.arrow_drop_down),
                           iconSize: 30,
                           isExpanded: true,
                           value: _chosenValue,
-                          onChanged: (newvalue) {
-                            setState(() {
-                              _chosenValue = newvalue;
-                            });
-                          },
+                          onChanged: (newvalue) => setState(() {
+                            _chosenValue = newvalue;
+                          }),
+                          validator: (value) =>
+                              (value == null) ? "Category is required!" : null,
                           items: _category.map((valueItem) {
                             return DropdownMenuItem(
-                              value: valueItem,
-                              child: Text(valueItem),
+                              value: valueItem.id,
+                              child: Text(valueItem.category),
                             );
                           }).toList(),
                         ),

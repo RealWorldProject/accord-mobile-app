@@ -4,16 +4,15 @@ import 'package:accord/constant/constant.dart';
 import 'package:accord/services/storage.dart';
 import 'package:dio/dio.dart';
 
-class BookService {
+class CategoryService {
   final dio = new Dio();
   final baseURL = Constant.baseURL;
 
-  Future<String> postBook(String book) async {
+  Future<String> fetchCategories() async {
     final userToken = await Storage().fetchToken();
     try {
-      final res = await dio.post(
-        '$baseURL/book',
-        data: book,
+      final res = await dio.get(
+        '$baseURL/categories',
         options: Options(
           responseType: ResponseType.plain,
           headers: {

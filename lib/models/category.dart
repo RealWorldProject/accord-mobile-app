@@ -1,13 +1,25 @@
-import 'package:accord/models/book_test.dart';
-
 class Category {
-  final String imageUrl;
-  final String name;
-  final List<BookTest> book;
+  final String id;
+  final String category;
+  final String slug;
+  final String displayName;
+  final String image;
 
   Category({
-    this.imageUrl,
-    this.name,
-    this.book
+    this.id,
+    this.category,
+    this.slug,
+    this.displayName,
+    this.image,
   });
+
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['_id'],
+      category: json['category'],
+      slug: json['slug'],
+      displayName: json['displayName'],
+      image: json['image'],
+    );
+  }
 }
