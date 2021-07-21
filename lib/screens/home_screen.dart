@@ -1,3 +1,5 @@
+import 'package:accord/screens/widgets/categories_view.dart';
+import 'package:accord/screens/widgets/search_field.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,7 +13,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child:Text("home page")),
+      body: Column(
+        children: [
+          SearchField(),
+          CategoriesView(),
+        ],
+      ),
     );
   }
 }
