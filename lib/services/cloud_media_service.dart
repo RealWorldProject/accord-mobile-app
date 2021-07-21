@@ -26,5 +26,6 @@ class CloudMediaService {
     } catch (e) {
       return e.response;
     }
+    return null;
   }
 }
