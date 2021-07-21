@@ -1,12 +1,12 @@
 import 'package:accord/models/book_test.dart';
-import 'package:accord/models/category.dart';
+import 'package:accord/models/category_test.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/screens/widgets/search_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SingleCategory extends StatefulWidget {
-  final Category category;
+  final CategoryTest category;
 
   SingleCategory({this.category});
 
