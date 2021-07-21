@@ -42,6 +42,8 @@ dependencies:
   flutter_secure_storage: ^4.2.0
   flutter_launcher_icons: ^0.9.0
   flutter_conditional_rendering: ^2.0.0
+  cloudinary_sdk: ^3.0.1+7
+  loading_indicator_view: ^1.1.0
 
 dev_dependencies:
   flutter_test:
