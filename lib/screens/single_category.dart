@@ -28,6 +28,7 @@ class _SingleCategoryState extends State<SingleCategory> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Stack(
             clipBehavior: Clip.none,
@@ -238,7 +239,7 @@ class _SingleCategoryState extends State<SingleCategory> {
             mainAxisSpacing: 10,
             crossAxisCount: 2,
             childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height / 1.09),
+                (MediaQuery.of(context).size.height / 1.025),
             children: List.generate(widget.category.book.length, (index) {
               BookTest bookTest = widget.category.book[index];
               return _buildBooks(bookTest, index);
