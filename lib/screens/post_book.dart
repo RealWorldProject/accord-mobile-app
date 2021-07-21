@@ -11,6 +11,8 @@ import 'package:accord/screens/widgets/custom_radio_button.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/screens/widgets/custom_text_field.dart';
 import 'package:accord/screens/widgets/image_uploader.dart';
+import 'package:accord/screens/widgets/loading_indicator.dart';
+import 'package:accord/services/cloud_media_service.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/category_view_model.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ class PostBook extends StatefulWidget {
 class _PostBookState extends State<PostBook> {
   final _formKey = GlobalKey<FormState>();
   XFile _image;
+  bool _imageChosen;
   String _chosenValue;
   List<Category> _category = [];
   String _conditionValue = "New";
@@ -70,6 +73,7 @@ class _PostBookState extends State<PostBook> {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
+      _imageChosen = true;
     });
   }
 
@@ -77,6 +81,7 @@ class _PostBookState extends State<PostBook> {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       _image = image;
+      _imageChosen = true;
     });
   }
 
@@ -93,25 +98,40 @@ class _PostBookState extends State<PostBook> {
   Future<void> _validatePostBook() async {
     BookViewModel bookViewModel = new BookViewModel();
     BookPostResponse bookPostResponse;
+    CloudMediaService cloudMediaService = new CloudMediaService();
+    setState(() {
+      _imageChosen = _image == null ? false : true;
+    });
 
     if (_formKey.currentState.validate()) {
-      Book book = Book(
-        name: _bookNameController.text,
-        author: _authorNameController.text,
-        category: _chosenValue,
-        price: double.parse(_priceController.text),
-        description: _descriptionController.text,
-        images: _image.path,
-        isNEW: (_conditionValue == "New") ? true : false,
-        isAvailableForExchange: (_exchangableValue == "Yes") ? true : false,
-      );
+      if (_imageChosen) {
+        loadingIndicator(context);
+        // checking if the image is chosen and
+        // then uploading image to Cloud through a function in CloudMediaService
+        // which returns the url of the uploaded image.
+        final String imageUrl =
+            await cloudMediaService.uploadImage(_image.path);
 
-      // converting book object into json file
-      String bookJSON = jsonEncode(book);
+        Book book = Book(
+          name: _bookNameController.text,
+          author: _authorNameController.text,
+          category: _chosenValue,
+          price: double.parse(_priceController.text),
+          description: _descriptionController.text,
+          images: imageUrl,
+          isNEW: (_conditionValue == "New") ? true : false,
+          isAvailableForExchange: (_exchangableValue == "Yes") ? true : false,
+        );
 
-      // connecting and waiting for response from api through bookViewModel.
-      // response will be object of BookPostResponse.
-      bookPostResponse = await bookViewModel.postBook(bookJSON);
+        // converting book object into json file
+        String bookJSON = jsonEncode(book);
+
+        // connecting and waiting for response from api through bookViewModel.
+        // response will be object of BookPostResponse.
+        bookPostResponse = await bookViewModel
+            .postBook(bookJSON)
+            .whenComplete(() => Navigator.of(context).pop());
+      }
 
       // displaying success or error message depending on response.
       if (bookPostResponse.success) {
@@ -146,7 +166,7 @@ class _PostBookState extends State<PostBook> {
               Padding(
                 padding: EdgeInsets.only(left: 6.0),
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 20.0),
+                  margin: EdgeInsets.only(top: 20.0),
                   padding: EdgeInsets.symmetric(vertical: 10.0),
                   height: 200.0,
                   child: ListView(
@@ -215,6 +235,7 @@ class _PostBookState extends State<PostBook> {
                                         onTap: () {
                                           setState(() {
                                             _image = null;
+                                            _imageChosen = false;
                                           });
                                         },
                                         child: Icon(
@@ -238,6 +259,19 @@ class _PostBookState extends State<PostBook> {
                   ),
                 ),
               ),
+              Visibility(
+                  visible: _imageChosen == null ? false : !_imageChosen,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Text(
+                      "Image is required!",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.red.shade800,
+                      ),
+                    ),
+                  )),
 
               // form area
               Padding(
