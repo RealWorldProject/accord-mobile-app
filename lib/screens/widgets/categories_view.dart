@@ -1,5 +1,5 @@
 import 'package:accord/data/data.dart';
-import 'package:accord/models/category.dart';
+import 'package:accord/models/category_test.dart';
 import 'package:accord/screens/single_category.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ class CategoriesView extends StatefulWidget {
 }
 
 class _CategoriesViewState extends State<CategoriesView> {
-  _buildCategory(Category category, index) {
+  _buildCategory(CategoryTest category, index) {
     return Container(
       margin: EdgeInsets.only(right: 20),
       child: InkWell(
@@ -92,11 +92,13 @@ class _CategoriesViewState extends State<CategoriesView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left:3.0),
+                padding: const EdgeInsets.only(left: 3.0),
                 child: Text(
                   "Categories",
-
-                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.w500,letterSpacing: -1),
+                  style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: -1),
                 ),
               ),
               Padding(
@@ -118,8 +120,8 @@ class _CategoriesViewState extends State<CategoriesView> {
               scrollDirection: Axis.horizontal,
               itemCount: categories.length,
               itemBuilder: (BuildContext context, int index) {
-                Category category = categories[index];
-                return _buildCategory(category,index);
+                CategoryTest category = categories[index];
+                return _buildCategory(category, index);
               },
             ),
           )
