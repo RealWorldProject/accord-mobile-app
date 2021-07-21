@@ -11,7 +11,7 @@ class CategoriesView extends StatefulWidget {
 }
 
 class _CategoriesViewState extends State<CategoriesView> {
-  _buildCategory(Category category) {
+  _buildCategory(Category category, index) {
     return Container(
       margin: EdgeInsets.only(right: 20),
       child: InkWell(
@@ -91,12 +91,16 @@ class _CategoriesViewState extends State<CategoriesView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Categories",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+              Padding(
+                padding: const EdgeInsets.only(left:3.0),
+                child: Text(
+                  "Categories",
+
+                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.w500,letterSpacing: -1),
+                ),
               ),
-              Container(
-                margin: EdgeInsets.only(right: 10),
+              Padding(
+                padding: EdgeInsets.only(right: 10),
                 child: Text(
                   "View All",
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w100),
@@ -115,7 +119,7 @@ class _CategoriesViewState extends State<CategoriesView> {
               itemCount: categories.length,
               itemBuilder: (BuildContext context, int index) {
                 Category category = categories[index];
-                return _buildCategory(category);
+                return _buildCategory(category,index);
               },
             ),
           )
