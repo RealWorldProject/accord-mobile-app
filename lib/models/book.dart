@@ -6,7 +6,7 @@ class Book {
   final double price;
   final String description;
   final String images;
-  final bool isNEW;
+  final bool isNew;
   final bool isAvailableForExchange;
 
   Book({
@@ -17,7 +17,7 @@ class Book {
     this.price,
     this.description,
     this.images,
-    this.isNEW,
+    this.isNew,
     this.isAvailableForExchange,
   });
 
@@ -31,7 +31,7 @@ class Book {
       price: json['price'],
       description: json['description'],
       images: json['images'],
-      isNEW: json['isNEW'],
+      isNew: json['isNew'],
       isAvailableForExchange: json['isAvailableForExchange'],
     );
   }
@@ -44,7 +44,7 @@ class Book {
         'price': price,
         'description': description,
         'images': images,
-        'isNEW': isNEW,
+        'isNew': isNew,
         'isAvailableForExchange': isAvailableForExchange,
       };
 }
