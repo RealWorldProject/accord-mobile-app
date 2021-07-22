@@ -96,15 +96,21 @@ class _PostBookState extends State<PostBook> {
   }
 
   Future<void> _validatePostBook() async {
+    // removes focus from textfeilds
+    FocusScope.of(context).unfocus();
+
     BookViewModel bookViewModel = new BookViewModel();
     BookPostResponse bookPostResponse;
     CloudMediaService cloudMediaService = new CloudMediaService();
+
+    // checks if image is chosen or not in the time of form submission.
     setState(() {
       _imageChosen = _image == null ? false : true;
     });
 
     if (_formKey.currentState.validate()) {
       if (_imageChosen) {
+        // shows loading screen while async image upload takes place
         loadingIndicator(context);
         // checking if the image is chosen and
         // then uploading image to Cloud through a function in CloudMediaService
@@ -119,7 +125,7 @@ class _PostBookState extends State<PostBook> {
           price: double.parse(_priceController.text),
           description: _descriptionController.text,
           images: imageUrl,
-          isNEW: (_conditionValue == "New") ? true : false,
+          isNew: (_conditionValue == "New") ? true : false,
           isAvailableForExchange: (_exchangableValue == "Yes") ? true : false,
         );
 
@@ -128,18 +134,21 @@ class _PostBookState extends State<PostBook> {
 
         // connecting and waiting for response from api through bookViewModel.
         // response will be object of BookPostResponse.
-        bookPostResponse = await bookViewModel
-            .postBook(bookJSON)
-            .whenComplete(() => Navigator.of(context).pop());
-      }
+        bookPostResponse =
+            await bookViewModel.postBook(bookJSON).whenComplete(() {
+          // closes loading screen when the api request to post book is over.
+          Navigator.of(context).pop();
+        });
 
-      // displaying success or error message depending on response.
-      if (bookPostResponse.success) {
-        ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(bookPostResponse.message, "Okay", this.context));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(bookPostResponse.message, "Try Again", this.context));
+        // displaying success or error message depending on response.
+        if (bookPostResponse.success) {
+          ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+              .popSnackbar(bookPostResponse.message, "Okay", this.context));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+              .popSnackbar(
+                  bookPostResponse.message, "Try Again", this.context));
+        }
       }
     }
   }
