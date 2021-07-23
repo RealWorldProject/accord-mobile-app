@@ -8,7 +8,7 @@ class BookTest {
   final double price;
   final String description;
   final String images;
-  final int rating;
+  final double rating;
   final bool isNEW;
   final bool isAvailableForExchange;
   final bool isLiked;

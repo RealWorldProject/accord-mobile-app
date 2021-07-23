@@ -114,7 +114,8 @@ class _CategoriesViewState extends State<CategoriesView> {
                   },
                   child: Text(
                     "View All",
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w100),
+
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w100,color: Colors.blue[900]),
                   ),
                 ),
               )
