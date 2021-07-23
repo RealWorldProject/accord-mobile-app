@@ -77,44 +77,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
 
-                          InkWell(
-                            onTap: (){},
-                            child: ListTile(
-                              leading: Icon(
-                                Icons.person_rounded,
-                                size: 32,
-                                color: Color(0xff0a78b2),
-                              ),
-                              title: Text(
-                                "View Profile",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff1b98e0)),
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            height: 0,
-                            thickness: 1,
-                            indent: 13,
-                            endIndent: 13,
-                            color: Color(0xffafa9a9),
-                          ),
-                          InkWell(
-                            onTap: (){},
-                            child: ListTile(
-                              leading: Icon(
-                                Icons.favorite,
-                                size: 32,
-                                color: Colors.redAccent[700],
-                              ),
-                              title: Text(
-                                "Favourites",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff1b98e0)),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: (){},
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.person_rounded,
+                                  size: 32,
+                                  color: Color(0xff0a78b2),
+                                ),
+                                title: Text(
+                                  "View Profile",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff1b98e0)),
+                                ),
                               ),
                             ),
                           ),
@@ -125,20 +104,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             endIndent: 13,
                             color: Color(0xffafa9a9),
                           ),
-                          InkWell(
-                            onTap: (){},
-                            child: ListTile(
-                              leading: Icon(
-                                Icons.menu_book_rounded,
-                                size: 32,
-                                color: Color(0xff0a78b2),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: (){},
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.favorite,
+                                  size: 32,
+                                  color: Colors.redAccent[700],
+                                ),
+                                title: Text(
+                                  "Favourites",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff1b98e0)),
+                                ),
                               ),
-                              title: Text(
-                                "My Books",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff1b98e0)),
+                            ),
+                          ),
+                          Divider(
+                            height: 0,
+                            thickness: 1,
+                            indent: 13,
+                            endIndent: 13,
+                            color: Color(0xffafa9a9),
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: (){},
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.menu_book_rounded,
+                                  size: 32,
+                                  color: Color(0xff0a78b2),
+                                ),
+                                title: Text(
+                                  "My Books",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff1b98e0)),
+                                ),
                               ),
                             ),
                           ),
@@ -150,20 +159,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Color(0xffafa9a9),
                           ),
 
-                          InkWell(
-                            onTap: (){},
-                            child: ListTile(
-                              leading: Icon(
-                                Icons.edit,
-                                size: 32,
-                                color: Color(0xff0a78b2),
-                              ),
-                              title: Text(
-                                "Change Password",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff1b98e0)),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: (){},
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.edit,
+                                  size: 32,
+                                  color: Color(0xff0a78b2),
+                                ),
+                                title: Text(
+                                  "Change Password",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff1b98e0)),
+                                ),
                               ),
                             ),
                           ),
@@ -174,20 +186,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             endIndent: 13,
                             color: Color(0xffafa9a9),
                           ),
-                          InkWell(
-                            onTap: (){},
-                            child: ListTile(
-                              leading: Icon(
-                                Icons.logout,
-                                size: 32,
-                                color: Color(0xff0a78b2),
-                              ),
-                              title: Text(
-                                "Logout",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff1b98e0)),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: (){},
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.logout,
+                                  size: 32,
+                                  color: Color(0xff0a78b2),
+                                ),
+                                title: Text(
+                                  "Logout",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff1b98e0)),
+                                ),
                               ),
                             ),
                           ),
