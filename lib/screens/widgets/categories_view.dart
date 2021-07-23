@@ -1,5 +1,6 @@
 import 'package:accord/data/data.dart';
 import 'package:accord/models/category_test.dart';
+import 'package:accord/screens/category/category_screen.dart';
 import 'package:accord/screens/single_category.dart';
 import 'package:flutter/material.dart';
 
@@ -103,9 +104,18 @@ class _CategoriesViewState extends State<CategoriesView> {
               ),
               Padding(
                 padding: EdgeInsets.only(right: 10),
-                child: Text(
-                  "View All",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w100),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryScreen(),
+                        ));
+                  },
+                  child: Text(
+                    "View All",
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w100),
+                  ),
                 ),
               )
             ],
