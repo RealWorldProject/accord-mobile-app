@@ -1,9 +1,4 @@
-<<<<<<< HEAD:lib/screens/profile_screen.dart
-import 'package:accord/screens/post_book.dart';
 import 'package:flutter/cupertino.dart';
-=======
-import 'package:accord/screens/profile/post_book.dart';
->>>>>>> master:lib/screens/profile/profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
@@ -70,8 +65,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 40,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 9,vertical: 10),
-
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 9, vertical: 10),
                       width: MediaQuery.of(context).size.width / 1.25,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -80,11 +75,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: Icon(
                                   Icons.person_rounded,
@@ -111,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: Icon(
                                   Icons.favorite,
@@ -138,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: Icon(
                                   Icons.menu_book_rounded,
@@ -162,11 +156,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             endIndent: 13,
                             color: Color(0xffafa9a9),
                           ),
-
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: Icon(
                                   Icons.edit,
@@ -193,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: Icon(
                                   Icons.logout,
@@ -217,13 +210,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             endIndent: 13,
                             color: Color(0xffafa9a9),
                           ),
-                          SizedBox(height: 20,)
-
-
+                          SizedBox(
+                            height: 20,
+                          )
                         ],
                       ),
-
-
                     ),
                   ],
                 ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
 
-
 class RatingStars extends StatelessWidget {
   final double rating;
 
@@ -25,11 +24,11 @@ class RatingStars extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
         return Icon(
-          index < rating ? Icons.star_rate_rounded : Icons.star_border_rounded, size: 15,color: Colors.orange,
+          index < rating ? Icons.star_rate_rounded : Icons.star_border_rounded,
+          size: 15,
+          color: Colors.orange,
         );
       }),
     );
-
-
   }
 }

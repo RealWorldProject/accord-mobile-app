@@ -1,4 +1,3 @@
-import 'package:accord/screens/widgets/categories_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
@@ -218,7 +217,9 @@ class SearchResultsListView extends StatelessWidget {
       return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [CategoriesView()],
+          children: [
+            // CategoriesView()
+          ],
         ),
       );
     }
