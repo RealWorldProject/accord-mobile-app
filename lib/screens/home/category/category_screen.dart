@@ -1,24 +1,48 @@
-import 'package:accord/models/book_test.dart';
-import 'package:accord/models/category_test.dart';
-import 'package:accord/screens/book_view/rating_stars.dart';
-import 'package:accord/screens/widgets/search_field.dart';
+import 'package:accord/models/book.dart';
+import 'package:accord/models/category.dart';
+import 'package:accord/responses/fetch_books_in_category_response.dart';
+import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SingleCategory extends StatefulWidget {
-  final CategoryTest category;
+class CategoryScreen extends StatefulWidget {
+  final Category categoryObj;
 
-  SingleCategory({this.category});
+  CategoryScreen({this.categoryObj});
 
   @override
-  _SingleCategoryState createState() => _SingleCategoryState();
+  _CategoryScreenState createState() => _CategoryScreenState();
 }
 
-class _SingleCategoryState extends State<SingleCategory> {
+class _CategoryScreenState extends State<CategoryScreen> {
   // bool isLiked = false;
-  // const isNew = widget.category.book.isNew;
+  // static const isNew = widget.categoryObj.book.isNew;
 
-  _buildBooks(BookTest bookTest, int index) {
+  List<Book> _books = [];
+
+  @override
+  initState() {
+    loadBooksInSelectedCategory().then((value) => setState(
+          () {
+            _books = value;
+          },
+        ));
+    super.initState();
+  }
+
+  Future<List<Book>> loadBooksInSelectedCategory() async {
+    BookViewModel bookViewModel = new BookViewModel();
+    FetchBooksInCategoryResponse fetchBooksInCategoryResponse =
+        await bookViewModel.fetchBooksInCategory(widget.categoryObj.id);
+
+    if (fetchBooksInCategoryResponse.success) {
+      return fetchBooksInCategoryResponse.result;
+    } else {
+      return [];
+    }
+  }
+
+  _buildBooks(Book book, int index) {
     return Container(
       margin: EdgeInsets.only(top: 20, left: 10, bottom: 0),
       padding: EdgeInsets.all(7.0),
@@ -38,7 +62,7 @@ class _SingleCategoryState extends State<SingleCategory> {
                 width: 175.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(bookTest.images),
+                    image: NetworkImage(book.images[0]),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(15.0),
@@ -75,18 +99,18 @@ class _SingleCategoryState extends State<SingleCategory> {
                       ),
                     ],
                   ),
-                  child: IconButton(
-                    padding:
-                        EdgeInsets.only(top: 4, bottom: 0, left: 0, right: 0),
-                    alignment: Alignment.center,
-                    icon: widget.category.book[index].isLiked == false
-                        ? Icon(Icons.favorite_outline_rounded)
-                        : Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          ),
-                    iconSize: 25,
-                  ),
+                  // child: IconButton(
+                  //   padding:
+                  //       EdgeInsets.only(top: 4, bottom: 0, left: 0, right: 0),
+                  //   alignment: Alignment.center,
+                  //   icon: book.isLiked == false
+                  //       ? Icon(Icons.favorite_outline_rounded)
+                  //       : Icon(
+                  //           Icons.favorite,
+                  //           color: Colors.red,
+                  //         ),
+                  //   iconSize: 25,
+                  // ),
                 ),
               ),
               Positioned(
@@ -95,7 +119,7 @@ class _SingleCategoryState extends State<SingleCategory> {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                   alignment: Alignment.center,
-                  decoration: widget.category.book[index].isNEW == false
+                  decoration: book.isNew == false
                       ? BoxDecoration(
                           color: Colors.purple,
                           borderRadius: BorderRadius.all(
@@ -108,7 +132,7 @@ class _SingleCategoryState extends State<SingleCategory> {
                             Radius.circular(5),
                           ),
                         ),
-                  child: widget.category.book[index].isNEW == false
+                  child: book.isNew == false
                       ? Text(
                           "old",
                           style: TextStyle(color: Colors.white, fontSize: 10),
@@ -125,7 +149,7 @@ class _SingleCategoryState extends State<SingleCategory> {
             height: 20,
           ),
           Text(
-            widget.category.book[index].name,
+            book.name,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: 14,
@@ -133,7 +157,7 @@ class _SingleCategoryState extends State<SingleCategory> {
                 color: Colors.grey[900]),
           ),
           Text(
-            widget.category.book[index].author,
+            book.author,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: 12,
@@ -141,8 +165,8 @@ class _SingleCategoryState extends State<SingleCategory> {
                 color: Colors.grey[700],
                 fontStyle: FontStyle.italic),
           ),
-          RatingStars(widget.category.book[index].rating),
-          widget.category.book[index].isAvailableForExchange == false
+          // RatingStars(book.rating),
+          book.isAvailableForExchange == false
               ? Text(
                   "Available for Exchange",
                   overflow: TextOverflow.ellipsis,
@@ -167,7 +191,7 @@ class _SingleCategoryState extends State<SingleCategory> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Rs. ${widget.category.book[index].price.toString()}",
+                "Rs. ${book.price.toString()}",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
@@ -209,14 +233,14 @@ class _SingleCategoryState extends State<SingleCategory> {
             snap: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(widget.category.name),
+              title: Text(widget.categoryObj.category),
               background: Stack(
                 children: [
                   Positioned.fill(
                     child: Hero(
-                      tag: widget.category.name,
-                      child: Image.asset(
-                        widget.category.imageUrl,
+                      tag: widget.categoryObj.category,
+                      child: Image.network(
+                        widget.categoryObj.image,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -241,9 +265,9 @@ class _SingleCategoryState extends State<SingleCategory> {
             crossAxisCount: 2,
             childAspectRatio: MediaQuery.of(context).size.width /
                 (MediaQuery.of(context).size.height / 1.025),
-            children: List.generate(widget.category.book.length, (index) {
-              BookTest bookTest = widget.category.book[index];
-              return _buildBooks(bookTest, index);
+            children: List.generate(_books.length, (index) {
+              Book book = _books[index];
+              return _buildBooks(book, index);
             }),
           ),
         ],

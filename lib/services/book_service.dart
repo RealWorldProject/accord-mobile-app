@@ -9,11 +9,34 @@ class BookService {
   final baseURL = Constant.baseURL;
 
   Future<String> postBook(String book) async {
-    final userToken = await Storage().fetchToken();
+    final String userToken = await Storage().fetchToken();
     try {
       final res = await dio.post(
         '$baseURL/book',
         data: book,
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on DioError catch (e) {
+      return e.response.data;
+    }
+  }
+
+  Future<String> fetchBooksInCategory(String categoryID) async {
+    final String userToken = await Storage().fetchToken();
+    try {
+      final res = await dio.get(
+        '$baseURL/books',
+        queryParameters: {
+          "page": 1,
+          "limit": 0,
+          "categoryID": categoryID,
+        },
         options: Options(
           responseType: ResponseType.plain,
           headers: {
