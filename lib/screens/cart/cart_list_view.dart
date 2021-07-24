@@ -158,6 +158,7 @@ class _CartListViewState extends State<CartListView> {
                     ],
                   ),
                 ),
+
               ],
             ),
           ),
