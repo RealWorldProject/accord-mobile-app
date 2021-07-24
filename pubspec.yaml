@@ -44,6 +44,9 @@ dependencies:
   flutter_conditional_rendering: ^2.0.0
   cloudinary_sdk: ^3.0.1+7
   loading_indicator_view: ^1.1.0
+  material_floating_search_bar: ^0.3.4
+  flutter_rating_bar: ^4.0.0
+  flutter_simple_rating_bar: 0.0.3
 
 dev_dependencies:
   flutter_test:
