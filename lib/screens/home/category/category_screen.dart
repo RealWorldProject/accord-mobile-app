@@ -259,6 +259,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             expandedHeight: MediaQuery.of(context).size.height * 0.305,
           ),
           SliverGrid.count(
+
             crossAxisSpacing: 0,
             mainAxisSpacing: 10,
             crossAxisCount: 2,

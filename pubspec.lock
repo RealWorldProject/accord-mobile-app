@@ -153,6 +153,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  flutter_custom_clippers:
+    dependency: "direct main"
+    description:
+      name: flutter_custom_clippers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   flutter_driver:
     dependency: transitive
     description: flutter
@@ -179,6 +186,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  flutter_rating_bar:
+    dependency: "direct main"
+    description:
+      name: flutter_rating_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -186,6 +200,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.0"
+  flutter_simple_rating_bar:
+    dependency: "direct main"
+    description:
+      name: flutter_simple_rating_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -313,6 +334,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.10"
+  material_floating_search_bar:
+    dependency: "direct main"
+    description:
+      name: material_floating_search_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.4"
   matrix_gesture_detector:
     dependency: transitive
     description:
