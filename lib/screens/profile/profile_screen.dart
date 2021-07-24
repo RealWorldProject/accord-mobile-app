@@ -1,3 +1,4 @@
+import 'package:accord/screens/profile/view_profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -78,7 +79,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ViewProfilePage()));
+                              },
                               child: ListTile(
                                 leading: Icon(
                                   Icons.person_rounded,

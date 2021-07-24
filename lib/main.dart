@@ -1,4 +1,5 @@
-import 'package:accord/screens/auth/login_screen.dart'
+import 'package:accord/screens/auth/login_screen.dart';
+import 'package:accord/screens/get_started_screen.dart';
 import 'package:accord/screens/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,11 +21,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: "Poppins",
-          bottomSheetTheme:
-              BottomSheetThemeData(backgroundColor: Colors.transparent)),
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins", bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: Colors.transparent
+      )),
       debugShowCheckedModeBanner: false,
       // home: BottomNavigation(),
 
