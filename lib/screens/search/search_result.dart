@@ -32,7 +32,6 @@ class _SearchResultState extends State<SearchResult> {
 
   _searchResultListView() {
     return Container(
-
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,158 +42,162 @@ class _SearchResultState extends State<SearchResult> {
           ),
           Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-
-                borderRadius: BorderRadius.circular(10.0)
-            ),
+                color: Colors.white, borderRadius: BorderRadius.circular(10.0),),
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            height: 140,
             child: Row(
               children: [
-                Column(
-                  children: [
-                    Stack(
-                      children: [
-                        // ClipRRect(
-                        //   borderRadius: BorderRadius.circular(20.0),
-                        //   child: Image.asset(
-                        //     "assets/images/b1.jpg",
-                        //     height: 120,
-                        //     width: 110,
-                        //     fit: BoxFit.cover,
-                        //   ),
-                        // ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Image.asset(
-                            "assets/images/b1.jpg",
-                            height: imageHeight,
-                            width: imageWidth,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Positioned.fill(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black26,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 3,
-                          right: 3,
-                          child: Container(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: 3, vertical: 0),
-                            decoration: BoxDecoration(
-                              color: Colors.greenAccent[700],
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5),
-                              ),
-                            ),
-                            child: Text(
-                              "new",
-                              style: TextStyle(color: Colors.white, fontSize: 10),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 2.05,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Expanded(
+                  child: Row(
                     children: [
-                      // Badge(
-                      //
-                      //   badgeContent: Text(
-                      //     "new",
-                      //     style: TextStyle(color: Colors.white, fontSize: 9),
-                      //   ),
-                      //   position: BadgePosition.topEnd(top: -12, end: -12),
-                      //   elevation: 0,
-                      //   shape: BadgeShape.square,
-                      //   badgeColor: Colors.greenAccent[700],
-                      //   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1.5),
-                      //   borderRadius: BorderRadius.circular(3),
-                      //   child: Text(
-                      //     "The Gravity of Us  ",
-                      //     style: TextStyle(
-                      //         fontSize: 16,
-                      //         fontWeight: FontWeight.bold,
-                      //         color: Colors.grey[900]),
-                      //     overflow: TextOverflow.ellipsis,
-                      //   ),
-                      // ),
-                      Text(
-                        "The Gravity of Us  ",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[900]),
-                        overflow: TextOverflow.ellipsis,
+                      Stack(
+                        children: [
+                          // ClipRRect(
+                          //   borderRadius: BorderRadius.circular(20.0),
+                          //   child: Image.asset(
+                          //     "assets/images/b1.jpg",
+                          //     height: 120,
+                          //     width: 110,
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          // ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Image.asset(
+                              "assets/images/b1.jpg",
+                              height: imageHeight,
+                              width: imageWidth,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 3,
+                            right: 3,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 3, vertical: 0),
+                              decoration: BoxDecoration(
+                                color: Colors.greenAccent[700],
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                              ),
+                              child: Text(
+                                "new",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10),
+                              ),
+                            ),
+                          ),
+                        ],
+
                       ),
-                      Text(
-                        "JK Rolling",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w100,
-                            color: Colors.grey[700],
-                            fontStyle: FontStyle.italic),
-                        overflow: TextOverflow.ellipsis,
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Badge(
+                              //
+                              //   badgeContent: Text(
+                              //     "new",
+                              //     style: TextStyle(color: Colors.white, fontSize: 9),
+                              //   ),
+                              //   position: BadgePosition.topEnd(top: -12, end: -12),
+                              //   elevation: 0,
+                              //   shape: BadgeShape.square,
+                              //   badgeColor: Colors.greenAccent[700],
+                              //   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1.5),
+                              //   borderRadius: BorderRadius.circular(3),
+                              //   child: Text(
+                              //     "The Gravity of Us  ",
+                              //     style: TextStyle(
+                              //         fontSize: 16,
+                              //         fontWeight: FontWeight.bold,
+                              //         color: Colors.grey[900]),
+                              //     overflow: TextOverflow.ellipsis,
+                              //   ),
+                              // ),
+                              Text(
+                                "The Gravity of Us  ",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[900]),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                "JK Rolling",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w100,
+                                    color: Colors.grey[700],
+                                    fontStyle: FontStyle.italic),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+
+                              _ratingStars(4),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              // Container(
+                              //   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                              //   decoration: BoxDecoration(
+                              //     color: Colors.greenAccent[700],
+                              //     borderRadius: BorderRadius.all(
+                              //       Radius.circular(5),
+                              //     ),
+                              //   ),
+                              //   child: Text(
+                              //     "new",
+                              //     style: TextStyle(color: Colors.white, fontSize: 10),
+                              //   ),
+                              // ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Text(
+                                "Available for Exchange",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w100,
+                                    color: Colors.blue,
+                                    fontStyle: FontStyle.italic),
+                              ),
+                              Text(
+                                "Rs. 500",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xff247BA0),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
 
-                      _ratingStars(4),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      // Container(
-                      //   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.greenAccent[700],
-                      //     borderRadius: BorderRadius.all(
-                      //       Radius.circular(5),
-                      //     ),
-                      //   ),
-                      //   child: Text(
-                      //     "new",
-                      //     style: TextStyle(color: Colors.white, fontSize: 10),
-                      //   ),
-                      // ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        "Available for Exchange",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w100,
-                            color: Colors.blue,
-                            fontStyle: FontStyle.italic),
-                      ),
-                      Text(
-                        "Rs. 500",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xff247BA0),
-                        ),
-                      ),
+
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.zero,
 
+                Container(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
                         padding: EdgeInsets.zero,
@@ -205,13 +208,8 @@ class _SearchResultState extends State<SearchResult> {
                           size: 28,
                         ),
                       ),
-                      SizedBox(
-                        height: 45,
-                      ),
                       Container(
                         padding: EdgeInsets.zero,
-
-
                         height: 30,
                         width: 35,
                         decoration: BoxDecoration(
@@ -221,7 +219,6 @@ class _SearchResultState extends State<SearchResult> {
                           ),
                         ),
                         child: IconButton(
-
                           onPressed: () {},
                           padding: EdgeInsets.zero,
                           icon: Icon(Icons.shopping_cart),
@@ -232,6 +229,7 @@ class _SearchResultState extends State<SearchResult> {
                     ],
                   ),
                 ),
+
               ],
             ),
           ),

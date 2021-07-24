@@ -1,6 +1,7 @@
+import 'package:accord/screens/cart/cart_screen.dart';
 import 'package:accord/screens/home_screen.dart';
 import 'package:accord/screens/notification_page.dart';
-import 'package:accord/screens/order_screen.dart';
+import 'package:accord/screens/cart/cart_list_view.dart';
 import 'package:accord/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -21,7 +22,7 @@ class _NavigationBarState extends State<NavigationBar> {
     // DashboardScreen(),
     // ProfileScreen(),
     HomeScreen(),
-    OrderScreen(),
+    CartScreen(),
     NotificationScreen(),
     ProfileScreen(),
   ];
@@ -67,7 +68,7 @@ class _NavigationBarState extends State<NavigationBar> {
                 ),
                 GButton(
                   icon: LineIcons.shoppingCart,
-                  text: 'Orders',
+                  text: 'Cart',
                 ),
                 GButton(
                   icon: LineIcons.bellAlt,

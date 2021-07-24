@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
       debugShowCheckedModeBanner: false,
-      home: SearchResult(),
-      // home: NavigationBar(),
+      // home: SearchResult(),
+      home: NavigationBar(),
 
       // initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
       // routes: {
