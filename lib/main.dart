@@ -1,11 +1,6 @@
 import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/get_started_screen.dart';
-<<<<<<< HEAD
-import 'package:accord/screens/search/search_result.dart';
-import 'package:accord/screens/widgets/navigation_bar.dart';
-=======
 import 'package:accord/screens/bottom_navigation.dart';
->>>>>>> master
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,14 +25,9 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.transparent
       )),
       debugShowCheckedModeBanner: false,
-<<<<<<< HEAD
-      // home: SearchResult(),
-      home: NavigationBar(),
-=======
       // home: BottomNavigation(),
 
       home: LoginScreen(),
->>>>>>> master
 
       // initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
       // routes: {
