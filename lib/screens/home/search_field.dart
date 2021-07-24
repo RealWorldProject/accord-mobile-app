@@ -190,14 +190,13 @@ class _SearchFieldState extends State<SearchField> {
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue),
-
             borderRadius: BorderRadius.circular(50),
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           hintText: "Search",
           prefixIcon: Icon(Icons.search_rounded),
-          suffixIcon: IconButton(
-              onPressed: () {}, icon: Icon(Icons.close_rounded)),
+          suffixIcon:
+              IconButton(onPressed: () {}, icon: Icon(Icons.close_rounded)),
           border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue),
             borderRadius: BorderRadius.circular(50),
@@ -215,13 +214,11 @@ class SearchResultsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (searchTerm==null){
+    if (searchTerm == null) {
       return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            CategoriesView()
-          ],
+          children: [CategoriesView()],
         ),
       );
     }
