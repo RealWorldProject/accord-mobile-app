@@ -4,7 +4,7 @@ import 'package:accord/screens/widgets/conceal_password.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_text_field.dart';
-import 'package:accord/screens/widgets/navigation_bar.dart';
+import 'package:accord/screens/bottom_navigation.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/services/storage.dart';
 import 'package:accord/viewModel/user_view_model.dart';
@@ -51,8 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
         // storing token
         Storage().storeToken("Bearer ${_loginResponse.token}");
         // navigating to dashboard
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NavigationBar()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => BottomNavigation()));
       } else {
         //else displaying error messages.
         ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
