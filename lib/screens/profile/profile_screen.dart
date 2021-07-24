@@ -1,4 +1,4 @@
-import 'package:accord/screens/post_book.dart';
+import 'package:accord/screens/profile/post_book.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
