@@ -196,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   size: 32,
                                   color: Color(0xff0a78b2),
                                 ),
-                                title: Text(
+                                title: Text( 
                                   "Logout",
                                   style: TextStyle(
                                       fontSize: 18,
