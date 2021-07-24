@@ -115,7 +115,7 @@ class _PostBookState extends State<PostBook> {
         // checking if the image is chosen and
         // then uploading image to Cloud through a function in CloudMediaService
         // which returns the url of the uploaded image.
-        final String imageUrl =
+        final List<String> imageUrl =
             await cloudMediaService.uploadImage(_image.path);
 
         Book book = Book(
@@ -131,6 +131,7 @@ class _PostBookState extends State<PostBook> {
 
         // converting book object into json file
         String bookJSON = jsonEncode(book);
+        print(bookJSON);
 
         // connecting and waiting for response from api through bookViewModel.
         // response will be object of BookPostResponse.
