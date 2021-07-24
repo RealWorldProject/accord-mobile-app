@@ -28,4 +28,15 @@ class CloudMediaService {
     }
     return null;
   }
+
+  Future<String> loadImage(String cloudImageUrl) async {
+    try {
+      final cloudinaryImage = CloudinaryImage(cloudImageUrl);
+      String transformedUrl =
+          cloudinaryImage.transform().width(132).height(180).generate();
+      return transformedUrl;
+    } catch (e) {
+      return e.response;
+    }
+  }
 }
