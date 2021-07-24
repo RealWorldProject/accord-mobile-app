@@ -1,4 +1,5 @@
 import 'package:accord/screens/post_book.dart';
+import 'package:accord/screens/profile/view_profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -66,8 +67,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 40,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 9,vertical: 10),
-
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 9, vertical: 10),
                       width: MediaQuery.of(context).size.width / 1.25,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -76,11 +77,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ViewProfilePage()));
+                              },
                               child: ListTile(
                                 leading: Icon(
                                   Icons.person_rounded,
@@ -107,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: Icon(
                                   Icons.favorite,
@@ -134,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: Icon(
                                   Icons.menu_book_rounded,
@@ -158,11 +164,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             endIndent: 13,
                             color: Color(0xffafa9a9),
                           ),
-
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: Icon(
                                   Icons.edit,
@@ -189,14 +194,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: Icon(
                                   Icons.logout,
                                   size: 32,
                                   color: Color(0xff0a78b2),
                                 ),
-                                title: Text( 
+                                title: Text(
                                   "Logout",
                                   style: TextStyle(
                                       fontSize: 18,
@@ -213,13 +218,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             endIndent: 13,
                             color: Color(0xffafa9a9),
                           ),
-                          SizedBox(height: 20,)
-
-
+                          SizedBox(
+                            height: 20,
+                          )
                         ],
                       ),
-
-
                     ),
                   ],
                 ),
