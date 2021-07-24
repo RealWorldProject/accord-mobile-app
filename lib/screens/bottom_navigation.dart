@@ -1,25 +1,20 @@
-import 'package:accord/screens/home_screen.dart';
-import 'package:accord/screens/notification_page.dart';
-import 'package:accord/screens/order_screen.dart';
-import 'package:accord/screens/profile_screen.dart';
+import 'package:accord/screens/home/home_screen.dart';
+import 'package:accord/screens/notification/notification_page.dart';
+import 'package:accord/screens/order/order_screen.dart';
+import 'package:accord/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
-class NavigationBar extends StatefulWidget {
+class BottomNavigation extends StatefulWidget {
   @override
-  _NavigationBarState createState() => _NavigationBarState();
+  _BottomNavigationState createState() => _BottomNavigationState();
 }
 
-class _NavigationBarState extends State<NavigationBar> {
+class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
-  // static const TextStyle optionStyle =
-  //     TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
+
   static List<Widget> _screens = [
-    // DashboardScreen(),
-    // ProfileScreen(),
-    // DashboardScreen(),
-    // ProfileScreen(),
     HomeScreen(),
     OrderScreen(),
     NotificationScreen(),
@@ -82,7 +77,6 @@ class _NavigationBarState extends State<NavigationBar> {
               onTabChange: (index) {
                 setState(() {
                   _selectedIndex = index;
-                  print(_selectedIndex);
                 });
               },
             ),
