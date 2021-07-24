@@ -8,7 +8,7 @@ class CloudMediaService {
     Constant.cloudName,
   );
 
-  Future<List<String>> uploadImage(String imagePath) async {
+  Future<String> uploadImage(String imagePath) async {
     try {
       CloudinaryResponse response =
           await cloudinary.uploadResource(CloudinaryUploadResource(
@@ -17,7 +17,7 @@ class CloudMediaService {
         folder: Constant.bookImageFolder,
       ));
       if (response.isSuccessful) {
-        return response.secureUrl as List;
+        return response.secureUrl;
       }
     } catch (e) {
       return e.response;
