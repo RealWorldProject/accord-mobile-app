@@ -118,19 +118,22 @@ class _PostBookState extends State<PostBook> {
         final String imageUrl =
             await cloudMediaService.uploadImage(_image.path);
 
+        List<String> imageUrls = [imageUrl];
+
         Book book = Book(
           name: _bookNameController.text,
           author: _authorNameController.text,
           category: _chosenValue,
           price: double.parse(_priceController.text),
           description: _descriptionController.text,
-          images: imageUrl,
+          images: imageUrls,
           isNew: (_conditionValue == "New") ? true : false,
           isAvailableForExchange: (_exchangableValue == "Yes") ? true : false,
         );
 
         // converting book object into json file
         String bookJSON = jsonEncode(book);
+        print(bookJSON);
 
         // connecting and waiting for response from api through bookViewModel.
         // response will be object of BookPostResponse.

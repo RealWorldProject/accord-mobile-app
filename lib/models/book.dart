@@ -5,7 +5,7 @@ class Book {
   final String category;
   final double price;
   final String description;
-  final String images;
+  final List<String> images;
   final bool isNew;
   final bool isAvailableForExchange;
 
@@ -28,9 +28,9 @@ class Book {
       name: json['name'],
       author: json['author'],
       category: json['category'],
-      price: json['price'],
+      price: double.parse(json['price'].toString()),
       description: json['description'],
-      images: json['images'],
+      images: new List<String>.from(json['images']),
       isNew: json['isNew'],
       isAvailableForExchange: json['isAvailableForExchange'],
     );

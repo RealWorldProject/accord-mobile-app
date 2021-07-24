@@ -1,5 +1,9 @@
+<<<<<<< HEAD:lib/screens/profile_screen.dart
 import 'package:accord/screens/post_book.dart';
 import 'package:flutter/cupertino.dart';
+=======
+import 'package:accord/screens/profile/post_book.dart';
+>>>>>>> master:lib/screens/profile/profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 

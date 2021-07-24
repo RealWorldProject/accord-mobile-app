@@ -1,6 +1,6 @@
 import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/get_started_screen.dart';
-import 'package:accord/screens/widgets/navigation_bar.dart';
+import 'package:accord/screens/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
       debugShowCheckedModeBanner: false,
-      home: NavigationBar(),
+      // home: BottomNavigation(),
+
+      home: LoginScreen(),
 
       // initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
       // routes: {
