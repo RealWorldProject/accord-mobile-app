@@ -115,8 +115,10 @@ class _PostBookState extends State<PostBook> {
         // checking if the image is chosen and
         // then uploading image to Cloud through a function in CloudMediaService
         // which returns the url of the uploaded image.
-        final List<String> imageUrl =
+        final String imageUrl =
             await cloudMediaService.uploadImage(_image.path);
+
+        List<String> imageUrls = [imageUrl];
 
         Book book = Book(
           name: _bookNameController.text,
@@ -124,7 +126,7 @@ class _PostBookState extends State<PostBook> {
           category: _chosenValue,
           price: double.parse(_priceController.text),
           description: _descriptionController.text,
-          images: imageUrl,
+          images: imageUrls,
           isNew: (_conditionValue == "New") ? true : false,
           isAvailableForExchange: (_exchangableValue == "Yes") ? true : false,
         );

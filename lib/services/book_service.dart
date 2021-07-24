@@ -44,7 +44,6 @@ class BookService {
           },
         ),
       );
-      print(userToken);
       return res.data;
     } on DioError catch (e) {
       return e.response.data;
