@@ -12,6 +12,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
         title: Text("My Cart (1)",style: TextStyle(color: Colors.black),),
         backgroundColor: Colors.white,
@@ -26,7 +27,21 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
       backgroundColor: Colors.grey[100],
-      body: CartListView(),
+      body: SingleChildScrollView(child: CartListView()),
+      // bottomSheet: Container(
+      //   color: Colors.grey,
+      //   child: Container(
+      //
+      //   ),
+      // ),
+      // bottomSheet: Container(
+      //
+      //   height: 150,
+      //   decoration: BoxDecoration(
+      //     color:Colors.transparent,
+      //         borderRadius: BorderRadius.only(topLeft: Radius.circular(20),)
+      //   ),
+      // )
     );
   }
 }

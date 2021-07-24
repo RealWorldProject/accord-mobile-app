@@ -31,7 +31,8 @@ class _NavigationBarState extends State<NavigationBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: SafeArea(child: _screens[_selectedIndex]),
+      body: SafeArea(child: _screens[_selectedIndex],bottom: false,),
+
       bottomNavigationBar: Container(
         height: 75,
         decoration: BoxDecoration(
