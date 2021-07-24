@@ -1,10 +1,6 @@
-import 'package:accord/screens/book_view/rating_stars.dart';
-import 'package:accord/screens/widgets/custom_label.dart';
-import 'package:accord/screens/widgets/search_field.dart';
-import 'package:badges/badges.dart';
+import 'package:accord/screens/home/search_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 class SearchResult extends StatefulWidget {
   const SearchResult({Key key}) : super(key: key);
@@ -42,7 +38,9 @@ class _SearchResultState extends State<SearchResult> {
           ),
           Container(
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10.0),),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             height: 140,
             child: Row(
@@ -100,7 +98,6 @@ class _SearchResultState extends State<SearchResult> {
                             ),
                           ),
                         ],
-
                       ),
                       Expanded(
                         child: Container(
@@ -189,12 +186,9 @@ class _SearchResultState extends State<SearchResult> {
                           ),
                         ),
                       ),
-
-
                     ],
                   ),
                 ),
-
                 Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -229,7 +223,6 @@ class _SearchResultState extends State<SearchResult> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
