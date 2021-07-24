@@ -25,7 +25,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: SafeArea(child: _screens[_selectedIndex]),
+      // body: SafeArea(child: _screens[_selectedIndex]),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _screens,
+      ),
       bottomNavigationBar: Container(
         height: 75,
         decoration: BoxDecoration(

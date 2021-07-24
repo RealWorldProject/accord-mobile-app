@@ -5,5 +5,5 @@ class Constant {
   static const String apiKey = "864233231861498";
   static const String apiSecret = "2j-cNb3rdXELlBz4km2tYYJDpIU";
   static const String cloudName = "accord";
-  static const String bookImageFolder = "accord/category_image_gallery";
+  static const String bookImageFolder = "accord/book_image_gallery";
 }

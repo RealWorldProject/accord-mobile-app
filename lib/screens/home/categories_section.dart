@@ -57,7 +57,11 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                   },
                   child: Text(
                     "View All",
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w100),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w100,
+                      color: Colors.blue[900],
+                    ),
                   ),
                 ),
               )
@@ -78,9 +82,17 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                     itemCount: categoriesSnap.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       Category categoryObj = categoriesSnap.data[index];
-                      return CategoryDisplayFormat(
-                        categoryObj: categoryObj,
-                        index: index,
+                      return Container(
+                        margin: EdgeInsets.only(right: 20),
+                        width: 132,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          color: Colors.black12,
+                        ),
+                        child: CategoryDisplayFormat(
+                          categoryObj: categoryObj,
+                          index: index,
+                        ),
                       );
                     },
                   );

@@ -1,20 +1,44 @@
-import 'package:accord/data/data.dart';
 import 'package:accord/models/category.dart';
-import 'package:accord/models/category_test.dart';
+import 'package:accord/responses/fetch_category_response.dart';
+import 'package:accord/screens/widgets/category_display_format.dart';
+import 'package:accord/viewModel/category_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'category_screen.dart';
 
 class AllCategoriesScreen extends StatefulWidget {
-  // final CategoryTest category;
-
-  // CategoryScreen({this.category});
+  const AllCategoriesScreen({Key key}) : super(key: key);
 
   @override
   _AllCategoriesScreenState createState() => _AllCategoriesScreenState();
 }
 
 class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
+  List<Category> _categories;
+
+  @override
+  initState() {
+    getAllCategories().then((value) => setState(
+          () {
+            _categories = value;
+            print(_categories);
+          },
+        ));
+    super.initState();
+  }
+
+  Future<List<Category>> getAllCategories() async {
+    CategoryViewModel categoryViewModel = new CategoryViewModel();
+    FetchCategoryResponse fetchCategoryResponse =
+        await categoryViewModel.fetchCategories();
+
+    if (fetchCategoryResponse.success) {
+      return fetchCategoryResponse.result;
+    } else {
+      return [];
+    }
+  }
+
   _buildCategory(Category categoryObj, index) {
     return Container(
       margin: EdgeInsets.only(
@@ -36,7 +60,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
               borderRadius: BorderRadius.circular(20.0),
               child: Hero(
                 tag: categoryObj.category,
-                child: Image.asset(
+                child: Image.network(
                   categoryObj.image,
                   height: 219,
                   width: 175,
@@ -128,10 +152,22 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
             crossAxisCount: 2,
             childAspectRatio: MediaQuery.of(context).size.width /
                 (MediaQuery.of(context).size.height / 1.6),
-            // children: List.generate(categories.length, (index) {
-            //   CategoryTest categoryObj = categories[index];
-            //   return _buildCategory(categoryObj, index);
-            // }),
+            children: _categories != null
+                ? List.generate(_categories.length, (index) {
+                    Category categoryObj = _categories[index];
+                    return Container(
+                      margin: EdgeInsets.only(
+                        top: 20,
+                        left: 10,
+                        right: 10,
+                      ),
+                      child: CategoryDisplayFormat(
+                        categoryObj: categoryObj,
+                        index: index,
+                      ),
+                    );
+                  })
+                : [],
           ),
         ],
       ),

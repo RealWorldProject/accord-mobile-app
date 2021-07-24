@@ -14,7 +14,6 @@ class CategoryDisplayFormat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 20),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -32,42 +31,30 @@ class CategoryDisplayFormat extends StatelessWidget {
                 tag: categoryObj.category,
                 child: Image.network(
                   categoryObj.image,
-                  width: 132,
-                  height: 180,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             Positioned(
-              left: 0,
-              top: 0,
-              child: Container(
-                width: 132,
-                height: 180,
-                decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 5,
                   ),
-                ),
-              ),
-            ),
-            Center(
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 5,
-                ),
-                color: Colors.white54,
-                height: 38,
-                width: 132,
-                child: Center(
-                  child: Text(
-                    categoryObj.category,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0),
+                  color: Colors.white54,
+                  height: 38,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: Text(
+                      categoryObj.category,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0),
+                    ),
                   ),
                 ),
               ),
