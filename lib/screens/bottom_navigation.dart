@@ -26,9 +26,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Scaffold(
       extendBody: true,
       // body: SafeArea(child: _screens[_selectedIndex]),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
+      body: SafeArea(
+        child: IndexedStack(
+          index: _selectedIndex,
+          children: _screens,
+        ),
       ),
       bottomNavigationBar: Container(
         height: 75,

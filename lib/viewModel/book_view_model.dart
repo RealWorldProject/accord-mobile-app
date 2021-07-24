@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:accord/models/book.dart';
 import 'package:accord/responses/book_post_response.dart';
+import 'package:accord/responses/fetch_books_in_category_response.dart';
 import 'package:accord/services/book_service.dart';
 
 class BookViewModel {
@@ -9,6 +10,13 @@ class BookViewModel {
     final postBookResponseAPI = await BookService().postBook(book);
     // sending json response to BookPostResponse to convert into object
     return BookPostResponse.fromJson(jsonDecode(postBookResponseAPI));
+  }
+
+  Future<FetchBooksInCategoryResponse> fetchBooksInCategory(
+      String categoryID) async {
+    final apiResponse = await BookService().fetchBooksInCategory(categoryID);
+    // sending json response to FetchBooksInCategoryResponse to convert into object
+    return FetchBooksInCategoryResponse.fromJson(jsonDecode(apiResponse));
   }
 }
 
@@ -25,7 +33,7 @@ class BookModelReader {
     return this.book.name;
   }
 
-  String get images {
+  List<String> get images {
     return this.book.images;
   }
 
