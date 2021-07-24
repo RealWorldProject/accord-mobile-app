@@ -14,7 +14,7 @@ class SearchResult extends StatefulWidget {
 }
 
 class _SearchResultState extends State<SearchResult> {
-  final double imageHeight = 110.0;
+  final double imageHeight = 125.0;
   final double imageWidth = 100.0;
 
   _ratingStars(double rating) {
