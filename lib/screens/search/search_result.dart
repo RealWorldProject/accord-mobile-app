@@ -1,10 +1,6 @@
-import 'package:accord/screens/book_view/rating_stars.dart';
-import 'package:accord/screens/widgets/custom_label.dart';
-import 'package:accord/screens/widgets/search_field.dart';
-import 'package:badges/badges.dart';
+import 'package:accord/screens/home/search_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 class SearchResult extends StatefulWidget {
   const SearchResult({Key key}) : super(key: key);
@@ -32,7 +28,6 @@ class _SearchResultState extends State<SearchResult> {
 
   _searchResultListView() {
     return Container(
-
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,10 +38,7 @@ class _SearchResultState extends State<SearchResult> {
           ),
           Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-
-                borderRadius: BorderRadius.circular(10.0)
-            ),
+                color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             child: Row(
               children: [
@@ -86,8 +78,8 @@ class _SearchResultState extends State<SearchResult> {
                           top: 3,
                           right: 3,
                           child: Container(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: 3, vertical: 0),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 3, vertical: 0),
                             decoration: BoxDecoration(
                               color: Colors.greenAccent[700],
                               borderRadius: BorderRadius.all(
@@ -96,7 +88,8 @@ class _SearchResultState extends State<SearchResult> {
                             ),
                             child: Text(
                               "new",
-                              style: TextStyle(color: Colors.white, fontSize: 10),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 10),
                             ),
                           ),
                         ),
@@ -193,7 +186,6 @@ class _SearchResultState extends State<SearchResult> {
                 ),
                 Container(
                   padding: EdgeInsets.zero,
-
                   child: Column(
                     children: [
                       IconButton(
@@ -210,8 +202,6 @@ class _SearchResultState extends State<SearchResult> {
                       ),
                       Container(
                         padding: EdgeInsets.zero,
-
-
                         height: 30,
                         width: 35,
                         decoration: BoxDecoration(
@@ -221,7 +211,6 @@ class _SearchResultState extends State<SearchResult> {
                           ),
                         ),
                         child: IconButton(
-
                           onPressed: () {},
                           padding: EdgeInsets.zero,
                           icon: Icon(Icons.shopping_cart),
