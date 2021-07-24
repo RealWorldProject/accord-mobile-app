@@ -1,6 +1,4 @@
-import 'package:accord/screens/post_book.dart';
 import 'package:accord/screens/profile/view_profile_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 

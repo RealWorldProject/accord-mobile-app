@@ -1,26 +1,20 @@
 import 'package:accord/screens/cart/cart_screen.dart';
-import 'package:accord/screens/home_screen.dart';
-import 'package:accord/screens/notification_page.dart';
-import 'package:accord/screens/cart/cart_list_view.dart';
-import 'package:accord/screens/profile_screen.dart';
+import 'package:accord/screens/home/home_screen.dart';
+import 'package:accord/screens/notification/notification_page.dart';
+import 'package:accord/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
-class NavigationBar extends StatefulWidget {
+class BottomNavigation extends StatefulWidget {
   @override
-  _NavigationBarState createState() => _NavigationBarState();
+  _BottomNavigationState createState() => _BottomNavigationState();
 }
 
-class _NavigationBarState extends State<NavigationBar> {
+class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
-  // static const TextStyle optionStyle =
-  //     TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
+
   static List<Widget> _screens = [
-    // DashboardScreen(),
-    // ProfileScreen(),
-    // DashboardScreen(),
-    // ProfileScreen(),
     HomeScreen(),
     CartScreen(),
     NotificationScreen(),
@@ -31,8 +25,13 @@ class _NavigationBarState extends State<NavigationBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: SafeArea(child: _screens[_selectedIndex],bottom: false,),
-
+      // body: SafeArea(child: _screens[_selectedIndex]),
+      body: SafeArea(
+        child: IndexedStack(
+          index: _selectedIndex,
+          children: _screens,
+        ),
+      ),
       bottomNavigationBar: Container(
         height: 75,
         decoration: BoxDecoration(
@@ -84,7 +83,6 @@ class _NavigationBarState extends State<NavigationBar> {
               onTabChange: (index) {
                 setState(() {
                   _selectedIndex = index;
-                  print(_selectedIndex);
                 });
               },
             ),
