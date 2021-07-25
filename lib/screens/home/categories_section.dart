@@ -1,9 +1,12 @@
+import 'package:accord/constant/constant.dart';
 import 'package:accord/models/category.dart';
 import 'package:accord/responses/fetch_category_response.dart';
 import 'package:accord/screens/home/category/all_categories_screen.dart';
+import 'package:accord/screens/shimmer/image_list_item.dart';
 import 'package:accord/screens/widgets/category_display_format.dart';
 import 'package:accord/viewModel/category_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CategoriesSection extends StatefulWidget {
   const CategoriesSection({Key key}) : super(key: key);
@@ -21,7 +24,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
     if (fetchCategoryResponse.success) {
       return await fetchCategoryResponse.result;
     }
-    return null;
+    return [];
   }
 
   @override
@@ -84,11 +87,6 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                       Category categoryObj = categoriesSnap.data[index];
                       return Container(
                         margin: EdgeInsets.only(right: 20),
-                        width: 132,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          color: Colors.black12,
-                        ),
                         child: CategoryDisplayFormat(
                           categoryObj: categoryObj,
                           index: index,
@@ -97,7 +95,23 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                     },
                   );
                 }
-                return Container();
+                return ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Shimmer.fromColors(
+                      baseColor: Constant.shimmer_base_color,
+                      highlightColor: Constant.shimmer_highlight_color,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 20),
+                        child: ImageListItem(
+                          index: index,
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
             ),
           )

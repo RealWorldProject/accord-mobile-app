@@ -1,10 +1,11 @@
+import 'package:accord/constant/constant.dart';
 import 'package:accord/models/category.dart';
 import 'package:accord/responses/fetch_category_response.dart';
+import 'package:accord/screens/shimmer/image_list_item.dart';
 import 'package:accord/screens/widgets/category_display_format.dart';
 import 'package:accord/viewModel/category_view_model.dart';
 import 'package:flutter/material.dart';
-
-import 'category_screen.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AllCategoriesScreen extends StatefulWidget {
   const AllCategoriesScreen({Key key}) : super(key: key);
@@ -21,7 +22,6 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
     getAllCategories().then((value) => setState(
           () {
             _categories = value;
-            print(_categories);
           },
         ));
     super.initState();
@@ -37,80 +37,6 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
     } else {
       return [];
     }
-  }
-
-  _buildCategory(Category categoryObj, index) {
-    return Container(
-      margin: EdgeInsets.only(
-        top: 20,
-        left: 10,
-      ),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => CategoryScreen(categoryObj: categoryObj),
-            ),
-          );
-        },
-        child: Stack(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: Hero(
-                tag: categoryObj.category,
-                child: Image.network(
-                  categoryObj.image,
-                  height: 219,
-                  width: 175,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              left: 0,
-              top: 0,
-              child: Container(
-                height: 219,
-                width: 175,
-                decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              child: Center(
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 5,
-                  ),
-                  color: Colors.white70,
-                  height: 38,
-                  width: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: Text(
-                      categoryObj.category,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            )
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -157,18 +83,26 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                 ? List.generate(_categories.length, (index) {
                     Category categoryObj = _categories[index];
                     return Container(
-                      margin: EdgeInsets.only(
-                        top: 20,
-                        left: 10,
-                        right: 10,
-                      ),
+                      margin: EdgeInsets.only(top: 20, left: 10, right: 10),
                       child: CategoryDisplayFormat(
                         categoryObj: categoryObj,
                         index: index,
                       ),
                     );
                   })
-                : [],
+                : List.generate(4, (index) {
+                    return Shimmer.fromColors(
+                      baseColor: Constant.shimmer_base_color,
+                      highlightColor: Constant.shimmer_highlight_color,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+                        child: ImageListItem(
+                          index: index,
+                          sizeRatio: 4 / 5,
+                        ),
+                      ),
+                    );
+                  }),
           ),
         ],
       ),
