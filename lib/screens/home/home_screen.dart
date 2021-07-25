@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
             currentFocus.unfocus();
           }
         },
+
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -36,13 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your onPressed code here!
-        },
-        child: const Icon(Icons.navigation),
-        backgroundColor: Colors.green,
-      ),
+
     );
   }
 }
