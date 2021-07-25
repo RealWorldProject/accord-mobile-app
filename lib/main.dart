@@ -2,6 +2,8 @@ import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/get_started_screen.dart';
 import 'package:accord/screens/bottom_navigation.dart';
 import 'package:accord/shimmer/home/category/all_categories_shimmer.dart';
+import 'package:accord/shimmer/home/category/category_shimmer.dart';
+import 'package:accord/shimmer/home_screen_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // home: BottomNavigation(),
 
-      home: AllCategoriesShimmer(),
+      home: HomeScreenShimmer(),
 
       // initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
       // routes: {

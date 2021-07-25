@@ -116,8 +116,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
               ),
               Positioned(
-                bottom: -20,
-                left: 0,
+                top: 10,
+                right: 10,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                   alignment: Alignment.center,

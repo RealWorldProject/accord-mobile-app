@@ -8,23 +8,27 @@ class AllCategoriesShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         slivers: [
           SliverAppBar(
             elevation: 0,
             snap: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Shimmer.fromColors( baseColor: Colors.grey[300],
-                  highlightColor: Colors.grey[200],child: Container(height: 28,width: 120,color: Colors.grey[300],)),
+              title: Shimmer.fromColors(
+                  baseColor: Colors.grey[300],
+                  highlightColor: Colors.grey[200],
+                  child: Container(
+                    height: 28,
+                    width: 120,
+                    color: Colors.grey[300],
+                  )),
               centerTitle: true,
               background: Stack(
                 children: [
-
                   Shimmer.fromColors(
                     baseColor: Colors.grey[400],
-                    highlightColor: Colors.grey[100],
-
+                    highlightColor: Colors.grey[200],
                     child: Container(
                       height: 270,
                       color: Colors.grey[300],
@@ -51,8 +55,8 @@ class AllCategoriesShimmer extends StatelessWidget {
                   ),
                   child: Stack(children: [
                     Shimmer.fromColors(
-                      baseColor: Colors.grey[300],
-                      highlightColor: Colors.grey[200],
+                      baseColor: Colors.grey[400],
+                      highlightColor: Colors.grey[300],
                       child: Container(
                         height: 219,
                         width: 175,
