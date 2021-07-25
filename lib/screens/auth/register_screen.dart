@@ -192,9 +192,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           hintText: "Password",
                                           fieldValidator: _validatePassword,
                                         ),
-                                        ConcealPassword(
-                                          obscurePassword: _obscureText,
-                                          toggleConceal: _toggle,
+                                        Positioned(
+                                          top: 0,
+                                          right: 0,
+                                          child: ConcealPassword(
+                                            obscurePassword: _obscureText,
+                                            toggleConceal: _toggle,
+                                          ),
                                         ),
                                       ],
                                     ),

@@ -25,8 +25,11 @@ class CustomTextField<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: fieldController,
-      // hiding texts if the text field is password
-      obscureText: (hintText == "Password") ? obscureText : false,
+      // hiding texts if the text field is any type of password
+      obscureText: (hintText.split(" ").contains("Password") ||
+              hintText.split(" ").contains("password"))
+          ? obscureText
+          : false,
       // separately defining number of lines for description
       maxLines: (hintText == "Description") ? 7 : 1,
       // separately defining keyboard type for price

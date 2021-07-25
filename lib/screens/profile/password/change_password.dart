@@ -19,9 +19,9 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _requireOldPassword = MultiValidator(
       [RequiredValidator(errorText: "Old Password is required!")]);
   final _requireNewPassword = MultiValidator(
-      [RequiredValidator(errorText: "Old Password is required!")]);
+      [RequiredValidator(errorText: "Please insert your new Password!")]);
   final _requireCmfPassword = MultiValidator(
-      [RequiredValidator(errorText: "Old Password is required!")]);
+      [RequiredValidator(errorText: "Please confirm your new Password!")]);
 
   bool _oldPassword = true;
   bool _newPassword = true;
@@ -45,14 +45,10 @@ class _ChangePasswordState extends State<ChangePassword> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children:
-        [
-
+      body: Stack(children: [
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -99,60 +95,62 @@ class _ChangePasswordState extends State<ChangePassword> {
                               key: _formKey,
                               child: Column(
                                 children: <Widget>[
-                                  // Container(
-                                  //   child: CustomTextField(
-                                  //     fieldController: _oldPasswordController,
-                                  //     obscureText: _obscurePassword,
-                                  //     hintText: "Email",
-                                  //     fieldValidator: _requireOldPassword,
-                                  //   ),
-                                  // ),
-                                  TextFormField(
-                                    obscureText: _oldPassword,
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
-
-                                    decoration: InputDecoration(
-                                      hintText: "Old Password",
-                                      suffixIcon: IconButton(
-                                        onPressed: _toggleOld,
-                                        icon: _oldPassword
-                                            ? Icon(Icons.visibility_off_rounded)
-                                            : Icon(Icons.visibility_rounded),
+                                  Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: <Widget>[
+                                      CustomTextField(
+                                        fieldController: _oldPasswordController,
+                                        obscureText: _oldPassword,
+                                        hintText: "Old Password",
+                                        fieldValidator: _requireOldPassword,
                                       ),
-                                    ),
-                                    validator: _requireOldPassword,
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: ConcealPassword(
+                                          obscurePassword: _oldPassword,
+                                          toggleConceal: _toggleOld,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-
-                                  TextFormField(
-                                    obscureText: _newPassword,
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
-
-                                    decoration: InputDecoration(
-                                      hintText: "New Password",
-                                      suffixIcon: IconButton(
-                                        onPressed: _toggleNew,
-                                        icon: _newPassword
-                                            ? Icon(Icons.visibility_off_rounded)
-                                            : Icon(Icons.visibility_rounded),
+                                  Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: <Widget>[
+                                      CustomTextField(
+                                        fieldController: _newPasswordController,
+                                        obscureText: _newPassword,
+                                        hintText: "New Password",
+                                        fieldValidator: _requireNewPassword,
                                       ),
-                                    ),
-                                    validator: _requireNewPassword,
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: ConcealPassword(
+                                          obscurePassword: _newPassword,
+                                          toggleConceal: _toggleNew,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-
-                                  TextFormField(
-                                    obscureText: _cmfPassword,
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
-
-                                    decoration: InputDecoration(
-                                      hintText: "Confirm Password",
-                                      suffixIcon: IconButton(
-                                        onPressed: _toggleCmf,
-                                        icon: _cmfPassword
-                                            ? Icon(Icons.visibility_off_rounded)
-                                            : Icon(Icons.visibility_rounded),
+                                  Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: <Widget>[
+                                      CustomTextField(
+                                        fieldController: _cmfPasswordController,
+                                        obscureText: _cmfPassword,
+                                        hintText: "Confirm Password",
+                                        fieldValidator: _requireCmfPassword,
                                       ),
-                                    ),
-                                    validator: _requireCmfPassword,
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: ConcealPassword(
+                                          obscurePassword: _cmfPassword,
+                                          toggleConceal: _toggleCmf,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(
                                     height: 10,
@@ -160,24 +158,21 @@ class _ChangePasswordState extends State<ChangePassword> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                        CustomText(
-                                          holderKey: "ask",
-                                          textToShow: "Forgot Password?",
-                                          textColor: Colors.grey.shade700,
-                                        ),
+                                      CustomText(
+                                        holderKey: "ask",
+                                        textToShow: "Forgot Password?",
+                                        textColor: Colors.grey.shade700,
+                                      ),
                                     ],
                                   ),
                                   SizedBox(
                                     height: 20,
                                   ),
-
                                   CustomButton(
                                     buttonKey: "btnCngPassword",
                                     buttonText: "Change Password",
                                     // triggerAction: _validateLogin,
                                   ),
-
-
                                 ],
                               ),
                             ),
@@ -191,31 +186,30 @@ class _ChangePasswordState extends State<ChangePassword> {
             ],
           ),
         ),
-          Positioned(
-            top: 85,
-            left: 15,
-            child: Container(
-              padding: EdgeInsets.zero,
-              height: 26,
-              width: 26,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 1.2),
-                  borderRadius: BorderRadius.circular(5)),
-              child: IconButton(
-                padding: EdgeInsets.only(left: 5),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
-                  size: 20,
-                ),
+        Positioned(
+          top: 85,
+          left: 15,
+          child: Container(
+            padding: EdgeInsets.zero,
+            height: 26,
+            width: 26,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.white, width: 1.2),
+                borderRadius: BorderRadius.circular(5)),
+            child: IconButton(
+              padding: EdgeInsets.only(left: 5),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 20,
               ),
             ),
           ),
-        ]
-      ),
+        ),
+      ]),
     );
   }
 }

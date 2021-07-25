@@ -136,10 +136,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                           hintText: "Password",
                                           fieldValidator: _requirePassword,
                                         ),
-                                        ConcealPassword(
-                                          obscurePassword: _obscurePassword,
-                                          toggleConceal: _toggle,
-                                        )
+                                        Positioned(
+                                          top: 0,
+                                          right: 0,
+                                          child: ConcealPassword(
+                                            obscurePassword: _obscurePassword,
+                                            toggleConceal: _toggle,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],

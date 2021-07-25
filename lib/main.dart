@@ -1,5 +1,7 @@
 import 'package:accord/screens/auth/login_screen.dart';
+import 'package:accord/screens/bottom_navigation.dart';
 import 'package:accord/screens/get_started_screen.dart';
+import 'package:accord/services/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,10 +13,14 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt('initScreen');
   await prefs.setInt('initScreen', 1);
-  runApp(MyApp());
+
+  String token = await Storage().fetchToken();
+  runApp(MyApp(token: token));
 }
 
 class MyApp extends StatelessWidget {
+  final String token;
+  MyApp({this.token});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -26,12 +32,15 @@ class MyApp extends StatelessWidget {
           bottomSheetTheme:
               BottomSheetThemeData(backgroundColor: Colors.transparent)),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      // home: BottomNavigation(),
+
       // home: LoginScreen(),
 
       initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
       routes: {
-        "home": (context) => LoginScreen(),
+        "home": token != null && token.isNotEmpty
+            ? (context) => BottomNavigation()
+            : (context) => LoginScreen(),
         "onboard": (context) => GetStartedScreen()
       },
     );
