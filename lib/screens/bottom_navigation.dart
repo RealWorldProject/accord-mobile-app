@@ -79,6 +79,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ],
             selectedIndex: _selectedIndex,
             onTabChange: (index) {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+
               setState(() {
                 _selectedIndex = index;
               });
