@@ -1,11 +1,14 @@
+import 'package:accord/constant/constant.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
 import 'package:accord/responses/fetch_books_in_category_response.dart';
 import 'package:accord/screens/rating/rate_book.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
+import 'package:accord/screens/shimmer/book_list_item.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CategoryScreen extends StatefulWidget {
   final Category categoryObj;
@@ -20,7 +23,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   // bool isLiked = false;
   // static const isNew = widget.categoryObj.book.isNew;
 
-  List<Book> _books = [];
+  List<Book> _books;
 
   @override
   initState() {
@@ -107,10 +110,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     alignment: Alignment.center,
                     // icon: book.isLiked == false
                     //     ? Icon(Icons.favorite_outline_rounded)
-                        icon: Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          ),
+                    icon: Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    ),
                     iconSize: 25,
                   ),
                 ),
@@ -243,7 +246,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       tag: widget.categoryObj.category,
                       child: Image.network(
                         widget.categoryObj.image,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ),
@@ -261,16 +264,25 @@ class _CategoryScreenState extends State<CategoryScreen> {
             expandedHeight: MediaQuery.of(context).size.height * 0.305,
           ),
           SliverGrid.count(
-
             crossAxisSpacing: 0,
             mainAxisSpacing: 10,
             crossAxisCount: 2,
             childAspectRatio: MediaQuery.of(context).size.width /
                 (MediaQuery.of(context).size.height / 1.025),
-            children: List.generate(_books.length, (index) {
-              Book book = _books[index];
-              return _buildBooks(book, index);
-            }),
+            children: _books != null
+                ? List.generate(_books.length, (index) {
+                    Book book = _books[index];
+                    return _buildBooks(book, index);
+                  })
+                : List.generate(4, (index) {
+                    return Shimmer.fromColors(
+                      child: BookListItem(
+                        index: index,
+                      ),
+                      baseColor: Constant.shimmer_base_color,
+                      highlightColor: Constant.shimmer_highlight_color,
+                    );
+                  }),
           ),
         ],
       ),

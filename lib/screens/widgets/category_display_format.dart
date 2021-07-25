@@ -5,15 +5,18 @@ import 'package:flutter/material.dart';
 class CategoryDisplayFormat extends StatelessWidget {
   final Category categoryObj;
   final int index;
+  final double sizeRatio;
 
   CategoryDisplayFormat({
     this.categoryObj,
     this.index,
+    this.sizeRatio = 11 / 15,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AspectRatio(
+      aspectRatio: sizeRatio,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -26,15 +29,22 @@ class CategoryDisplayFormat extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: Hero(
-                tag: categoryObj.category,
-                child: Image.network(
-                  categoryObj.image,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  fit: BoxFit.cover,
+              borderRadius: BorderRadius.circular(16),
+              child: Image.network(
+                categoryObj.image,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  color: Colors.black12,
                 ),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
               ),
             ),
             Positioned(
