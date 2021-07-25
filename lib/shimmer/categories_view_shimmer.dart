@@ -27,13 +27,13 @@ class _CategoriesViewShimmerState extends State<CategoriesViewShimmer> {
             // ),
           ),
           Shimmer.fromColors(
-            baseColor: Colors.grey[300],
+            baseColor: Colors.grey[400],
             highlightColor: Colors.grey[200],
             child: Container(
               height: 180,
               width: 132,
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Colors.grey[300],
                 borderRadius: BorderRadius.all(
                   Radius.circular(20),
                 ),
@@ -75,24 +75,24 @@ class _CategoriesViewShimmerState extends State<CategoriesViewShimmer> {
               Padding(
                 padding: const EdgeInsets.only(left: 3.0),
                 child: Shimmer.fromColors(
-                  baseColor: Colors.grey[300],
-                  highlightColor: Colors.grey[100],
+                  baseColor: Colors.grey[400],
+                  highlightColor: Colors.grey[200],
                   child: Container(
                     height: 26.0,
-                    width: 140.0,
-                    color: Colors.grey,
+                    width: 160.0,
+                    color: Colors.grey[200],
                   ),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 10),
                 child: Shimmer.fromColors(
-                  baseColor: Colors.grey[300],
-                  highlightColor: Colors.grey[100],
+                  baseColor: Colors.grey[400],
+                  highlightColor: Colors.grey[200],
                   child: Container(
                     height: 20.0,
-                    width: 80.0,
-                    color: Colors.grey,
+                    width: 60.0,
+                    color: Colors.grey[300],
                   ),
                 ),
               )

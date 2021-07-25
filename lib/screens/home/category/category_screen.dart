@@ -1,7 +1,7 @@
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
 import 'package:accord/responses/fetch_books_in_category_response.dart';
-import 'package:accord/screens/book_view/rate_book.dart';
+import 'package:accord/screens/rating/rate_book.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -116,8 +116,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
               ),
               Positioned(
-                bottom: -20,
-                left: 0,
+                top: 10,
+                right: 10,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                   alignment: Alignment.center,

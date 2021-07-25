@@ -89,14 +89,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: ListTile(
                                 leading: Icon(
                                   Icons.person_rounded,
-                                  size: 32,
+                                  size: 28,
                                   color: Color(0xff0a78b2),
                                 ),
                                 title: Text(
                                   "View Profile",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w500,
                                       color: Color(0xff1b98e0)),
                                 ),
                               ),
@@ -116,14 +116,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: ListTile(
                                 leading: Icon(
                                   Icons.favorite,
-                                  size: 32,
+                                  size: 28,
                                   color: Colors.redAccent[700],
                                 ),
                                 title: Text(
                                   "Favourites",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w500,
                                       color: Color(0xff1b98e0)),
                                 ),
                               ),
@@ -143,14 +143,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: ListTile(
                                 leading: Icon(
                                   Icons.menu_book_rounded,
-                                  size: 32,
+                                  size: 28,
                                   color: Color(0xff0a78b2),
                                 ),
                                 title: Text(
                                   "My Books",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w500,
                                       color: Color(0xff1b98e0)),
                                 ),
                               ),
@@ -170,14 +170,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: ListTile(
                                 leading: Icon(
                                   Icons.edit,
-                                  size: 32,
+                                  size: 28,
                                   color: Color(0xff0a78b2),
                                 ),
                                 title: Text(
                                   "Change Password",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w500,
                                       color: Color(0xff1b98e0)),
                                 ),
                               ),
@@ -197,14 +197,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: ListTile(
                                 leading: Icon(
                                   Icons.logout,
-                                  size: 32,
+                                  size: 28,
                                   color: Color(0xff0a78b2),
                                 ),
                                 title: Text(
                                   "Logout",
                                   style: TextStyle(
                                       fontSize: 18,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w500,
                                       color: Color(0xff1b98e0)),
                                 ),
                               ),

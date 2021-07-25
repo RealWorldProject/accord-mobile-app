@@ -2,7 +2,6 @@ import 'package:accord/screens/cart/cart_screen.dart';
 import 'package:accord/screens/home/home_screen.dart';
 import 'package:accord/screens/notification/notification_page.dart';
 import 'package:accord/screens/profile/profile_screen.dart';
-import 'package:accord/screens/shimmer/home_screen_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
