@@ -1,5 +1,7 @@
+import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/profile/password/change_password.dart';
 import 'package:accord/screens/profile/view_profile_page.dart';
+import 'package:accord/services/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -10,6 +12,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Future<void> logout() async {
+    await Storage().deleteToken();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -201,7 +209,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                logout();
+                              },
                               child: ListTile(
                                 leading: Icon(
                                   Icons.logout,
@@ -238,7 +248,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 top: 65,
                 right: 15,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    logout();
+                  },
                   icon: Icon(
                     Icons.logout,
                     color: Colors.white,

@@ -10,4 +10,8 @@ class Storage {
   Future fetchToken() async {
     return await tokenStorage.read(key: 'userToken');
   }
+
+  Future<void> deleteToken() async {
+    await tokenStorage.delete(key: 'userToken');
+  }
 }
