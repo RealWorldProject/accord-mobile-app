@@ -2,6 +2,7 @@ import 'package:accord/screens/cart/cart_screen.dart';
 import 'package:accord/screens/home/home_screen.dart';
 import 'package:accord/screens/notification/notification_page.dart';
 import 'package:accord/screens/profile/profile_screen.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -62,6 +63,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               GButton(
                 icon: LineIcons.home,
                 text: 'Home',
+
               ),
               GButton(
                 icon: LineIcons.shoppingCart,

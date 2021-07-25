@@ -26,8 +26,7 @@ class MyApp extends StatelessWidget {
           bottomSheetTheme:
               BottomSheetThemeData(backgroundColor: Colors.transparent)),
       debugShowCheckedModeBanner: false,
-      // home: BottomNavigation(),
-
+      home: LoginScreen(),
       // home: LoginScreen(),
 
       initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
