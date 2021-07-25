@@ -1,3 +1,4 @@
+import 'package:accord/screens/profile/password/change_password.dart';
 import 'package:accord/screens/profile/view_profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -166,7 +167,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChangePassword(),
+                                  ),
+                                );
+                              },
                               child: ListTile(
                                 leading: Icon(
                                   Icons.edit,
