@@ -13,19 +13,20 @@ class _RateBookState extends State<RateBook> {
   Widget build(BuildContext context) {
     return  Center(
       child: RatingBar(
-        initialRating: 0,
+        initialRating: 3.5,
         direction: Axis.horizontal,
-        allowHalfRating: false,
+        allowHalfRating: true,
         itemCount: 5,
         ratingWidget: RatingWidget(
           full: Icon(Icons.star_rate_rounded,),
+          half: Icon(Icons.star_half_rounded),
           empty: Icon(Icons.star_outline_rounded,),
         ),
-        itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
-        onRatingUpdate: (rating) {
-          print(rating);
-        },
-        itemSize: 32,
+        itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+        // onRatingUpdate: (rating) {
+        //   print(rating);
+        // },
+        itemSize: 18,
       ),
     );
   }

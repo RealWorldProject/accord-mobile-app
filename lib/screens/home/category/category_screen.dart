@@ -1,6 +1,8 @@
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
 import 'package:accord/responses/fetch_books_in_category_response.dart';
+import 'package:accord/screens/book_view/rate_book.dart';
+import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,18 +101,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       ),
                     ],
                   ),
-                  // child: IconButton(
-                  //   padding:
-                  //       EdgeInsets.only(top: 4, bottom: 0, left: 0, right: 0),
-                  //   alignment: Alignment.center,
-                  //   icon: book.isLiked == false
-                  //       ? Icon(Icons.favorite_outline_rounded)
-                  //       : Icon(
-                  //           Icons.favorite,
-                  //           color: Colors.red,
-                  //         ),
-                  //   iconSize: 25,
-                  // ),
+                  child: IconButton(
+                    padding:
+                        EdgeInsets.only(top: 4, bottom: 0, left: 0, right: 0),
+                    alignment: Alignment.center,
+                    // icon: book.isLiked == false
+                    //     ? Icon(Icons.favorite_outline_rounded)
+                        icon: Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          ),
+                    iconSize: 25,
+                  ),
                 ),
               ),
               Positioned(
@@ -165,7 +167,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 color: Colors.grey[700],
                 fontStyle: FontStyle.italic),
           ),
-          // RatingStars(book.rating),
+          RatingStars(4.5),
           book.isAvailableForExchange == false
               ? Text(
                   "Available for Exchange",

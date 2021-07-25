@@ -13,17 +13,35 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Home"),
-        automaticallyImplyLeading: false,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SearchField(),
-            CategoriesSection(),
-          ],
+      extendBody: true,
+      // appBar: AppBar(
+      //   title: Text("Home"),
+      //   automaticallyImplyLeading: false,
+      // ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SearchField(),
+                CategoriesSection(),
+              ],
+            ),
+          ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        child: const Icon(Icons.navigation),
+        backgroundColor: Colors.green,
       ),
     );
   }

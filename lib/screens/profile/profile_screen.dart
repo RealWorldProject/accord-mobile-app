@@ -22,12 +22,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: ClipPath(
                   clipper: ArcClipper(),
                   child: Container(
-                    height: MediaQuery.of(context).size.height / 1.5,
+                    height: MediaQuery.of(context).size.height / 1.3,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/images/profileBG.png"),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
 
                         // image: Image.asset("assets/images/profileBG.png",height: MediaQuery.of(context).size.height,fit: BoxFit.cover,),
                       ),
@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 30),
+                margin: EdgeInsets.only(top: 95),
                 child: Column(
                   children: [
                     Center(
@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 30,
                     ),
                     Container(
                       padding:
@@ -227,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               Positioned(
-                top: 15,
+                top: 65,
                 right: 15,
                 child: IconButton(
                   onPressed: () {},

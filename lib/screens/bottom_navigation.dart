@@ -2,6 +2,7 @@ import 'package:accord/screens/cart/cart_screen.dart';
 import 'package:accord/screens/home/home_screen.dart';
 import 'package:accord/screens/notification/notification_page.dart';
 import 'package:accord/screens/profile/profile_screen.dart';
+import 'package:accord/screens/shimmer/home_screen_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -26,11 +27,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Scaffold(
       extendBody: true,
       // body: SafeArea(child: _screens[_selectedIndex]),
-      body: SafeArea(
-        child: IndexedStack(
-          index: _selectedIndex,
-          children: _screens,
-        ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _screens,
       ),
       bottomNavigationBar: Container(
         height: 75,
@@ -48,44 +47,42 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ),
           ],
         ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-            child: GNav(
-              rippleColor: Colors.blue[300],
-              hoverColor: Colors.blue[100],
-              gap: 8,
-              activeColor: Colors.white,
-              iconSize: 24,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              duration: Duration(milliseconds: 400),
-              tabBackgroundColor: Colors.lightBlue,
-              color: Colors.blue[400],
-              tabs: [
-                GButton(
-                  icon: LineIcons.home,
-                  text: 'Home',
-                ),
-                GButton(
-                  icon: LineIcons.shoppingCart,
-                  text: 'Cart',
-                ),
-                GButton(
-                  icon: LineIcons.bellAlt,
-                  text: 'Notifications',
-                ),
-                GButton(
-                  icon: LineIcons.user,
-                  text: 'Profile',
-                ),
-              ],
-              selectedIndex: _selectedIndex,
-              onTabChange: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-            ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+          child: GNav(
+            rippleColor: Colors.blue[300],
+            hoverColor: Colors.blue[100],
+            gap: 8,
+            activeColor: Colors.white,
+            iconSize: 24,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            duration: Duration(milliseconds: 400),
+            tabBackgroundColor: Colors.lightBlue,
+            color: Colors.blue[400],
+            tabs: [
+              GButton(
+                icon: LineIcons.home,
+                text: 'Home',
+              ),
+              GButton(
+                icon: LineIcons.shoppingCart,
+                text: 'Cart',
+              ),
+              GButton(
+                icon: LineIcons.bellAlt,
+                text: 'Notifications',
+              ),
+              GButton(
+                icon: LineIcons.user,
+                text: 'Profile',
+              ),
+            ],
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
           ),
         ),
       ),

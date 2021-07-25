@@ -1,3 +1,4 @@
+import 'package:accord/screens/profile/post_book.dart';
 import 'package:accord/screens/profile/view_page_body.dart';
 import 'package:accord/screens/profile/view_profile_top.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,7 +63,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: (){print("Add book");},
+                        onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> PostBook()));},
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
 

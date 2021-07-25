@@ -25,9 +25,9 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.transparent
       )),
       debugShowCheckedModeBanner: false,
-      // home: BottomNavigation(),
+      home: BottomNavigation(),
 
-      home: LoginScreen(),
+      // home: LoginScreen(),
 
       // initialRoute: initScreen == 0 || initScreen == null ? "onboard" : "home",
       // routes: {
