@@ -125,11 +125,12 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text("All Categories"),
+              centerTitle: true,
               background: Stack(
                 children: [
                   Positioned.fill(
                     child: Image.asset(
-                      "assets/images/b3.jpg",
+                      "assets/images/bookstore.png",
                       fit: BoxFit.cover,
                     ),
                   ),
