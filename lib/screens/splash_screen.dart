@@ -20,7 +20,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
   void initState() {
     Storage().fetchToken().then(
           (token) => Timer(
-            Duration(milliseconds: 3000),
+            Duration(milliseconds: 5000),
             () => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -39,7 +39,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
   Widget build(BuildContext context) {
     return SplashScreenView(
       navigateRoute: LoginScreen(),
-      duration: 5000,
+      // duration: 600,
       imageSize: 150,
 
       imageSrc: "assets/images/icon.png",

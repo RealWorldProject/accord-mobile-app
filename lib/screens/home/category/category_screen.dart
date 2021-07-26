@@ -49,15 +49,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   _buildBooks(Book book, int index) {
     return Container(
-      margin: EdgeInsets.only(top: 20, left: 10, bottom: 0),
+      margin: EdgeInsets.symmetric(vertical: 10),
       padding: EdgeInsets.all(7.0),
       decoration: BoxDecoration(
         color: Colors.grey[100],
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Stack(
             clipBehavior: Clip.none,
@@ -75,12 +74,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
               Positioned.fill(
                 child: Container(
-                  height: 180,
-                  width: 132,
+                  height: 219.0,
+                  width: 175.0,
                   decoration: BoxDecoration(
-                    color: Colors.black12,
+                    color: Colors.black26,
                     borderRadius: BorderRadius.all(
-                      Radius.circular(20),
+                      Radius.circular(15.0),
                     ),
                   ),
                 ),
@@ -150,78 +149,98 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
             ],
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            book.name,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey[900]),
-          ),
-          Text(
-            book.author,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w100,
-                color: Colors.grey[700],
-                fontStyle: FontStyle.italic),
-          ),
-          RatingStars(4.5),
-          book.isAvailableForExchange == false
-              ? Text(
-                  "Available for Exchange",
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w100,
-                      color: Colors.grey[800],
-                      decoration: TextDecoration.lineThrough,
-                      fontStyle: FontStyle.italic),
-                )
-              : Text(
-                  "Available for Exchange",
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w100,
-                      color: Colors.blue,
-                      fontStyle: FontStyle.italic),
-                ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Rs. ${book.price.toString()}",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xff247BA0),
-                ),
+              SizedBox(
+                height: 20,
               ),
-              Container(
-                height: 30,
-                width: 35,
-                decoration: BoxDecoration(
-                  color: Color(0xff13293D),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
+              Text(
+                book.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[900]),
+              ),
+              Text(
+                book.author,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w100,
+                    color: Colors.grey[700],
+                    fontStyle: FontStyle.italic),
+              ),
+              RatingStars(4.5),
+              Text(
+                "Available for Exchange",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w100,
+                    color: book.isAvailableForExchange == true
+                        ? Colors.blue
+                        : Colors.grey[800],
+                    decoration: book.isAvailableForExchange == false
+                        ? (TextDecoration.lineThrough)
+                        : (TextDecoration.none),
+                    fontStyle: FontStyle.italic),
+              ),
+              // book.isAvailableForExchange == false
+              //     ? Text(
+              //   "Available for Exchange",
+              //   overflow: TextOverflow.ellipsis,
+              //   style: TextStyle(
+              //       fontSize: 10,
+              //       fontWeight: FontWeight.w100,
+              //       color: Colors.grey[800],
+              //       decoration: TextDecoration.lineThrough,
+              //       fontStyle: FontStyle.italic),
+              // )
+              //     : Text(
+              //   "Available for Exchange",
+              //   overflow: TextOverflow.ellipsis,
+              //   style: TextStyle(
+              //       fontSize: 11,
+              //       fontWeight: FontWeight.w100,
+              //       color: Colors.blue,
+              //       fontStyle: FontStyle.italic),
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Rs. ${book.price.toString()}",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xff247BA0),
+                    ),
                   ),
-                ),
-                child: IconButton(
-                  onPressed: () {},
-                  padding: EdgeInsets.zero,
-                  icon: Icon(Icons.shopping_cart),
-                  iconSize: 18,
-                  color: Colors.white,
-                ),
+                  Container(
+                    height: 30,
+                    width: 35,
+                    decoration: BoxDecoration(
+                      color: Color(0xff13293D),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    child: IconButton(
+                      onPressed: () {},
+                      padding: EdgeInsets.zero,
+                      icon: Icon(Icons.shopping_cart),
+                      iconSize: 18,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
               )
             ],
-          )
+          ),
         ],
       ),
     );
@@ -246,7 +265,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       tag: widget.categoryObj.category,
                       child: Image.network(
                         widget.categoryObj.image,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
