@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -49,6 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (_loginResponse.success) {
         // storing token
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', _loginResponse.token);
         Storage().storeToken("Bearer ${_loginResponse.token}");
         // navigating to dashboard
         Navigator.pushReplacement(context,
