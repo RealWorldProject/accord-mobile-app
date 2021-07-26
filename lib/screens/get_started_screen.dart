@@ -1,6 +1,7 @@
 import 'package:accord/screens/auth/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class GetStartedScreen extends StatefulWidget {
   @override
@@ -56,6 +57,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
               child: GestureDetector(
                 key: Key("getstarted"),
                 onTap: () {
+                  FlutterSecureStorage().write(key: 'firstRun', value: "no");
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
