@@ -98,21 +98,25 @@ class _ViewPageBodyState extends State<ViewPageBody> {
                 ),
               ),
               Positioned(
-                  top: 10,
-                  left: 10,
+                  top: 6,
+                  left: 6,
                   child: CircleAvatar(
-                    radius: 20,
-                    child: RotationTransition(
-                      turns: new AlwaysStoppedAnimation(330 / 360),
-                      child: Text(
-                        "NEW",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                    backgroundImage: AssetImage("assets/images/tag-shape.png"),
+                    radius: 22,
+                    child: Center(
+                      child: RotationTransition(
+                        turns: new AlwaysStoppedAnimation(320 / 360),
+                        child: Text(
+                          "NEW",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
-                    backgroundColor: Color(0xff19b128),
+                    // backgroundColor: Color(0xff19b128),
+                    backgroundColor: Colors.transparent,
                   ))
             ],
           ),

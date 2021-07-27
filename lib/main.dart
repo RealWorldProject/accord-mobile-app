@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: firstRun ? "onboard" : "home",
       routes: {
-        "home": (context) => SplashScreen(),
+        "home": (context) => Splash_Screen(),
         "onboard": (context) => GetStartedScreen()
       },
     );
