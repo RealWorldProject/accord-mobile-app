@@ -1,4 +1,5 @@
 import 'package:accord/screens/cart/cart_list_view.dart';
+import 'package:accord/screens/shimmer/cart_shimmer.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
@@ -34,6 +35,7 @@ class _CartScreenState extends State<CartScreen> {
         physics: BouncingScrollPhysics(),
           child: Column(
         children: [
+          CartShimmer(),
           CartListView(),
           CartListView(),
           CartListView(),

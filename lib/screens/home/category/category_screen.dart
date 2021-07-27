@@ -32,6 +32,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     loadBooksInSelectedCategory().then((value) => setState(
           () {
             _books = value;
+            print(_books[0]);
           },
         ));
     super.initState();
@@ -48,7 +49,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       return [];
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,10 +88,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ),
           SliverGrid.count(
             crossAxisSpacing: 0,
-            mainAxisSpacing: 10,
+            mainAxisSpacing: 0,
             crossAxisCount: 2,
-            childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height / 1.020),
+            childAspectRatio: 1/2,
+            // childAspectRatio: (MediaQuery.of(context).devicePixelRatio /5.2),
+            // childAspectRatio: MediaQuery.of(context).size.width /
+            //     (MediaQuery.of(context).size.height / 1.05),
             children: _books != null
                 ? List.generate(_books.length, (index) {
                     Book book = _books[index];

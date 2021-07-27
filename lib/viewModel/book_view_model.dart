@@ -54,8 +54,8 @@ class BookModelReader {
     return this.book.category;
   }
 
-  bool get isNew {
-    return this.book.isNew;
+  bool get isNewBook {
+    return this.book.isNewBook;
   }
 
   bool get isAvailableForExchange {
