@@ -1,6 +1,6 @@
 import 'package:accord/models/book.dart';
 
-class FetchBooksInCategoryResponse {
+class FetchBooksResponse {
   final bool success;
   final String message;
   final String developerMessage;
@@ -8,7 +8,7 @@ class FetchBooksInCategoryResponse {
   final int page;
   final int total;
 
-  FetchBooksInCategoryResponse({
+  FetchBooksResponse({
     this.success,
     this.message,
     this.developerMessage,
@@ -17,13 +17,13 @@ class FetchBooksInCategoryResponse {
     this.total,
   });
 
-  factory FetchBooksInCategoryResponse.fromJson(Map<String, dynamic> json) {
+  factory FetchBooksResponse.fromJson(Map<String, dynamic> json) {
     // converting List<String> to List<Book>
     var books = json['result'] as List;
     List<Book> formattedBooks =
         books.map((book) => Book.fromJson(book)).toList();
 
-    return FetchBooksInCategoryResponse(
+    return FetchBooksResponse(
       success: json['success'],
       message: json['message'],
       developerMessage: json['developerMessage'],

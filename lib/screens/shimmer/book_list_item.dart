@@ -11,33 +11,41 @@ class BookListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: EdgeInsets.only(
-            top: 20,
-            left: 10,
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.all(7.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            child: ImageListItem(
+              index: index,
+              width: 175.0,
+              height: 219.0,
+            ),
           ),
-          padding: EdgeInsets.all(7.0),
-          child: ImageListItem(
-            index: index,
-            sizeRatio: 4 / 5,
+          SizedBox(
+            height: 5,
           ),
-        ),
-        TextItem(
-          width: MediaQuery.of(context).size.width / 2 - 40,
-        ),
-        TextItem(
-          width: MediaQuery.of(context).size.width / 2 - 70,
-        ),
-        TextItem(
-          width: MediaQuery.of(context).size.width / 2 - 90,
-        ),
-        TextItem(
-          width: MediaQuery.of(context).size.width / 2 - 60,
-        ),
-      ],
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextItem(
+                width: MediaQuery.of(context).size.width / 2 - 40,
+              ),
+              TextItem(
+                width: MediaQuery.of(context).size.width / 2 - 70,
+              ),
+              TextItem(
+                width: MediaQuery.of(context).size.width / 2 - 90,
+              ),
+              TextItem(
+                width: MediaQuery.of(context).size.width / 2 - 60,
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

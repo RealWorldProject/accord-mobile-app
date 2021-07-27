@@ -10,7 +10,7 @@ class TextItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, left: 20),
+      margin: EdgeInsets.only(top: 10),
       width: width,
       height: 12,
       decoration: BoxDecoration(
