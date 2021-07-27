@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/bottom_navigation.dart';
-import 'package:accord/screens/widgets/loading_indicator.dart';
-import 'package:loading_indicator_view/loading_indicator_view.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:accord/services/storage.dart';
 import 'package:flutter/material.dart';
@@ -16,22 +12,17 @@ class Splash_Screen extends StatefulWidget {
 }
 
 class _Splash_ScreenState extends State<Splash_Screen> {
-  String token = Storage().fetchToken().toString();
+
+
+  String _userToken;
+
   @override
   void initState() {
-    Storage().fetchToken().then(
-          (token) => Timer(
-            Duration(milliseconds: 5000),
-            () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: token == null || token.isEmpty
-                    ? (context) => LoginScreen()
-                    : (context) => BottomNavigation(),
-              ),
-            ),
-          ),
-        );
+    Storage().fetchToken().then((token) => setState(
+          () {
+            _userToken = token;
+          },
+        ));
 
     super.initState();
   }
@@ -39,17 +30,20 @@ class _Splash_ScreenState extends State<Splash_Screen> {
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-      navigateRoute:   LoginScreen(),
-      // duration: 600,
-      imageSize: 150,
 
+      navigateRoute: _userToken != null
+          ? _userToken.isNotEmpty
+              ? BottomNavigation()
+              : LoginScreen()
+          : LoginScreen(),
+      imageSize: 150,
       imageSrc: "assets/images/icon.png",
       text: "accord",
       textType: TextType.ColorizeAnimationText,
       textStyle: TextStyle(
         fontSize: 60.0,
         fontFamily: "MMCruella",
-        fontWeight: FontWeight.w700
+        fontWeight: FontWeight.w700,
       ),
       colors: [
         Colors.blue,
@@ -57,19 +51,9 @@ class _Splash_ScreenState extends State<Splash_Screen> {
         Colors.orange,
         Colors.indigo[700],
       ],
-
-      // colors: [
-      //   Colors.white,
-      //   Colors.indigo[700],
-      //   Colors.grey[400],
-      //   Colors.purple,
-      // ],
-      // backgroundColor: Color(0xff1b98e0),
       backgroundColor: Colors.white,
-        pageRouteTransition: PageRouteTransition.SlideTransition,
-
+      pageRouteTransition: PageRouteTransition.SlideTransition,
       speed: 1,
-
     );
   }
 }
