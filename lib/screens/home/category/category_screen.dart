@@ -30,6 +30,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     loadBooksInSelectedCategory().then((value) => setState(
           () {
             _books = value;
+            print(_books[0]);
           },
         ));
     super.initState();
@@ -124,7 +125,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                   alignment: Alignment.center,
-                  decoration: book.isNew == false
+                  decoration: book.isNewBook == false
                       ? BoxDecoration(
                           color: Colors.purple,
                           borderRadius: BorderRadius.all(
@@ -137,7 +138,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             Radius.circular(5),
                           ),
                         ),
-                  child: book.isNew == false
+                  child: book.isNewBook == false
                       ? Text(
                           "old",
                           style: TextStyle(color: Colors.white, fontSize: 10),
@@ -233,7 +234,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         ),
                       ),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {print(book.isAvailableForExchange);},
                         padding: EdgeInsets.zero,
                         icon: Icon(Icons.shopping_cart),
                         iconSize: 18,

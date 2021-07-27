@@ -127,7 +127,7 @@ class _PostBookState extends State<PostBook> {
           price: double.parse(_priceController.text),
           description: _descriptionController.text,
           images: imageUrls,
-          isNew: (_conditionValue == "New") ? true : false,
+          isNewBook: (_conditionValue == "New") ? true : false,
           isAvailableForExchange: (_exchangableValue == "Yes") ? true : false,
         );
 

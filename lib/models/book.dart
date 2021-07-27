@@ -6,7 +6,7 @@ class Book {
   final double price;
   final String description;
   final List<String> images;
-  final bool isNew;
+  final bool isNewBook;
   final bool isAvailableForExchange;
 
   Book({
@@ -17,7 +17,7 @@ class Book {
     this.price,
     this.description,
     this.images,
-    this.isNew,
+    this.isNewBook,
     this.isAvailableForExchange,
   });
 
@@ -31,7 +31,7 @@ class Book {
       price: double.parse(json['price'].toString()),
       description: json['description'],
       images: new List<String>.from(json['images']),
-      isNew: json['isNew'],
+      isNewBook: json['isNewBook'],
       isAvailableForExchange: json['isAvailableForExchange'],
     );
   }
@@ -44,7 +44,7 @@ class Book {
         'price': price,
         'description': description,
         'images': images,
-        'isNew': isNew,
+        'isNewBook': isNewBook,
         'isAvailableForExchange': isAvailableForExchange,
       };
 }
