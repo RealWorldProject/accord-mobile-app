@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:accord/models/book.dart';
 import 'package:accord/responses/book_post_response.dart';
-import 'package:accord/responses/fetch_books_in_category_response.dart';
+import 'package:accord/responses/fetch_books_response.dart';
 import 'package:accord/services/book_service.dart';
 
 class BookViewModel {
@@ -12,11 +12,16 @@ class BookViewModel {
     return BookPostResponse.fromJson(jsonDecode(postBookResponseAPI));
   }
 
-  Future<FetchBooksInCategoryResponse> fetchBooksInCategory(
-      String categoryID) async {
+  Future<FetchBooksResponse> fetchBooksInCategory(String categoryID) async {
     final apiResponse = await BookService().fetchBooksInCategory(categoryID);
     // sending json response to FetchBooksInCategoryResponse to convert into object
-    return FetchBooksInCategoryResponse.fromJson(jsonDecode(apiResponse));
+    return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+  }
+
+  Future<FetchBooksResponse> fetchAllBooks() async {
+    final apiResponse = await BookService().fetchAllBooks();
+    // sending json response to FetchBooksResponse to convert into object
+    return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
   }
 }
 
