@@ -287,7 +287,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             mainAxisSpacing: 10,
             crossAxisCount: 2,
             childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height / 1.025),
+                (MediaQuery.of(context).size.height / 1.020),
             children: _books != null
                 ? List.generate(_books.length, (index) {
                     Book book = _books[index];
