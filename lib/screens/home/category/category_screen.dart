@@ -2,11 +2,8 @@ import 'package:accord/constant/constant.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
 import 'package:accord/responses/fetch_books_response.dart';
-import 'package:accord/screens/rating/rate_book.dart';
-import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/screens/shimmer/book_list_item.dart';
 import 'package:accord/screens/widgets/book_display_format.dart';
-import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +19,6 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  // bool isLiked = false;
-  // static const isNew = widget.categoryObj.book.isNew;
-
   List<Book> _books;
 
   @override
@@ -32,7 +26,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     loadBooksInSelectedCategory().then((value) => setState(
           () {
             _books = value;
-            print(_books[0]);
           },
         ));
     super.initState();
@@ -49,7 +42,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       return [];
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,10 +83,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             crossAxisSpacing: 0,
             mainAxisSpacing: 0,
             crossAxisCount: 2,
-            childAspectRatio: 1/2,
-            // childAspectRatio: (MediaQuery.of(context).devicePixelRatio /5.2),
-            // childAspectRatio: MediaQuery.of(context).size.width /
-            //     (MediaQuery.of(context).size.height / 1.05),
+            childAspectRatio: 1 / 2,
             children: _books != null
                 ? List.generate(_books.length, (index) {
                     Book book = _books[index];
