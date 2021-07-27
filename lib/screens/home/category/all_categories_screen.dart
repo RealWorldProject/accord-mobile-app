@@ -83,7 +83,8 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                 ? List.generate(_categories.length, (index) {
                     Category categoryObj = _categories[index];
                     return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       // margin: EdgeInsets.only(top: 20, left: 10, right: 10),
                       child: CategoryDisplayFormat(
                         categoryObj: categoryObj,
@@ -96,11 +97,12 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                       baseColor: Constant.shimmer_base_color,
                       highlightColor: Constant.shimmer_highlight_color,
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: ImageListItem(
                           index: index,
-                          sizeRatio: 4 / 5,
+                          width: 175.0,
+                          height: 219.0,
                         ),
                       ),
                     );

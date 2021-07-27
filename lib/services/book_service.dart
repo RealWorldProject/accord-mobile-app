@@ -49,4 +49,26 @@ class BookService {
       return e.response.data;
     }
   }
+
+  Future<String> fetchAllBooks() async {
+    final String userToken = await Storage().fetchToken();
+    try {
+      final res = await dio.get(
+        '$baseURL/books',
+        queryParameters: {
+          "page": 1,
+          "limit": 0,
+        },
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on DioError catch (e) {
+      return e.response.data;
+    }
+  }
 }

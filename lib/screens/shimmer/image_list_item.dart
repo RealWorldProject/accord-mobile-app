@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class ImageListItem extends StatelessWidget {
-  const ImageListItem({
-    Key key,
-    this.index,
-    this.sizeRatio = 11 / 15,
-  }) : super(key: key);
+  const ImageListItem(
+      {Key key, this.index, this.width = 132, this.height = 180})
+      : super(key: key);
   final int index;
-  final double sizeRatio;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: sizeRatio,
+    return Container(
+      width: width,
+      height: height,
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
