@@ -1,6 +1,7 @@
 import 'package:accord/screens/profile/post_book.dart';
 import 'package:accord/screens/profile/view_page_body.dart';
 import 'package:accord/screens/profile/view_profile_top.dart';
+import 'package:accord/screens/shimmer/view_profile_shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -82,7 +83,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                 ],
               ),
             ),
-
+            ViewProfileShimmer(),
             ViewPageBody(),
             ViewPageBody(),
 
