@@ -11,7 +11,7 @@ class ViewProfileShimmer extends StatefulWidget {
 }
 
 class _ViewProfileShimmerState extends State<ViewProfileShimmer> {
-  double sizeHight = 5;
+  double sizeHight = 8;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,7 +69,7 @@ class _ViewProfileShimmerState extends State<ViewProfileShimmer> {
                   baseColor: Constant.shimmer_base_color,
                   highlightColor: Constant.shimmer_highlight_color,
                   child: Container(
-                    width: MediaQuery.of(context).size.width/1.5,
+                    width: MediaQuery.of(context).size.width/1.2,
                     height: 12,
 
                     decoration: BoxDecoration(
@@ -83,22 +83,7 @@ class _ViewProfileShimmerState extends State<ViewProfileShimmer> {
                   baseColor: Constant.shimmer_base_color,
                   highlightColor: Constant.shimmer_highlight_color,
                   child: Container(
-                    width: MediaQuery.of(context).size.width/1.5 - 40,
-                    height: 12,
-
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                ),
-                SizedBox(height: sizeHight,),
-
-                Shimmer.fromColors(
-                  baseColor: Constant.shimmer_base_color,
-                  highlightColor: Constant.shimmer_highlight_color,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width/1.5 -80,
+                    width: MediaQuery.of(context).size.width/1.2 - 40,
                     height: 12,
 
                     decoration: BoxDecoration(
@@ -113,7 +98,7 @@ class _ViewProfileShimmerState extends State<ViewProfileShimmer> {
                   baseColor: Constant.shimmer_base_color,
                   highlightColor: Constant.shimmer_highlight_color,
                   child: Container(
-                    width: MediaQuery.of(context).size.width/1.5-10,
+                    width: MediaQuery.of(context).size.width/1.2 -80,
                     height: 12,
 
                     decoration: BoxDecoration(
@@ -123,29 +108,44 @@ class _ViewProfileShimmerState extends State<ViewProfileShimmer> {
                   ),
                 ),
                 SizedBox(height: sizeHight,),
-                Container(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Shimmer.fromColors(
-                        baseColor: Constant.shimmer_base_color,
-                        highlightColor: Constant.shimmer_highlight_color,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width/5,
-                          height: 12,
 
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                      ),
+                Shimmer.fromColors(
+                  baseColor: Constant.shimmer_base_color,
+                  highlightColor: Constant.shimmer_highlight_color,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width/1.2-10,
+                    height: 12,
 
-                    ],
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
-                )
+                ),
+                SizedBox(height: sizeHight,),
+                // Container(
+                //   padding: EdgeInsets.only(right: 15),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       Shimmer.fromColors(
+                //         baseColor: Constant.shimmer_base_color,
+                //         highlightColor: Constant.shimmer_highlight_color,
+                //         child: Container(
+                //           width: MediaQuery.of(context).size.width/4,
+                //           height: 12,
+                //
+                //           decoration: BoxDecoration(
+                //             color: Colors.grey[300],
+                //             borderRadius: BorderRadius.circular(16),
+                //           ),
+                //         ),
+                //       ),
+                //
+                //     ],
+                //   ),
+                // )
               ],
             ),
           ),

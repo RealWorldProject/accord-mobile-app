@@ -29,7 +29,7 @@ class _ViewPageBodyState extends State<ViewPageBody> {
             contentPadding: EdgeInsets.symmetric(horizontal: 8),
             leading: CircleAvatar(
               radius: 20.0,
-              backgroundImage: AssetImage("assets/images/user2.jpg"),
+              backgroundImage: AssetImage("assets/images/user2.png"),
               backgroundColor: Colors.transparent,
             ),
             title: Text(
@@ -57,7 +57,7 @@ class _ViewPageBodyState extends State<ViewPageBody> {
                 height: MediaQuery.of(context).size.height / 1.8,
                 width: double.infinity,
                 child: Image.asset(
-                  "assets/images/a1.jpg",
+                  "assets/images/bg1.jpg",
                   fit: BoxFit.contain,
                 ),
               ),

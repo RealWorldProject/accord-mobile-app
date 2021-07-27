@@ -30,7 +30,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 10.0, top: 10.0),
+      margin: EdgeInsets.only(left: 10.0, top: 10.0),
       // padding: EdgeInsets.only(left: 6.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,15 +38,12 @@ class _CategoriesSectionState extends State<CategoriesSection> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 3.0),
-                child: Text(
-                  "Categories",
-                  style: TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: -1),
-                ),
+              Text(
+                "Categories",
+                style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w600,
+                    ),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 10),

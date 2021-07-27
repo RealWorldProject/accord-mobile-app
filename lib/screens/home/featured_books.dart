@@ -42,7 +42,8 @@ class _FeaturedBooksSectionState extends State<FeaturedBooksSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 10.0, top: 20.0),
+      margin: EdgeInsets.only(top: 20),
+      // padding: EdgeInsets.only(left: 10.0, top: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -50,13 +51,13 @@ class _FeaturedBooksSectionState extends State<FeaturedBooksSection> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 3.0),
+                padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
                   "Featured Books",
                   style: TextStyle(
                       fontSize: 21,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: -1),
+                      fontWeight: FontWeight.w600,
+                      ),
                 ),
               ),
             ],
@@ -68,7 +69,7 @@ class _FeaturedBooksSectionState extends State<FeaturedBooksSection> {
             slivers: <Widget>[
               SliverGrid.count(
                 crossAxisSpacing: 0,
-                mainAxisSpacing: 10,
+                mainAxisSpacing: 0,
                 crossAxisCount: 2,
                 childAspectRatio: MediaQuery.of(context).size.width /
                     (MediaQuery.of(context).size.height),

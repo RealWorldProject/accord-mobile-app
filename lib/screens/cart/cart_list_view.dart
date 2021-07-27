@@ -30,7 +30,7 @@ class _CartListViewState extends State<CartListView> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: Image.asset(
-                        "assets/images/b1.jpg",
+                        "assets/images/bg1.jpg",
                         height: imageHeight,
                         width: imageWidth,
                         fit: BoxFit.cover,

@@ -49,7 +49,7 @@ class ViewProfileTop extends StatelessWidget {
                     backgroundColor: Colors.white,
                     child: CircleAvatar(
                       radius: 56.0,
-                      backgroundImage: AssetImage("assets/images/user2.jpg"),
+                      backgroundImage: AssetImage("assets/images/user2.png"),
                       backgroundColor: Colors.transparent,
                     ),
                   ),
