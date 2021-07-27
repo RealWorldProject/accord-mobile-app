@@ -15,9 +15,7 @@ Future<void> main() async {
 
   firstRun =
       await FlutterSecureStorage().read(key: 'firstRun') == null ? true : false;
-
-  String token = await Storage().fetchToken();
-  runApp(MyApp(token: token));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
