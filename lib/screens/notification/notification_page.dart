@@ -1,5 +1,6 @@
 import 'package:accord/screens/notification/notification_tile.dart';
 import 'package:accord/screens/notification/request_notification.dart';
+import 'package:accord/screens/shimmer/notification_shimmer.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           children: [
             NotificationTile(),
             RequestNotification(),
+            NotificationShimmer(),
 
           ],
         ),
