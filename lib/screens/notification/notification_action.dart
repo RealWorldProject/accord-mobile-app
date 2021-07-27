@@ -39,10 +39,10 @@ class _NotificationActionState extends State<NotificationAction> {
                   Icons.library_add_check_rounded,size: 22, color: Colors.blue,
                 ),
                 title: widget.value==false? CustomText(
-                  textToShow: "Mark as unread",
+                  textToShow: "Mark as read",
                   textColor: Colors.blue,
                 ):CustomText(
-                  textToShow: "Mark as read",
+                  textToShow: "Mark as unread",
                   textColor: Colors.blue,
                 ),
 
