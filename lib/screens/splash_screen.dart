@@ -16,6 +16,7 @@ class Splash_Screen extends StatefulWidget {
 }
 
 class _Splash_ScreenState extends State<Splash_Screen> {
+  String token = Storage().fetchToken().toString();
   @override
   void initState() {
     Storage().fetchToken().then(
@@ -38,7 +39,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-      navigateRoute: LoginScreen(),
+      navigateRoute:   LoginScreen(),
       // duration: 600,
       imageSize: 150,
 
