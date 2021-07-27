@@ -89,7 +89,7 @@ class BookDisplayFormat extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                   alignment: Alignment.center,
-                  decoration: book.isNew == false
+                  decoration: book.isNewBook == false
                       ? BoxDecoration(
                           color: Colors.purple,
                           borderRadius: BorderRadius.all(
@@ -102,7 +102,7 @@ class BookDisplayFormat extends StatelessWidget {
                             Radius.circular(5),
                           ),
                         ),
-                  child: book.isNew == false
+                  child: book.isNewBook == false
                       ? Text(
                           "old",
                           style: TextStyle(color: Colors.white, fontSize: 10),

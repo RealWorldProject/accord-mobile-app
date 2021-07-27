@@ -36,12 +36,12 @@ class _Splash_ScreenState extends State<Splash_Screen> {
               ? BottomNavigation()
               : LoginScreen()
           : LoginScreen(),
-      imageSize: 150,
+      imageSize: 130,
       imageSrc: "assets/images/icon.png",
       text: "accord",
       textType: TextType.ColorizeAnimationText,
       textStyle: TextStyle(
-        fontSize: 60.0,
+        fontSize: 55.0,
         fontFamily: "MMCruella",
         fontWeight: FontWeight.w700,
       ),

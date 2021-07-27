@@ -1,5 +1,6 @@
 import 'package:accord/screens/shimmer/image_list_item.dart';
 import 'package:accord/screens/shimmer/text_item.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BookListItem extends StatelessWidget {
@@ -27,22 +28,25 @@ class BookListItem extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextItem(
-                width: MediaQuery.of(context).size.width / 2 - 40,
-              ),
-              TextItem(
-                width: MediaQuery.of(context).size.width / 2 - 70,
-              ),
-              TextItem(
-                width: MediaQuery.of(context).size.width / 2 - 90,
-              ),
-              TextItem(
-                width: MediaQuery.of(context).size.width / 2 - 60,
-              ),
-            ],
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextItem(
+                  width: MediaQuery.of(context).size.width / 2 - 40,
+                ),
+                TextItem(
+                  width: MediaQuery.of(context).size.width / 2 - 70,
+                ),
+                TextItem(
+                  width: MediaQuery.of(context).size.width / 2 - 90,
+                ),
+                TextItem(
+                  width: MediaQuery.of(context).size.width / 2 - 60,
+                ),
+              ],
+            ),
           )
         ],
       ),
