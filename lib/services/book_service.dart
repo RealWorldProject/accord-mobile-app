@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:accord/constant/constant.dart';
 import 'package:accord/services/storage.dart';
 import 'package:dio/dio.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class BookService {
   final dio = new Dio();
@@ -82,6 +83,69 @@ class BookService {
           "limit": 0,
           "searchTerm": searchTerm,
         },
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on DioError catch (e) {
+      return e.response.data;
+    }
+  }
+
+  Future<String> fetchUserPostedBooks() async {
+    final String userToken = await Storage().fetchToken();
+    final Map<String, dynamic> user = JwtDecoder.decode(userToken);
+    try {
+      final res = await dio.get(
+        '$baseURL/books',
+        queryParameters: {
+          "page": 1,
+          "limit": 0,
+          "userID": user['id'],
+        },
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on DioError catch (e) {
+      return e.response.data;
+    }
+  }
+
+  Future<String> fetchSelectedBookDetails(String bookID) async {
+    final String userToken = await Storage().fetchToken();
+    try {
+      final res = await dio.get(
+        '$baseURL/books',
+        queryParameters: {
+          "bookID": bookID,
+        },
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on DioError catch (e) {
+      return e.response.data;
+    }
+  }
+
+  Future<String> updateBook(String updatedBook, String bookID) async {
+    final String userToken = await Storage().fetchToken();
+    try {
+      final res = await dio.get(
+        '$baseURL/book/$bookID',
         options: Options(
           responseType: ResponseType.plain,
           headers: {

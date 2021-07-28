@@ -1,6 +1,6 @@
 import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/profile/password/change_password.dart';
-import 'package:accord/screens/profile/view_profile_page.dart';
+import 'package:accord/screens/profile/user/user_screen.dart';
 import 'package:accord/services/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // set up the buttons
   // Widget cancelButton =
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            ViewProfilePage()));
+                                        builder: (context) => UserScreen()));
                               },
                               child: ListTile(
                                 leading: Icon(

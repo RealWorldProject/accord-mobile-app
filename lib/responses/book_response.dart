@@ -1,20 +1,20 @@
 import 'package:accord/models/book.dart';
 
-class BookPostResponse {
+class BookResponse {
   final bool success;
   final String message;
   final String developerMessage;
   final Book result;
 
-  BookPostResponse({
+  BookResponse({
     this.success,
     this.message,
     this.developerMessage,
     this.result,
   });
 
-  factory BookPostResponse.fromJson(Map<String, dynamic> parsedJson) {
-    return BookPostResponse(
+  factory BookResponse.fromJson(Map<String, dynamic> parsedJson) {
+    return BookResponse(
       success: parsedJson['success'],
       message: parsedJson['message'],
       developerMessage: parsedJson['developerMessage'],

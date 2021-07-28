@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
-import 'package:accord/responses/book_post_response.dart';
+import 'package:accord/responses/book_response.dart';
 import 'package:accord/responses/fetch_category_response.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
@@ -19,12 +19,12 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
 
-class PostBook extends StatefulWidget {
+class PostBookScreen extends StatefulWidget {
   @override
-  _PostBookState createState() => _PostBookState();
+  _PostBookScreenState createState() => _PostBookScreenState();
 }
 
-class _PostBookState extends State<PostBook> {
+class _PostBookScreenState extends State<PostBookScreen> {
   final _formKey = GlobalKey<FormState>();
   XFile _image;
   bool _imageChosen;
@@ -100,7 +100,7 @@ class _PostBookState extends State<PostBook> {
     FocusScope.of(context).unfocus();
 
     BookViewModel bookViewModel = new BookViewModel();
-    BookPostResponse bookPostResponse;
+    BookResponse bookPostResponse;
     CloudMediaService cloudMediaService = new CloudMediaService();
 
     // checks if image is chosen or not in the time of form submission.

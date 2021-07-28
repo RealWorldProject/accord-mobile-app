@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:accord/models/book.dart';
-import 'package:accord/responses/book_post_response.dart';
+import 'package:accord/responses/book_response.dart';
 import 'package:accord/responses/fetch_books_response.dart';
 import 'package:accord/services/book_service.dart';
 
 class BookViewModel {
-  Future<BookPostResponse> postBook(String book) async {
+  Future<BookResponse> postBook(String book) async {
     final postBookResponseAPI = await BookService().postBook(book);
-    // sending json response to BookPostResponse to convert into object
-    return BookPostResponse.fromJson(jsonDecode(postBookResponseAPI));
+    // sending json response to BookResponse to convert into object
+    return BookResponse.fromJson(jsonDecode(postBookResponseAPI));
   }
 
   Future<FetchBooksResponse> fetchBooksInCategory(String categoryID) async {
@@ -28,6 +28,24 @@ class BookViewModel {
     final apiResponse = await BookService().fetchSearchedBooks(searchTerm);
     // sending json response to FetchBooksResponse to convert into object
     return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+  }
+
+  Future<FetchBooksResponse> fetchUserPostedBooks() async {
+    final apiResponse = await BookService().fetchUserPostedBooks();
+    // sending json response to FetchBooksResponse to convert into object
+    return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+  }
+
+  Future<BookResponse> fetchSelectedBookDetails(String bookID) async {
+    final apiResponse = await BookService().fetchSelectedBookDetails(bookID);
+    // sending json response to BookResponse to convert into object
+    return BookResponse.fromJson(jsonDecode(apiResponse));
+  }
+
+  Future<BookResponse> updateBook(String updatedBook, String bookID) async {
+    final apiResponse = await BookService().updateBook(updatedBook, bookID);
+    // sending json response to BookResponse to convert into object
+    return BookResponse.fromJson(jsonDecode(apiResponse));
   }
 }
 
