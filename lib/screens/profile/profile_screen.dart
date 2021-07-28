@@ -18,6 +18,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
+  // set up the buttons
+  // Widget cancelButton =
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -210,7 +214,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                logout();
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Confirmation"),
+                                      content: Text(
+                                          "Are you sure you want to logout?"),
+                                      actions: [
+                                        TextButton(
+                                          child: Text("No"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text("Yes"),
+                                          onPressed: () {
+                                            logout();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                // logout();
                               },
                               child: ListTile(
                                 leading: Icon(
@@ -221,9 +249,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 title: Text(
                                   "Logout",
                                   style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff1b98e0)),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff1b98e0),
+                                  ),
                                 ),
                               ),
                             ),
