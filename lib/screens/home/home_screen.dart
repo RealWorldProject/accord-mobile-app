@@ -1,7 +1,7 @@
 import 'package:accord/screens/home/categories_section.dart';
 import 'package:accord/screens/home/featured_books.dart';
 import 'package:accord/screens/home/search_field.dart';
-import 'package:accord/screens/profile/post_book.dart';
+import 'package:accord/screens/profile/user/book/post_book_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: FloatingActionButton(
             isExtended: true,
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => PostBook()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PostBookScreen()));
             },
             child: const Icon(
               Icons.add,

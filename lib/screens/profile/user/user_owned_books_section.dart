@@ -1,24 +1,80 @@
+import 'package:accord/models/book.dart';
+import 'package:accord/responses/fetch_books_response.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
-import 'package:accord/screens/profile/book_action.dart';
+import 'package:accord/screens/profile/user/book/edit_book_screen.dart';
+import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
+import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ViewPageBody extends StatefulWidget {
-  const ViewPageBody({Key key}) : super(key: key);
+class UserOwnedBooksSection extends StatefulWidget {
+  const UserOwnedBooksSection({Key key}) : super(key: key);
 
   @override
-  _ViewPageBodyState createState() => _ViewPageBodyState();
+  _UserOwnedBooksSectionState createState() => _UserOwnedBooksSectionState();
 }
 
-class _ViewPageBodyState extends State<ViewPageBody> {
-  Future<void> _editBookDetail() async {
+class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
+  List<Book> _books;
 
+  @override
+  void initState() {
+    super.initState();
+    getUserOwnedBooks().then((books) => setState(() {
+          _books = books;
+        }));
   }
-  Future<void> _deleteBook() async {
 
+  Future<List<Book>> getUserOwnedBooks() async {
+    BookViewModel bookViewModel = new BookViewModel();
+    FetchBooksResponse fetchBooksResponse =
+        await bookViewModel.fetchUserPostedBooks();
+    if (fetchBooksResponse.success) {
+      return fetchBooksResponse.result;
+    } else {
+      return [];
+    }
   }
+
   @override
   Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.75,
+      child: FutureBuilder(
+          future: BookViewModel().fetchUserPostedBooks(),
+          builder: (context, userOwnedBookSnap) {
+            if (userOwnedBookSnap.hasData) {
+              List<Book> books = userOwnedBookSnap.data.result;
+              if (books.isEmpty) {
+                return Container(
+                  child: Text(
+                    "You have not posted any book yet.",
+                    style: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 18,
+                      letterSpacing: -1,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                );
+                ;
+              } else {
+                return ListView.builder(
+                    itemCount: books.length,
+                    itemBuilder: (context, index) {
+                      Book book = books[index];
+                      return Container(
+                        child: bookFeedStyleDisplay(book),
+                      );
+                    });
+              }
+            }
+            return Container();
+          }),
+    );
+  }
+
+  bookFeedStyleDisplay(Book book) {
     return Container(
       margin: EdgeInsets.only(top: 15),
       color: Colors.white,
@@ -41,12 +97,25 @@ class _ViewPageBodyState extends State<ViewPageBody> {
             ),
             trailing: GestureDetector(
               onTap: () {
-                showModalBottomSheet(context: context, builder: (context) =>BookAction(
-                  editOption:_editBookDetail,
-                  deleteOption:_deleteBook,
-                ));
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) => CustomBottomSheet(
+                          // option 1
+                          option1: "Edit Book",
+                          action1: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditBookScreen(
+                                      book: book,
+                                    )),
+                          ),
+                          iconOpt1: Icons.edit_rounded,
+                          // option 2
+                          option2: "Delete Book",
+                          action2: () => {},
+                          iconOpt2: Icons.delete_forever_rounded,
+                        ));
               },
-
               child: Icon(Icons.more_vert_rounded),
             ),
           ),
@@ -56,8 +125,8 @@ class _ViewPageBodyState extends State<ViewPageBody> {
               Container(
                 height: MediaQuery.of(context).size.height / 1.8,
                 width: double.infinity,
-                child: Image.asset(
-                  "assets/images/bg1.jpg",
+                child: Image.network(
+                  book.images[0],
                   fit: BoxFit.contain,
                 ),
               ),
@@ -107,7 +176,7 @@ class _ViewPageBodyState extends State<ViewPageBody> {
                       child: RotationTransition(
                         turns: new AlwaysStoppedAnimation(320 / 360),
                         child: Text(
-                          "NEW",
+                          book.isNewBook ? "NEW" : "OLD",
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -126,7 +195,7 @@ class _ViewPageBodyState extends State<ViewPageBody> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "The Gravity of US",
+                  book.name,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 16,
@@ -134,7 +203,7 @@ class _ViewPageBodyState extends State<ViewPageBody> {
                       color: Colors.grey[900]),
                 ),
                 Text(
-                  "Phil Stamper",
+                  book.author,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 14,
@@ -144,7 +213,9 @@ class _ViewPageBodyState extends State<ViewPageBody> {
                 ),
                 RatingStars(5),
                 Text(
-                  "Available for Exchange",
+                  book.isAvailableForExchange
+                      ? "Available for exchange"
+                      : "Not available for exchange.",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 12,
@@ -159,7 +230,7 @@ class _ViewPageBodyState extends State<ViewPageBody> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Rs. 500",
+                        book.price.toString(),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w800,

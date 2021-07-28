@@ -1,16 +1,29 @@
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 
-class BookAction extends StatelessWidget {
-  // show bottom sheet modal
+class CustomBottomSheet extends StatelessWidget {
+  const CustomBottomSheet({
+    Key key,
+    this.option1,
+    this.option2,
+    this.option3,
+    this.action1,
+    this.action2,
+    this.action3,
+    this.iconOpt1,
+    this.iconOpt2,
+    this.iconOpt3,
+  }) : super(key: key);
 
-
-  final VoidCallback editOption;
-  final VoidCallback deleteOption;
-
-  const BookAction({Key key, this.editOption, this.deleteOption})
-      : super(key: key);
+  final String option1;
+  final String option2;
+  final String option3;
+  final VoidCallback action1;
+  final VoidCallback action2;
+  final VoidCallback action3; //corresponding in-case option action
+  final IconData iconOpt1;
+  final IconData iconOpt2;
+  final IconData iconOpt3; //corresponding in-case icon
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +45,17 @@ class BookAction extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.edit_rounded,size: 22, color: Colors.blue,
+                  iconOpt1,
+                  size: 22,
+                  color: Colors.blue,
                 ),
                 title: CustomText(
-                  textToShow: "Edit Book",
+                  textToShow: option1,
                   textColor: Colors.blue,
                 ),
                 onTap: () {
                   Navigator.of(context).pop();
+                  action1();
                 },
               ),
               Divider(
@@ -50,17 +66,19 @@ class BookAction extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.delete_forever_rounded,size: 24, color: Colors.red,
+                  iconOpt2,
+                  size: 24,
+                  color: Colors.red,
                 ),
                 title: CustomText(
-                  textToShow: "Delete",
+                  textToShow: option2,
                   textColor: Colors.red,
                 ),
                 onTap: () {
                   Navigator.of(context).pop();
+                  action2();
                 },
               ),
-
             ],
           ),
         ),
