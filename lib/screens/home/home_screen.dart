@@ -16,10 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      // appBar: AppBar(
-      //   title: Text("Home"),
-      //   automaticallyImplyLeading: false,
-      // ),
       body: Container(
         padding: EdgeInsets.zero,
         child: GestureDetector(
@@ -34,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
               bottom: false,
               child: Column(
                 children: [
-                  // SearchField(),
+                  SearchField(),
                   CategoriesSection(),
                   FeaturedBooksSection(),
                 ],
@@ -43,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-
       floatingActionButton: Align(
           child: FloatingActionButton(
             isExtended: true,

@@ -14,12 +14,18 @@ class BookViewModel {
 
   Future<FetchBooksResponse> fetchBooksInCategory(String categoryID) async {
     final apiResponse = await BookService().fetchBooksInCategory(categoryID);
-    // sending json response to FetchBooksInCategoryResponse to convert into object
+    // sending json response to FetchBooksResponse to convert into object
     return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
   }
 
   Future<FetchBooksResponse> fetchAllBooks() async {
     final apiResponse = await BookService().fetchAllBooks();
+    // sending json response to FetchBooksResponse to convert into object
+    return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+  }
+
+  Future<FetchBooksResponse> fetchSearchedBooks(String searchTerm) async {
+    final apiResponse = await BookService().fetchSearchedBooks(searchTerm);
     // sending json response to FetchBooksResponse to convert into object
     return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
   }
