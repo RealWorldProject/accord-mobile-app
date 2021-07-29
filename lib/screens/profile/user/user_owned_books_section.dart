@@ -38,39 +38,56 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.75,
-      child: FutureBuilder(
-          future: BookViewModel().fetchUserPostedBooks(),
-          builder: (context, userOwnedBookSnap) {
-            if (userOwnedBookSnap.hasData) {
-              List<Book> books = userOwnedBookSnap.data.result;
-              if (books.isEmpty) {
-                return Container(
-                  child: Text(
-                    "You have not posted any book yet.",
-                    style: TextStyle(
-                      color: Colors.black38,
-                      fontSize: 18,
-                      letterSpacing: -1,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                );
-                ;
-              } else {
-                return ListView.builder(
-                    itemCount: books.length,
-                    itemBuilder: (context, index) {
-                      Book book = books[index];
-                      return Container(
-                        child: bookFeedStyleDisplay(book),
-                      );
-                    });
-              }
-            }
-            return Container();
-          }),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 10),
+          child: FutureBuilder(
+              future: BookViewModel().fetchUserPostedBooks(),
+              builder: (context, userOwnedBookSnap) {
+                if (userOwnedBookSnap.hasData) {
+                  List<Book> books = userOwnedBookSnap.data.result;
+                  if (books.isEmpty) {
+                    return Container(
+                      child: Text(
+                        "You have not posted any book yet.",
+                        style: TextStyle(
+                          color: Colors.black38,
+                          fontSize: 18,
+                          letterSpacing: -1,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return CustomScrollView(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      primary: false,
+
+                      slivers: [
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, index) {
+                              Book book = books[index];
+                              return Container(
+                                child: bookFeedStyleDisplay(book),
+                              );
+                            },
+                            childCount: books.length,
+
+                          ),
+
+                        )
+                      ],
+                    );
+                  }
+                }
+                return Container();
+              }),
+        ),
+      ],
     );
   }
 
