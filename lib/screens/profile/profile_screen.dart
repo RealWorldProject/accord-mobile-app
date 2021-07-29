@@ -216,21 +216,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text("Confirmation"),
                                       content: Text(
                                           "Are you sure you want to logout?"),
                                       actions: [
-                                        TextButton(
-                                          child: Text("No"),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
+                                        SizedBox(
+                                          height:30,
+                                          width:80,
+                                          child: TextButton(
+                                            style: ButtonStyle(
+                                              padding: MaterialStateProperty.all<EdgeInsets>(
+                                                  EdgeInsets.all(0)),
+                                            ),
+                                            child: Text("Stay In"),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
                                         ),
-                                        TextButton(
-                                          child: Text("Yes"),
-                                          onPressed: () {
-                                            logout();
-                                          },
+                                        SizedBox(
+                                          height:30,
+                                          width:80,
+                                          child: TextButton(
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                Colors.red,
+                                              ),
+
+                                              padding: MaterialStateProperty.all<EdgeInsets>(
+                                                  EdgeInsets.all(0)),
+                                            ),
+                                            child: Text("Logout",style: TextStyle(color: Colors.white),),
+                                            onPressed: () {
+                                              logout();
+                                            },
+                                          ),
                                         ),
                                       ],
                                     );
