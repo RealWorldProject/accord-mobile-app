@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:accord/models/book.dart';
-import 'package:accord/responses/fetch_books_response.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/screens/profile/user/book/edit_book_screen.dart';
+import 'package:accord/screens/shimmer/view_profile_shimmer.dart';
 import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
+import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +47,6 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       primary: false,
-
                       slivers: [
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
@@ -55,15 +57,13 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                               );
                             },
                             childCount: books.length,
-
                           ),
-
                         )
                       ],
                     );
                   }
                 }
-                return Container();
+                return ViewProfileShimmer();
               }),
         ),
       ],
@@ -265,5 +265,16 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
         ],
       ),
     );
+  }
+
+  // refresher: holds function that the screen depends on.
+  Future<void> refreshData() async {
+    await BookViewModel().fetchUserPostedBooks();
+  }
+
+  // triggers both refresher and setState
+  FutureOr onReturn(dynamic value) {
+    refreshData();
+    setState(() {});
   }
 }

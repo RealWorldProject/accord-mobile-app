@@ -1,6 +1,7 @@
 import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/profile/password/change_password.dart';
 import 'package:accord/screens/profile/user/user_screen.dart';
+import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/services/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -212,51 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      content: Text(
-                                          "Are you sure you want to logout?"),
-                                      actions: [
-                                        SizedBox(
-                                          height:30,
-                                          width:80,
-                                          child: TextButton(
-                                            style: ButtonStyle(
-                                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                                  EdgeInsets.all(0)),
-                                            ),
-                                            child: Text("Stay In"),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height:30,
-                                          width:80,
-                                          child: TextButton(
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                Colors.red,
-                                              ),
-
-                                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                                  EdgeInsets.all(0)),
-                                            ),
-                                            child: Text("Logout",style: TextStyle(color: Colors.white),),
-                                            onPressed: () {
-                                              logout();
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                                // logout();
+                                showLogoutDialog();
                               },
                               child: ListTile(
                                 leading: Icon(
@@ -296,7 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 right: 15,
                 child: IconButton(
                   onPressed: () {
-                    logout();
+                    showLogoutDialog();
                   },
                   icon: Icon(
                     Icons.logout,
@@ -311,7 +268,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  Future<dynamic> showLogoutDialog() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDialogBox(
+          title: "Action: Log out!",
+          confirmMessage: "Are you sure you want to logout?",
+          dontText: "Stay In",
+          dontAction: () => Navigator.pop(context),
+          doText: "Log Out",
+          doAction: logout,
+        );
+      },
+    );
+  }
 }
+
 // return SingleChildScrollView(
 // child: Column(
 // mainAxisSize: MainAxisSize.min,
