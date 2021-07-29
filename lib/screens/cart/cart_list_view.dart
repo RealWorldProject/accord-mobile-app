@@ -46,7 +46,6 @@ class _CartListViewState extends State<CartListView> {
                         ),
                       ),
                     ),
-
                   ],
                 ),
                 Expanded(
@@ -87,18 +86,24 @@ class _CartListViewState extends State<CartListView> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: Colors.blueAccent,
-                                  width: 1.5,
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: Colors.blueAccent,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.remove_rounded,
+                                    color: Colors.blueAccent,
+                                    size: 18,
+                                  ),
                                 ),
-                              ),
-                              child: Icon(
-                                Icons.remove_rounded,
-                                color: Colors.blueAccent,
-                                size: 18,
                               ),
                             ),
                             SizedBox(
@@ -107,24 +112,31 @@ class _CartListViewState extends State<CartListView> {
                             Text(
                               "12",
                               style: TextStyle(
-                                  fontSize: 16, color: Colors.blueAccent,fontWeight: FontWeight.w500),
+                                  fontSize: 16,
+                                  color: Colors.blueAccent,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
                               width: 8,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: Colors.blueAccent,
-                                  width: 1.5,
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: Colors.blueAccent,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.add_rounded,
+                                    color: Colors.blueAccent,
+                                    size: 18,
+                                  ),
                                 ),
-                              ),
-                              child: Icon(
-                                Icons.add_rounded,
-                                color: Colors.blueAccent,
-
-                                size: 18,
                               ),
                             ),
                           ],
@@ -138,15 +150,45 @@ class _CartListViewState extends State<CartListView> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.grey,
-                          size: 24,
+                      ClipOval(
+                        child: Material(
+                          color: Colors.transparent, // Button color
+                          child: InkWell(
+                            splashColor: Colors.black26, // Splash color
+                            onTap: () {},
+                            child: SizedBox(
+                              width: 35,
+                              height: 35,
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
                         ),
                       ),
+                      // Material(
+                      //   type: MaterialType.transparency,
+                      //   shape: CircleBorder(),
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //         shape: BoxShape.circle,
+                      //       color: Colors.grey[400]
+                      //
+                      //     ),
+                      //     child: IconButton(
+                      //       splashColor: Colors.blue,
+                      //       splashRadius: 100,
+                      //       padding: EdgeInsets.all(2),
+                      //       onPressed: () {},
+                      //       icon: Icon(
+                      //         Icons.delete,
+                      //         color: Colors.grey,
+                      //         size: 24,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Text(
                         "Rs. 500",
                         style: TextStyle(
@@ -158,7 +200,6 @@ class _CartListViewState extends State<CartListView> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),

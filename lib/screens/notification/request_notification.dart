@@ -31,7 +31,7 @@ class _RequestNotificationState extends State<RequestNotification> {
               children: [
                 CircleAvatar(
                   backgroundImage: AssetImage(
-                    "assets/images/user2.jpg",
+                    "assets/images/user2.png",
                   ),
                   radius: 30,
                 )
@@ -156,22 +156,22 @@ class _RequestNotificationState extends State<RequestNotification> {
               ),
             ),
           ),
-          IconButton(
-            padding: EdgeInsets.zero,
-            alignment: Alignment.centerRight,
-            icon: Icon(
-              Icons.more_vert,
-              color: Colors.grey[600],
+          ClipOval(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: (){ showModalBottomSheet(
+                    context: context,
+                    builder: (context) => NotificationAction(
+                      markasreadOption: _toggleBookIsSeen,
+                      value: isSeen,
+                    ));},
+                child: SizedBox(width: 35,height: 35,child: Icon(Icons.more_vert,color: Colors.grey,),),
+
+              ),
             ),
-            onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) => NotificationAction(
-                        markasreadOption: _toggleBookIsSeen,
-                        value: isSeen,
-                      ));
-            },
           ),
+
         ],
       ),
     );
