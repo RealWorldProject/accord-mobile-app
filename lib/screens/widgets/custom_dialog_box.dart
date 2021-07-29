@@ -22,33 +22,65 @@ class CustomDialogBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-          color: Colors.red.shade400,
-          letterSpacing: -1,
-        ),
-      ),
+      // title: Text(
+      //   title,
+      //   style: TextStyle(
+      //     fontSize: 20,
+      //     fontWeight: FontWeight.w500,
+      //     color: Colors.red.shade400,
+      //     letterSpacing: -1,
+      //   ),
+      // ),
       content: Text(
         confirmMessage,
       ),
       actions: [
-        TextButton(
-          child: Text(dontText),
-          onPressed: () {
-            dontAction();
-          },
+        SizedBox(
+          height:30,
+          width:80,
+          child: TextButton(
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                  EdgeInsets.all(0)),
+            ),
+            child: Text(dontText),
+            onPressed: () {
+              dontAction();
+            },
+          ),
         ),
-        TextButton(
-          child: Text(doText),
-          style: TextButton.styleFrom(
-              primary: Colors.white, backgroundColor: Colors.red),
-          onPressed: () {
-            doAction();
-          },
+        // TextButton(
+        //   child: Text(dontText),
+        //   onPressed: () {
+        //     dontAction();
+        //   },
+        // ),
+        SizedBox(
+          height:30,
+          width:80,
+          child: TextButton(
+            style: ButtonStyle(
+              backgroundColor:
+              MaterialStateProperty.all(
+                Colors.red,
+              ),
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                  EdgeInsets.all(0)),
+            ),
+            child: Text(doText,style: TextStyle(color: Colors.white),),
+            onPressed: () {
+              doAction();
+            },
+          ),
         ),
+        // TextButton(
+        //   child: Text(doText),
+        //   style: TextButton.styleFrom(
+        //       primary: Colors.white, backgroundColor: Colors.red),
+        //   onPressed: () {
+        //     doAction();
+        //   },
+        // ),
       ],
     );
   }

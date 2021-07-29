@@ -167,7 +167,7 @@ class _UserDetailSectionState extends State<UserDetailSection> {
                         ),
                         Positioned(
                           bottom: 0,
-                          right: 0,
+                          right: 5,
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
@@ -179,7 +179,7 @@ class _UserDetailSectionState extends State<UserDetailSection> {
                               ],
                             ),
                             child: CircleAvatar(
-                              radius: 18,
+                              radius: 20,
                               backgroundColor: Colors.white,
                               child: IconButton(
                                 padding: EdgeInsets.zero,
@@ -187,7 +187,7 @@ class _UserDetailSectionState extends State<UserDetailSection> {
                                   Icons.camera_alt_sharp,
                                   color: Colors.grey[900],
                                 ),
-                                iconSize: 20,
+                                iconSize: 22,
                                 onPressed: () {
                                   showModalBottomSheet(
                                     context: context,

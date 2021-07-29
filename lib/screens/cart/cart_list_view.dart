@@ -87,20 +87,27 @@ class _CartListViewState extends State<CartListView> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: Colors.blueAccent,
-                                  width: 1.5,
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: Colors.blueAccent,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.remove_rounded,
+                                    color: Colors.blueAccent,
+                                    size: 18,
+                                  ),
                                 ),
                               ),
-                              child: Icon(
-                                Icons.remove_rounded,
-                                color: Colors.blueAccent,
-                                size: 18,
-                              ),
                             ),
+                            
                             SizedBox(
                               width: 8,
                             ),
@@ -112,19 +119,24 @@ class _CartListViewState extends State<CartListView> {
                             SizedBox(
                               width: 8,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: Colors.blueAccent,
-                                  width: 1.5,
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: Colors.blueAccent,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.add_rounded,
+                                    color: Colors.blueAccent,
+                                    size: 18,
+                                  ),
                                 ),
-                              ),
-                              child: Icon(
-                                Icons.add_rounded,
-                                color: Colors.blueAccent,
-
-                                size: 18,
                               ),
                             ),
                           ],
@@ -138,13 +150,23 @@ class _CartListViewState extends State<CartListView> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.grey,
-                          size: 24,
+                      ClipOval(
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: (){},
+                            child: SizedBox(
+                              width: 35,height: 35,
+                              child:Icon(
+                                Icons.delete,
+                                color: Colors.grey,
+                                size: 24,
+                              ),
+                            )
+
+
+                           
+                          ),
                         ),
                       ),
                       Text(

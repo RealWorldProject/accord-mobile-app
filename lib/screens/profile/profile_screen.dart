@@ -274,7 +274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return CustomDialogBox(
-          title: "Action: Log out!",
+          // title: "Action: Log out!",
           confirmMessage: "Are you sure you want to logout?",
           dontText: "Stay In",
           dontAction: () => Navigator.pop(context),

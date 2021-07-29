@@ -91,48 +91,60 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                 color: Color(0xff13293d),
               ),
             ),
-            trailing: GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) => CustomBottomSheet(
-                          // option 1
-                          option1: "Edit Book",
-                          action1: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditBookScreen(
-                                      book: book,
-                                    )),
-                          ).then(onReturn),
-                          iconOpt1: Icons.edit_rounded,
-                          // option 2
-                          option2: "Delete Book",
-                          action2: () => {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CustomDialogBox(
-                                  title: "Action: Book Deletion!!!",
-                                  confirmMessage:
-                                      "Are you sure you want to delete, '${book.name}'?",
-                                  dontText: "Keep!",
-                                  dontAction: () => Navigator.pop(context),
-                                  doText: "Delete!",
-                                  doAction: () async {
-                                    await BookViewModel()
-                                        .deleteBook(book.id)
-                                        .whenComplete(
-                                            () => Navigator.pop(context));
+            trailing: ClipOval(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) => CustomBottomSheet(
+                              // option 1
+                              option1: "Edit Book",
+                              action1: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditBookScreen(
+                                          book: book,
+                                        )),
+                              ).then(onReturn),
+                              iconOpt1: Icons.edit_rounded,
+                              // option 2
+                              option2: "Delete Book",
+                              action2: () => {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CustomDialogBox(
+                                      title: "Action: Book Deletion!!!",
+                                      confirmMessage:
+                                          "Are you sure you want to delete, '${book.name}'?",
+                                      dontText: "Keep!",
+                                      dontAction: () => Navigator.pop(context),
+                                      doText: "Delete!",
+                                      doAction: () async {
+                                        await BookViewModel()
+                                            .deleteBook(book.id)
+                                            .whenComplete(
+                                                () => Navigator.pop(context));
+                                      },
+                                    );
                                   },
-                                );
+                                ).then(onReturn)
                               },
-                            ).then(onReturn)
-                          },
-                          iconOpt2: Icons.delete_forever_rounded,
-                        ));
-              },
-              child: Icon(Icons.more_vert_rounded),
+                              iconOpt2: Icons.delete_forever_rounded,
+                            ));
+                  },
+                  child: SizedBox(
+                    width: 35,
+                    height: 35,
+                    child: Icon(
+                      Icons.more_vert,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
           Stack(
