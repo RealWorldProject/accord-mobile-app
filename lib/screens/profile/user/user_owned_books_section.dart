@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:accord/models/book.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/screens/profile/user/book/edit_book_screen.dart';
+import 'package:accord/screens/shimmer/view_profile_shimmer.dart';
 import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
 import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/viewModel/book_view_model.dart';
@@ -62,7 +63,7 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                     );
                   }
                 }
-                return Container();
+                return ViewProfileShimmer();
               }),
         ),
       ],
