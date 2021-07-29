@@ -8,9 +8,10 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 class BookService {
   final dio = new Dio();
   final baseURL = Constant.baseURL;
+  String userToken;
 
   Future<String> postBook(String book) async {
-    final String userToken = await Storage().fetchToken();
+    userToken = await Storage().fetchToken();
     try {
       final res = await dio.post(
         '$baseURL/book',
@@ -29,7 +30,7 @@ class BookService {
   }
 
   Future<String> fetchBooksInCategory(String categoryID) async {
-    final String userToken = await Storage().fetchToken();
+    userToken = await Storage().fetchToken();
     try {
       final res = await dio.get(
         '$baseURL/books',
@@ -52,7 +53,7 @@ class BookService {
   }
 
   Future<String> fetchAllBooks() async {
-    final String userToken = await Storage().fetchToken();
+    userToken = await Storage().fetchToken();
     try {
       final res = await dio.get(
         '$baseURL/books',
@@ -74,7 +75,7 @@ class BookService {
   }
 
   Future<String> fetchSearchedBooks(String searchTerm) async {
-    final String userToken = await Storage().fetchToken();
+    userToken = await Storage().fetchToken();
     try {
       final res = await dio.get(
         '$baseURL/books',
@@ -97,7 +98,7 @@ class BookService {
   }
 
   Future<String> fetchUserPostedBooks() async {
-    final String userToken = await Storage().fetchToken();
+    userToken = await Storage().fetchToken();
     final Map<String, dynamic> user = JwtDecoder.decode(userToken);
     try {
       final res = await dio.get(
@@ -120,14 +121,12 @@ class BookService {
     }
   }
 
-  Future<String> fetchSelectedBookDetails(String bookID) async {
-    final String userToken = await Storage().fetchToken();
+  Future<String> updateBook(String updatedBook, String bookID) async {
+    userToken = await Storage().fetchToken();
     try {
-      final res = await dio.get(
-        '$baseURL/books',
-        queryParameters: {
-          "bookID": bookID,
-        },
+      final res = await dio.put(
+        '$baseURL/book/$bookID',
+        data: updatedBook,
         options: Options(
           responseType: ResponseType.plain,
           headers: {
@@ -141,12 +140,11 @@ class BookService {
     }
   }
 
-  Future<String> updateBook(String updatedBook, String bookID) async {
-    final String userToken = await Storage().fetchToken();
+  Future<String> deleteBook(String bookID) async {
+    userToken = await Storage().fetchToken();
     try {
-      final res = await dio.put(
+      final res = await dio.delete(
         '$baseURL/book/$bookID',
-        data: updatedBook,
         options: Options(
           responseType: ResponseType.plain,
           headers: {

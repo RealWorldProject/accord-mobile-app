@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
 import 'package:accord/responses/fetch_category_response.dart';
-import 'package:accord/screens/profile/user/user_screen.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_radio_button.dart';
@@ -147,7 +146,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
     return fetchCategoryResponse.result;
   }
 
-  Future<void> _validatePostBook() async {
+  Future<void> _validateEditBook() async {
     // removes focus from textfeilds
     FocusScope.of(context).unfocus();
 
@@ -189,7 +188,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
         String updatedBookJSON = jsonEncode(book);
 
         // connecting and waiting for response from api through bookViewModel.
-        // response will be object of BookPostResponse.
+        // response will be object of BookResponse.
         bool updateResult = await bookViewModel
             .updateBook(updatedBookJSON, widget.book.id)
             .then(
@@ -214,13 +213,13 @@ class _EditBookScreenState extends State<EditBookScreen> {
           },
         ).whenComplete(
           () =>
-              // closes loading screen when the api request to post book is over.
+              // closes loading screen when the api request to book update is over.
               Navigator.of(context).pop(),
         );
 
+        // navigates to previous page if update is successful.
         if (updateResult) {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => UserScreen()));
+          Navigator.pop(context);
         }
       }
     }
@@ -545,7 +544,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
                       CustomButton(
                         buttonKey: "btnPostBook",
                         buttonText: "Update Book",
-                        triggerAction: _validatePostBook,
+                        triggerAction: _validateEditBook,
                       ),
                     ],
                   ),
