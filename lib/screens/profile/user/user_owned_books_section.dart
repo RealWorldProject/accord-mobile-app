@@ -91,29 +91,35 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                 color: Color(0xff13293d),
               ),
             ),
-            trailing: GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) => CustomBottomSheet(
-                          // option 1
-                          option1: "Edit Book",
-                          action1: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditBookScreen(
-                                      book: book,
-                                    )),
-                          ),
-                          iconOpt1: Icons.edit_rounded,
-                          // option 2
-                          option2: "Delete Book",
-                          action2: () => {},
-                          iconOpt2: Icons.delete_forever_rounded,
-                        ));
-              },
-              child: Icon(Icons.more_vert_rounded),
+            trailing: ClipOval(
+
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) => CustomBottomSheet(
+                            // option 1
+                            option1: "Edit Book",
+                            action1: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditBookScreen(
+                                        book: book,
+                                      )),
+                            ),
+                            iconOpt1: Icons.edit_rounded,
+                            // option 2
+                            option2: "Delete Book",
+                            action2: () => {},
+                            iconOpt2: Icons.delete_forever_rounded,
+                          ));
+                },
+                child: SizedBox(height: 35,width: 35,child: Icon(Icons.more_vert_rounded)),
+              ),
             ),
+            )
           ),
           Stack(
             clipBehavior: Clip.none,

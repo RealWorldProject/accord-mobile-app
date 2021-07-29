@@ -25,7 +25,7 @@ class _NotificationTileState extends State<NotificationTile> {
               children: [
                 CircleAvatar(
                   backgroundImage: AssetImage(
-                    "assets/images/user2.jpg",
+                    "assets/images/user2.png",
                   ),
                   radius: 30 ,
                 )
@@ -93,10 +93,15 @@ class _NotificationTileState extends State<NotificationTile> {
               ),
             ),
           ),
-          IconButton(
-            padding: EdgeInsets.zero,
-            alignment: Alignment.centerRight,
-            icon: Icon(Icons.more_vert),
+          ClipOval(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: (){},
+                child: SizedBox(width: 35,height: 35,child: Icon(Icons.more_vert,color: Colors.grey),),
+
+              ),
+            ),
           ),
         ],
       ),
