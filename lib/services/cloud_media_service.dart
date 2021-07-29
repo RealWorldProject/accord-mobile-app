@@ -35,4 +35,14 @@ class CloudMediaService {
   //     return e.response;
   //   }
   // }
+
+  Future<void> deleteImage(String cloudImageUrl) async {
+    final res = await cloudinary.deleteFile(
+      url: cloudImageUrl,
+      resourceType: CloudinaryResourceType.image,
+      invalidate: false,
+    );
+    print(res);
+    if (res.isSuccessful ?? false) {}
+  }
 }

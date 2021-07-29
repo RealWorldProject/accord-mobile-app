@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
-import 'package:accord/responses/book_response.dart';
 import 'package:accord/responses/fetch_category_response.dart';
+import 'package:accord/screens/profile/user/user_screen.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_radio_button.dart';
@@ -18,7 +15,6 @@ import 'package:accord/screens/widgets/loading_indicator.dart';
 import 'package:accord/services/cloud_media_service.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/category_view_model.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -39,6 +35,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
   XFile _image;
   bool _imageChosen;
   String _chosenValue;
+  String _initialImageHolder;
   List<Category> _category = [];
   String _conditionValue;
   String _exchangableValue;
@@ -46,6 +43,37 @@ class _EditBookScreenState extends State<EditBookScreen> {
   final _authorNameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    bookDetailsAssigner(widget.book);
+    _getCategories().then((categories) => setState(
+          () {
+            _category = categories;
+          },
+        ));
+  }
+
+  // value initializations for the selected book.
+  void bookDetailsAssigner(Book book) {
+    setState(() {
+      urlToFile(imageName: book.images[0].split("/").last, ext: ".jpg")
+          .then((value) => setState(
+                () {
+                  _initialImageHolder = value.path;
+                  _image = XFile(_initialImageHolder);
+                },
+              ));
+      _bookNameController.text = book.name;
+      _authorNameController.text = book.author;
+      _priceController.text = book.price.toString();
+      _descriptionController.text = book.description;
+      _chosenValue = book.category;
+      _conditionValue = book.isNewBook ? "New" : "Old";
+      _exchangableValue = book.isAvailableForExchange ? "Yes" : "No";
+    });
+  }
 
   // converting network image into file.
   Future<File> urlToFile({String imageName, String ext}) async {
@@ -67,29 +95,6 @@ class _EditBookScreenState extends State<EditBookScreen> {
     if (cacheDir.existsSync()) {
       cacheDir.deleteSync(recursive: true);
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // value initializations for the selected book.
-    urlToFile(imageName: widget.book.id, ext: ".jpg").then((value) => setState(
-          () {
-            _image = XFile(value.path);
-          },
-        ));
-    _bookNameController.text = widget.book.name;
-    _authorNameController.text = widget.book.author;
-    _priceController.text = widget.book.price.toString();
-    _descriptionController.text = widget.book.description;
-    _chosenValue = widget.book.category;
-    _conditionValue = widget.book.isNewBook ? "New" : "Old";
-    _exchangableValue = widget.book.isAvailableForExchange ? "Yes" : "No";
-    _getCategories().then((categories) => setState(
-          () {
-            _category = categories;
-          },
-        ));
   }
 
   // field validations
@@ -116,26 +121,21 @@ class _EditBookScreenState extends State<EditBookScreen> {
 
   // image upload options.
 
-  Future<void> _getImagefromcamera() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
-    setState(() {
-      _image = image;
-      _imageChosen = true;
-    });
-  }
-
   Future<void> _getImagefromGallery() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
-      _image = image;
-      _imageChosen = true;
+      _image = image != null ? image : _image;
+      _imageChosen = _image != null ? true : false;
     });
   }
 
-  // Future<Book> getSelectedBookDetails() async {
-  //   BookViewModel bookViewModel = new BookViewModel();
-  //   BookResponse bookResponse = await bookViewModel.fetchSelectedBookDetails(widget.book.id)
-  // }
+  Future<void> _getImagefromcamera() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = image != null ? image : _image;
+      _imageChosen = _image != null ? true : false;
+    });
+  }
 
   Future<List<Category>> _getCategories() async {
     CategoryViewModel categoryViewModel = new CategoryViewModel();
@@ -152,7 +152,6 @@ class _EditBookScreenState extends State<EditBookScreen> {
     FocusScope.of(context).unfocus();
 
     BookViewModel bookViewModel = new BookViewModel();
-    BookResponse bookUpdateResponse;
     CloudMediaService cloudMediaService = new CloudMediaService();
 
     // checks if image is chosen or not in the time of form submission.
@@ -161,16 +160,19 @@ class _EditBookScreenState extends State<EditBookScreen> {
     });
 
     if (_formKey.currentState.validate()) {
+      // checking if the image is chosen and
       if (_imageChosen) {
         // shows loading screen while async image upload takes place
         loadingIndicator(context);
-        // checking if the image is chosen and
-        // then uploading image to Cloud through a function in CloudMediaService
+        // uploading image to Cloud through a function in CloudMediaService
         // which returns the url of the uploaded image.
-        final String imageUrl =
-            await cloudMediaService.uploadImage(_image.path);
-
-        List<String> imageUrls = [imageUrl];
+        List<String> imageUrls = [];
+        // uploading image only if the image has been altered.
+        if (isImageAltered()) {
+          imageUrls.add(await cloudMediaService.uploadImage(_image.path));
+        } else {
+          imageUrls.add(widget.book.images[0]);
+        }
 
         Book book = Book(
           name: _bookNameController.text,
@@ -184,26 +186,51 @@ class _EditBookScreenState extends State<EditBookScreen> {
         );
 
         // converting book object into json file
-        String bookJSON = jsonEncode(book);
+        String updatedBookJSON = jsonEncode(book);
 
         // connecting and waiting for response from api through bookViewModel.
         // response will be object of BookPostResponse.
-        bookUpdateResponse =
-            await bookViewModel.postBook(bookJSON).whenComplete(() {
-          // closes loading screen when the api request to post book is over.
-          Navigator.of(context).pop();
-        });
+        bool updateResult = await bookViewModel
+            .updateBook(updatedBookJSON, widget.book.id)
+            .then(
+          (updateResponse) {
+            if (updateResponse.success) {
+              // deleting the previous image if user has altered the book image
+              if (isImageAltered()) {
+                cloudMediaService.deleteImage(widget.book.images[0]);
+              }
+              ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+                  .popSnackbar(updateResponse.message, "", this.context));
+            } else {
+              // in case of error, deleting the current image if user has altered the book image
+              if (isImageAltered()) {
+                cloudMediaService.deleteImage(imageUrls[0]);
+              }
+              ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+                  .popSnackbar(
+                      updateResponse.message, "Try Again", this.context));
+            }
+            return updateResponse.success;
+          },
+        ).whenComplete(
+          () =>
+              // closes loading screen when the api request to post book is over.
+              Navigator.of(context).pop(),
+        );
 
-        // displaying success or error message depending on response.
-        if (bookUpdateResponse.success) {
-          ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-              .popSnackbar(bookUpdateResponse.message, "Okay", this.context));
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-              .popSnackbar(
-                  bookUpdateResponse.message, "Try Again", this.context));
+        if (updateResult) {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => UserScreen()));
         }
       }
+    }
+  }
+
+  bool isImageAltered() {
+    if (_initialImageHolder != _image.path) {
+      return true;
+    } else {
+      return false;
     }
   }
 

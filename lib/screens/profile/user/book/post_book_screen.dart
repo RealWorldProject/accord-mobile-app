@@ -133,7 +133,6 @@ class _PostBookScreenState extends State<PostBookScreen> {
 
         // converting book object into json file
         String bookJSON = jsonEncode(book);
-        print(bookJSON);
 
         // connecting and waiting for response from api through bookViewModel.
         // response will be object of BookPostResponse.
