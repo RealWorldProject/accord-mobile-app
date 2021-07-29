@@ -36,14 +36,14 @@ class BookViewModel {
     return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
   }
 
-  Future<BookResponse> fetchSelectedBookDetails(String bookID) async {
-    final apiResponse = await BookService().fetchSelectedBookDetails(bookID);
+  Future<BookResponse> updateBook(String updatedBook, String bookID) async {
+    final apiResponse = await BookService().updateBook(updatedBook, bookID);
     // sending json response to BookResponse to convert into object
     return BookResponse.fromJson(jsonDecode(apiResponse));
   }
 
-  Future<BookResponse> updateBook(String updatedBook, String bookID) async {
-    final apiResponse = await BookService().updateBook(updatedBook, bookID);
+  Future<BookResponse> deleteBook(String bookID) async {
+    final apiResponse = await BookService().deleteBook(bookID);
     // sending json response to BookResponse to convert into object
     return BookResponse.fromJson(jsonDecode(apiResponse));
   }

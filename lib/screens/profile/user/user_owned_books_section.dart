@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:accord/models/book.dart';
-import 'package:accord/responses/fetch_books_response.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/screens/profile/user/book/edit_book_screen.dart';
 import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
+import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +46,6 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       primary: false,
-
                       slivers: [
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
@@ -55,9 +56,7 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                               );
                             },
                             childCount: books.length,
-
                           ),
-
                         )
                       ],
                     );
@@ -104,11 +103,31 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                                 builder: (context) => EditBookScreen(
                                       book: book,
                                     )),
-                          ),
+                          ).then(onReturn),
                           iconOpt1: Icons.edit_rounded,
                           // option 2
                           option2: "Delete Book",
-                          action2: () => {},
+                          action2: () => {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CustomDialogBox(
+                                  title: "Action: Book Deletion!!!",
+                                  confirmMessage:
+                                      "Are you sure you want to delete, '${book.name}'?",
+                                  dontText: "Keep!",
+                                  dontAction: () => Navigator.pop(context),
+                                  doText: "Delete!",
+                                  doAction: () async {
+                                    await BookViewModel()
+                                        .deleteBook(book.id)
+                                        .whenComplete(
+                                            () => Navigator.pop(context));
+                                  },
+                                );
+                              },
+                            ).then(onReturn)
+                          },
                           iconOpt2: Icons.delete_forever_rounded,
                         ));
               },
@@ -259,5 +278,16 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
         ],
       ),
     );
+  }
+
+  // refresher: holds function that the screen depends on.
+  Future<void> refreshData() async {
+    await BookViewModel().fetchUserPostedBooks();
+  }
+
+  // triggers both refresher and setState
+  FutureOr onReturn(dynamic value) {
+    refreshData();
+    setState(() {});
   }
 }
