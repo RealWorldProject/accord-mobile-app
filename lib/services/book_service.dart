@@ -144,8 +144,9 @@ class BookService {
   Future<String> updateBook(String updatedBook, String bookID) async {
     final String userToken = await Storage().fetchToken();
     try {
-      final res = await dio.get(
+      final res = await dio.put(
         '$baseURL/book/$bookID',
+        data: updatedBook,
         options: Options(
           responseType: ResponseType.plain,
           headers: {

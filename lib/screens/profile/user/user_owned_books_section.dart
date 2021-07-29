@@ -15,27 +15,6 @@ class UserOwnedBooksSection extends StatefulWidget {
 }
 
 class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
-  List<Book> _books;
-
-  @override
-  void initState() {
-    super.initState();
-    getUserOwnedBooks().then((books) => setState(() {
-          _books = books;
-        }));
-  }
-
-  Future<List<Book>> getUserOwnedBooks() async {
-    BookViewModel bookViewModel = new BookViewModel();
-    FetchBooksResponse fetchBooksResponse =
-        await bookViewModel.fetchUserPostedBooks();
-    if (fetchBooksResponse.success) {
-      return fetchBooksResponse.result;
-    } else {
-      return [];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
