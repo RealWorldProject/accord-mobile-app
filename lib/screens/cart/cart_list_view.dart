@@ -46,7 +46,6 @@ class _CartListViewState extends State<CartListView> {
                         ),
                       ),
                     ),
-
                   ],
                 ),
                 Expanded(
@@ -114,7 +113,9 @@ class _CartListViewState extends State<CartListView> {
                             Text(
                               "12",
                               style: TextStyle(
-                                  fontSize: 16, color: Colors.blueAccent,fontWeight: FontWeight.w500),
+                                  fontSize: 16,
+                                  color: Colors.blueAccent,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
                               width: 8,
@@ -163,12 +164,31 @@ class _CartListViewState extends State<CartListView> {
                                 size: 24,
                               ),
                             )
-
-
-                           
                           ),
                         ),
                       ),
+                      // Material(
+                      //   type: MaterialType.transparency,
+                      //   shape: CircleBorder(),
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //         shape: BoxShape.circle,
+                      //       color: Colors.grey[400]
+                      //
+                      //     ),
+                      //     child: IconButton(
+                      //       splashColor: Colors.blue,
+                      //       splashRadius: 100,
+                      //       padding: EdgeInsets.all(2),
+                      //       onPressed: () {},
+                      //       icon: Icon(
+                      //         Icons.delete,
+                      //         color: Colors.grey,
+                      //         size: 24,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Text(
                         "Rs. 500",
                         style: TextStyle(
@@ -180,7 +200,6 @@ class _CartListViewState extends State<CartListView> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),

@@ -146,6 +146,7 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                 ),
               ),
             ),
+            )
           ),
           Stack(
             clipBehavior: Clip.none,
