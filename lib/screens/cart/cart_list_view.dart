@@ -17,31 +17,34 @@ class _CartListViewState extends State<CartListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130,
       child: FutureBuilder(
           future: CartviewModel().fetchCartItems(),
           builder: (context, cartSnap) {
             if (cartSnap.hasData) {
               // notifying users that there is no books added to the cart.
-              if (cartSnap.data.result.length == 0) {
+              if (cartSnap.data.result.length > 0) {
                 return Container(
+
                   padding: EdgeInsets.only(
                     top: 1.5,
                     left: 5,
                     right: 2,
                   ),
-                  child: Text(
-                    "Your cart list is empty.",
-                    style: TextStyle(
-                      color: Colors.black38,
-                      fontSize: 18,
-                      letterSpacing: -1,
-                      fontWeight: FontWeight.w300,
+                  child: Center(
+                    child: Text(
+                      "Your cart list is empty.",
+                      style: TextStyle(
+                        color: Colors.black38,
+                        fontSize: 18,
+                        letterSpacing: -1,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                   ),
                 );
               } else {
                 return ListView.builder(
+                  shrinkWrap: true,
                     itemCount: cartSnap.data.result.length,
                     itemBuilder: (BuildContext context, int index) {
                       CartItem cartItem = cartSnap.data.result[index];
@@ -62,6 +65,8 @@ class _CartListViewState extends State<CartListView> {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       height: 130,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+
         children: [
           Expanded(
             child: Row(

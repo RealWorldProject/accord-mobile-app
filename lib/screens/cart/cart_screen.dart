@@ -1,4 +1,5 @@
 import 'package:accord/screens/cart/cart_list_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
@@ -30,20 +31,18 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
       backgroundColor: Colors.grey[200],
-      body: SingleChildScrollView(
+      body: Container(
+        margin: EdgeInsets.only(bottom: 130),
+        child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
-            children: [
-              CartListView(),
-              CartListView(),
-              CartListView(),
-              CartListView(),
-              CartListView(),
-              SizedBox(
-                height: 210,
-              )
-            ],
-          )),
+              children: [
+                CartListView(),
+
+              ],
+            ),
+        ),
+      ),
 
       bottomSheet: Container(
         height: 200,

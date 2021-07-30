@@ -16,6 +16,8 @@ class CartShimmer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       height: 130,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
             child: Row(
