@@ -1,5 +1,4 @@
 import 'package:accord/screens/cart/cart_list_view.dart';
-import 'package:accord/screens/shimmer/cart_shimmer.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {

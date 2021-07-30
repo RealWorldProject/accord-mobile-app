@@ -17,13 +17,12 @@ class _CartListViewState extends State<CartListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: 130,
       child: FutureBuilder(
           future: CartviewModel().fetchCartItems(),
           builder: (context, cartSnap) {
             if (cartSnap.hasData) {
-              // notifying users that there is no books available
-              // related to the term they just searched.
+              // notifying users that there is no books added to the cart.
               if (cartSnap.data.result.length == 0) {
                 return Container(
                   padding: EdgeInsets.only(
