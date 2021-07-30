@@ -14,4 +14,7 @@ class Constant {
 
   static final Color shimmer_base_color = Colors.grey.shade400;
   static final Color shimmer_highlight_color = Colors.grey.shade300;
+  static final Color primary_blue_color = Color(0xff1b98e0);
+  static final Color semi_dark_blue_color = Color(0xff006494);
+  static final Color full_dark_blue_color = Color(0xff13293d);
 }
