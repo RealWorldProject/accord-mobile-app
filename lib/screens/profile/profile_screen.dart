@@ -1,8 +1,13 @@
+import 'dart:developer';
+
+import 'package:accord/models/user.dart';
 import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/profile/password/change_password.dart';
 import 'package:accord/screens/profile/user/user_screen.dart';
 import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/services/storage.dart';
+import 'package:accord/utils/text_utils.dart';
+import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -52,29 +57,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 margin: EdgeInsets.only(top: 95),
                 child: Column(
                   children: [
-                    Center(
-                      child: CircleAvatar(
-                        radius: 74.0,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 70.0,
-                          backgroundImage:
-                              AssetImage("assets/images/user2.png"),
-                          backgroundColor: Colors.transparent,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "John Doe",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "johndoe@gmail.com",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+                    FutureBuilder(
+                        future: UserViewModel().fetchUserDetails(),
+                        builder: (context, userSnap) {
+                          if (userSnap.hasData) {
+                            User user = userSnap.data.result;
+                            return userDetailsDisplayer(user);
+                          }
+                          return userDetailsDisplayer(User(
+                            email: "dummyuser@gmail.com",
+                            image: "",
+                            fullName: "dummy user",
+                          ));
+                        }),
                     SizedBox(
                       height: 30,
                     ),
@@ -269,6 +264,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  userDetailsDisplayer(User user) {
+    return Container(
+      child: Column(
+        children: [
+          Center(
+            child: CircleAvatar(
+              radius: 74.0,
+              backgroundColor: Colors.white,
+              child: CircleAvatar(
+                radius: 70.0,
+                backgroundImage: user.image == "dummy.png" || user.image == ""
+                    ? AssetImage("assets/images/user2.png")
+                    : NetworkImage(user.image),
+                backgroundColor: Colors.transparent,
+              ),
+            ),
+          ),
+          Text(
+            TextUtils().capitalizeAll(user.fullName),
+            style: TextStyle(
+                color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            user.email,
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<dynamic> showLogoutDialog() {
     return showDialog(
       context: context,
@@ -285,63 +311,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
-// return SingleChildScrollView(
-// child: Column(
-// mainAxisSize: MainAxisSize.min,
-// children: [
-// Stack(
-// overflow: Overflow.visible,
-// children: <Widget>[
-//
-// ClipRRect(
-// // borderRadius: BorderRadius.circular(8.0),
-// child: Image.asset(
-// 'assets/images/wat.jpg',
-// height: 250,
-// width: double.infinity,
-// fit: BoxFit.cover,
-// ),
-// ),
-// // Positioned(
-// //   top: 1,
-// //   left: 1,
-// //   child: InkWell(
-// //
-// //     child: Container(
-// //       height: 45,
-// //       width: 45,
-// //       child: Icon(
-// //         Icons.arrow_back_ios,
-// //         color: Colors.blue,
-// //       ),
-// //     ),
-// //   ),
-// // ),
-// Positioned(
-// bottom: 1,
-// right: 1,
-// child: Container(
-// height: 45,
-// width: 45,
-// child: Icon(
-// Icons.add_a_photo,
-// color: Colors.white,
-// ),
-// decoration: BoxDecoration(
-// color: Colors.blue,
-// borderRadius: BorderRadius.all(
-// Radius.circular(25),
-// ),
-// ),
-// ),
-// ),
-// ],
-// ),
-// Flexible(
-// child: Container(
-// child: TextFormField(),
-// ))
-// ],
-// ),
-// );
