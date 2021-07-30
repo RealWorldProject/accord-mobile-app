@@ -1,5 +1,7 @@
+import 'package:accord/models/cart_item.dart';
+import 'package:accord/screens/shimmer/cart_shimmer.dart';
+import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 class CartListView extends StatefulWidget {
   const CartListView({Key key}) : super(key: key);
@@ -15,6 +17,46 @@ class _CartListViewState extends State<CartListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height,
+      child: FutureBuilder(
+          future: CartviewModel().fetchCartItems(),
+          builder: (context, cartSnap) {
+            if (cartSnap.hasData) {
+              // notifying users that there is no books available
+              // related to the term they just searched.
+              if (cartSnap.data.result.length == 0) {
+                return Container(
+                  padding: EdgeInsets.only(
+                    top: 1.5,
+                    left: 5,
+                    right: 2,
+                  ),
+                  child: Text(
+                    "Your cart list is empty.",
+                    style: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 18,
+                      letterSpacing: -1,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                    itemCount: cartSnap.data.result.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      CartItem cartItem = cartSnap.data.result[index];
+                      return cartItemDesign(cartItem);
+                    });
+              }
+            }
+            return CartShimmer();
+          }),
+    );
+  }
+
+  cartItemDesign(CartItem cartItem) {
+    return Container(
       margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
@@ -29,8 +71,8 @@ class _CartListViewState extends State<CartListView> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      child: Image.asset(
-                        "assets/images/bg1.jpg",
+                      child: Image.network(
+                        cartItem.images,
                         height: imageHeight,
                         width: imageWidth,
                         fit: BoxFit.cover,
@@ -56,24 +98,24 @@ class _CartListViewState extends State<CartListView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "The Gravity of Us  ",
+                          cartItem.name,
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.grey[900]),
                           overflow: TextOverflow.ellipsis,
                         ),
+                        // Text(
+                        //   cartItem.author,
+                        //   style: TextStyle(
+                        //       fontSize: 14,
+                        //       fontWeight: FontWeight.w100,
+                        //       color: Colors.grey[700],
+                        //       fontStyle: FontStyle.italic),
+                        //   overflow: TextOverflow.ellipsis,
+                        // ),
                         Text(
-                          "JK Rolling",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w100,
-                              color: Colors.grey[700],
-                              fontStyle: FontStyle.italic),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          "Rs. 500",
+                          cartItem.price.toString(),
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w100,
@@ -106,12 +148,11 @@ class _CartListViewState extends State<CartListView> {
                                 ),
                               ),
                             ),
-                            
                             SizedBox(
                               width: 8,
                             ),
                             Text(
-                              "12",
+                              cartItem.quantity.toString(),
                               style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.blueAccent,
@@ -155,42 +196,20 @@ class _CartListViewState extends State<CartListView> {
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: (){},
-                            child: SizedBox(
-                              width: 35,height: 35,
-                              child:Icon(
-                                Icons.delete,
-                                color: Colors.grey,
-                                size: 24,
-                              ),
-                            )
-                          ),
+                              onTap: () {},
+                              child: SizedBox(
+                                width: 35,
+                                height: 35,
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.grey,
+                                  size: 24,
+                                ),
+                              )),
                         ),
                       ),
-                      // Material(
-                      //   type: MaterialType.transparency,
-                      //   shape: CircleBorder(),
-                      //   child: Container(
-                      //     decoration: BoxDecoration(
-                      //         shape: BoxShape.circle,
-                      //       color: Colors.grey[400]
-                      //
-                      //     ),
-                      //     child: IconButton(
-                      //       splashColor: Colors.blue,
-                      //       splashRadius: 100,
-                      //       padding: EdgeInsets.all(2),
-                      //       onPressed: () {},
-                      //       icon: Icon(
-                      //         Icons.delete,
-                      //         color: Colors.grey,
-                      //         size: 24,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       Text(
-                        "Rs. 500",
+                        (cartItem.quantity * cartItem.price).toInt().toString(),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
