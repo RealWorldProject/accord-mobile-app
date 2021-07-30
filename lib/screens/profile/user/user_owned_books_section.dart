@@ -130,7 +130,7 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                                       },
                                     );
                                   },
-                                ).then(onReturn)
+                                ).then(onReturn ?? ViewProfileShimmer())
                               },
                               iconOpt2: Icons.delete_forever_rounded,
                             ));
@@ -146,7 +146,6 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                 ),
               ),
             ),
-            )
           ),
           Stack(
             clipBehavior: Clip.none,

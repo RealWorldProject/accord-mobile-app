@@ -1,4 +1,3 @@
-import 'package:accord/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class MessageHolder {
@@ -8,8 +7,9 @@ class MessageHolder {
       content: Text(
         displayMessage,
         style: TextStyle(
-          color:
-              (actionLabel == "Okay") ? Color(0xffAAFF00) : Color(0xffFE7187),
+          color: (actionLabel == "Okay" || actionLabel == "")
+              ? Color(0xffAAFF00)
+              : Color(0xffFE7187),
           fontSize: 16,
           fontStyle: FontStyle.italic,
         ),
