@@ -31,10 +31,10 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
       backgroundColor: Colors.grey[200],
-      body: Container(
-        margin: EdgeInsets.only(bottom: 130),
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Container(
+          margin: EdgeInsets.only(bottom: 130),
           child: Column(
               children: [
                 CartListView(),
