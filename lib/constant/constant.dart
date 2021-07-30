@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Constant {
-  // static const baseURL = "http://10.0.2.2:7000/api/v1";
-  static const baseURL = "https://accord-backend.herokuapp.com/api/v1";
+  static const baseURL = "http://10.0.2.2:7000/api/v1";
+  // static const baseURL = "https://accord-backend.herokuapp.com/api/v1";
   // static const baseURL = "http://192.168.0.107:7000/api/v1";
   // static const baseURL = "http://192.168.100.73:7000/api/v1";
 

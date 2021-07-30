@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:accord/models/book.dart';
+import 'package:accord/models/cart_item.dart';
+import 'package:accord/responses/cart_response.dart';
 import 'package:accord/screens/book_view/book_detail.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
+import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 
 class BookDisplayFormat extends StatelessWidget {
@@ -16,7 +21,7 @@ class BookDisplayFormat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10,horizontal: 5),
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       padding: EdgeInsets.all(7.0),
       decoration: BoxDecoration(
         color: Colors.grey[300],
@@ -26,8 +31,9 @@ class BookDisplayFormat extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           splashColor: Colors.white60,
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> BookDetail()));
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => BookDetail()));
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,8 +84,8 @@ class BookDisplayFormat extends StatelessWidget {
                         ],
                       ),
                       child: IconButton(
-                        padding:
-                            EdgeInsets.only(top: 4, bottom: 0, left: 0, right: 0),
+                        padding: EdgeInsets.only(
+                            top: 4, bottom: 0, left: 0, right: 0),
                         alignment: Alignment.center,
                         // icon: book.isLiked == false
                         //     ? Icon(Icons.favorite_outline_rounded)
@@ -113,11 +119,13 @@ class BookDisplayFormat extends StatelessWidget {
                       child: book.isNewBook == false
                           ? Text(
                               "old",
-                              style: TextStyle(color: Colors.white, fontSize: 10),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 10),
                             )
                           : Text(
                               "new",
-                              style: TextStyle(color: Colors.white, fontSize: 10),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 10),
                             ),
                     ),
                   ),
@@ -148,7 +156,7 @@ class BookDisplayFormat extends StatelessWidget {
                           color: Colors.grey[700],
                           fontStyle: FontStyle.italic),
                     ),
-                    RatingStars(4.5,18),
+                    RatingStars(4.5, 18),
                     Text(
                       "Available for Exchange",
                       overflow: TextOverflow.ellipsis,
@@ -163,26 +171,6 @@ class BookDisplayFormat extends StatelessWidget {
                               : (TextDecoration.none),
                           fontStyle: FontStyle.italic),
                     ),
-                    // book.isAvailableForExchange == false
-                    //     ? Text(
-                    //   "Available for Exchange",
-                    //   overflow: TextOverflow.ellipsis,
-                    //   style: TextStyle(
-                    //       fontSize: 10,
-                    //       fontWeight: FontWeight.w100,
-                    //       color: Colors.grey[800],
-                    //       decoration: TextDecoration.lineThrough,
-                    //       fontStyle: FontStyle.italic),
-                    // )
-                    //     : Text(
-                    //   "Available for Exchange",
-                    //   overflow: TextOverflow.ellipsis,
-                    //   style: TextStyle(
-                    //       fontSize: 11,
-                    //       fontWeight: FontWeight.w100,
-                    //       color: Colors.blue,
-                    //       fontStyle: FontStyle.italic),
-                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -206,7 +194,9 @@ class BookDisplayFormat extends StatelessWidget {
                             ),
                           ),
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              addBookToCart(book.id);
+                            },
                             padding: EdgeInsets.zero,
                             icon: Icon(Icons.shopping_cart),
                             iconSize: 18,
@@ -223,5 +213,17 @@ class BookDisplayFormat extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> addBookToCart(String bookID, [int quantity = 1]) async {
+    CartviewModel cartviewModel = new CartviewModel();
+    CartItem cartItem = CartItem(bookID: bookID, quantity: quantity);
+    String cartItemJson = jsonEncode(cartItem);
+
+    await cartviewModel.addToCart(cartItemJson).then((addResponse) {
+      if (addResponse.success) {
+        print(addResponse.result.last.name);
+      }
+    });
   }
 }
