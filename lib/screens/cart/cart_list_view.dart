@@ -22,7 +22,7 @@ class _CartListViewState extends State<CartListView> {
           builder: (context, cartSnap) {
             if (cartSnap.hasData) {
               // notifying users that there is no books added to the cart.
-              if (cartSnap.data.result.length > 0) {
+              if (cartSnap.data.result.length == 0) {
                 return Container(
 
                   padding: EdgeInsets.only(
@@ -45,6 +45,9 @@ class _CartListViewState extends State<CartListView> {
               } else {
                 return ListView.builder(
                   shrinkWrap: true,
+
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
                     itemCount: cartSnap.data.result.length,
                     itemBuilder: (BuildContext context, int index) {
                       CartItem cartItem = cartSnap.data.result[index];
