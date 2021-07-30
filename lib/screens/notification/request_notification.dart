@@ -166,12 +166,26 @@ class _RequestNotificationState extends State<RequestNotification> {
                       markasreadOption: _toggleBookIsSeen,
                       value: isSeen,
                     ));},
-                child: SizedBox(width: 35,height: 35,child: Icon(Icons.more_vert,color: Colors.grey,),),
-
+                child: SizedBox(width: 35,height: 35,child: Icon(Icons.more_vert,color: Colors.grey[600],),),
               ),
             ),
           ),
-
+          // IconButton(
+          //   padding: EdgeInsets.zero,
+          //   alignment: Alignment.centerRight,
+          //   icon: Icon(
+          //     Icons.more_vert,
+          //     color: Colors.grey[600],
+          //   ),
+          //   onPressed: () {
+          //     showModalBottomSheet(
+          //         context: context,
+          //         builder: (context) => NotificationAction(
+          //               markasreadOption: _toggleBookIsSeen,
+          //               value: isSeen,
+          //             ));
+          //   },
+          // ),
         ],
       ),
     );

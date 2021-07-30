@@ -97,9 +97,8 @@ class _NotificationTileState extends State<NotificationTile> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: (){},
-                child: SizedBox(width: 35,height: 35,child: Icon(Icons.more_vert,color: Colors.grey),),
-
+                onTap: (){ },
+                child: SizedBox(width: 35,height: 35,child: Icon(Icons.more_vert,color: Colors.grey[600],),),
               ),
             ),
           ),

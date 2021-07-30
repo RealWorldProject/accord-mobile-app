@@ -106,6 +106,7 @@ class _CartListViewState extends State<CartListView> {
                                 ),
                               ),
                             ),
+                            
                             SizedBox(
                               width: 8,
                             ),
@@ -152,18 +153,17 @@ class _CartListViewState extends State<CartListView> {
                     children: [
                       ClipOval(
                         child: Material(
-                          color: Colors.transparent, // Button color
+                          color: Colors.transparent,
                           child: InkWell(
-                            splashColor: Colors.black26, // Splash color
-                            onTap: () {},
+                            onTap: (){},
                             child: SizedBox(
-                              width: 35,
-                              height: 35,
-                              child: Icon(
+                              width: 35,height: 35,
+                              child:Icon(
                                 Icons.delete,
-                                color: Colors.grey[600],
+                                color: Colors.grey,
+                                size: 24,
                               ),
-                            ),
+                            )
                           ),
                         ),
                       ),
