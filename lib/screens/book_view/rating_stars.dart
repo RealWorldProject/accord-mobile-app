@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-
 class RatingStars extends StatelessWidget {
   final double rating;
+  final double size;
 
-  RatingStars(this.rating);
+  RatingStars(this.rating, this.size);
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +22,30 @@ class RatingStars extends StatelessWidget {
     // );
 
     return RatingBar(
-    initialRating: rating,
-    direction: Axis.horizontal,
-    allowHalfRating: true,
-    itemCount: 5,
-    ratingWidget: RatingWidget(
-    full: Icon(Icons.star_rate_rounded,color: Colors.orangeAccent,),
-    half: Icon(Icons.star_half_rounded,color: Colors.orangeAccent,),
-    empty: Icon(Icons.star_outline_rounded,color: Colors.orangeAccent,),
-    ),
-    itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
-    // onRatingUpdate: (rating) {
-    //   print(rating);
-    // },
-    itemSize: 18,
+      initialRating: rating,
+      direction: Axis.horizontal,
+      allowHalfRating: true,
+      itemCount: 5,
+      ratingWidget: RatingWidget(
+        full: Icon(
+          Icons.star_rate_rounded,
+          color: Color(0xffffbb00),
+        ),
+        half: Icon(
+          Icons.star_half_rounded,
+          color: Color(0xffffbb00),
+        ),
+        empty: Icon(
+          Icons.star_outline_rounded,
+          color: Color(0xffffbb00),
+        ),
+      ),
+      itemPadding: EdgeInsets.zero,
+
+      // onRatingUpdate: (rating) {
+      //   print(rating);
+      // },
+      itemSize: size,
     );
   }
 }

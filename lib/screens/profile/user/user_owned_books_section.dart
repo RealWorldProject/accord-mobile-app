@@ -239,7 +239,7 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                       color: Colors.grey[700],
                       fontStyle: FontStyle.italic),
                 ),
-                RatingStars(5),
+                RatingStars(5,18),
                 Text(
                   book.isAvailableForExchange
                       ? "Available for exchange"

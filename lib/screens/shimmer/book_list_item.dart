@@ -1,3 +1,4 @@
+import 'package:accord/screens/book_view/book_detail.dart';
 import 'package:accord/screens/shimmer/image_list_item.dart';
 import 'package:accord/screens/shimmer/text_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,73 +20,76 @@ class BookListItem extends StatelessWidget {
       //   color: Colors.grey[300],
       //   borderRadius: BorderRadius.circular(15.0),
       // ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: 219.0,
-            width: 175.0,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(15.0),
+      child: InkWell(
+        onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> BookDetail()));},
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 219.0,
+              width: 175.0,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(15.0),
 
 
-              // image: DecorationImage(
-              //   image: NetworkImage(book.images[0]),
-              //   fit: BoxFit.cover,
-              // ),
-              // borderRadius: BorderRadius.circular(15.0),
-            ),
-             child: ImageListItem(
-                      index: index,
-                      width: 175.0,
-                      height: 219.0,
-                    ),
-          ),
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                TextItem(
-                  width: MediaQuery.of(context).size.width / 2 - 40,
-                ),
-                TextItem(
-                  width: MediaQuery.of(context).size.width / 2 - 70,
-                ),
-                TextItem(
-                  width: MediaQuery.of(context).size.width / 2 - 90,
-                ),
-                TextItem(
-                  width: MediaQuery.of(context).size.width / 2 - 60,
-                ),
-
-                // book.isAvailableForExchange == false
-                //     ? Text(
-                //   "Available for Exchange",
-                //   overflow: TextOverflow.ellipsis,
-                //   style: TextStyle(
-                //       fontSize: 10,
-                //       fontWeight: FontWeight.w100,
-                //       color: Colors.grey[800],
-                //       decoration: TextDecoration.lineThrough,
-                //       fontStyle: FontStyle.italic),
-                // )
-                //     : Text(
-                //   "Available for Exchange",
-                //   overflow: TextOverflow.ellipsis,
-                //   style: TextStyle(
-                //       fontSize: 11,
-                //       fontWeight: FontWeight.w100,
-                //       color: Colors.blue,
-                //       fontStyle: FontStyle.italic),
+                // image: DecorationImage(
+                //   image: NetworkImage(book.images[0]),
+                //   fit: BoxFit.cover,
                 // ),
-              ],
+                // borderRadius: BorderRadius.circular(15.0),
+              ),
+               child: ImageListItem(
+                        index: index,
+                        width: 175.0,
+                        height: 219.0,
+                      ),
             ),
-          ),
-        ],
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextItem(
+                    width: MediaQuery.of(context).size.width / 2 - 40,
+                  ),
+                  TextItem(
+                    width: MediaQuery.of(context).size.width / 2 - 70,
+                  ),
+                  TextItem(
+                    width: MediaQuery.of(context).size.width / 2 - 90,
+                  ),
+                  TextItem(
+                    width: MediaQuery.of(context).size.width / 2 - 60,
+                  ),
+
+                  // book.isAvailableForExchange == false
+                  //     ? Text(
+                  //   "Available for Exchange",
+                  //   overflow: TextOverflow.ellipsis,
+                  //   style: TextStyle(
+                  //       fontSize: 10,
+                  //       fontWeight: FontWeight.w100,
+                  //       color: Colors.grey[800],
+                  //       decoration: TextDecoration.lineThrough,
+                  //       fontStyle: FontStyle.italic),
+                  // )
+                  //     : Text(
+                  //   "Available for Exchange",
+                  //   overflow: TextOverflow.ellipsis,
+                  //   style: TextStyle(
+                  //       fontSize: 11,
+                  //       fontWeight: FontWeight.w100,
+                  //       color: Colors.blue,
+                  //       fontStyle: FontStyle.italic),
+                  // ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
     // return Container(

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:accord/screens/auth/login_screen.dart';
+import 'package:accord/screens/book_view/book_detail.dart';
 import 'package:accord/screens/bottom_navigation.dart';
 import 'package:accord/screens/get_started_screen.dart';
 import 'package:accord/screens/splash_screen.dart';
