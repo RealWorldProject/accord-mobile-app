@@ -20,4 +20,9 @@ class UserViewModel {
     // sending json response to login_response to convert into map
     return LoginResponse.fromJson(jsonDecode(loginResponseAPI));
   }
+
+  Future<RegisterResponse> fetchUserDetails() async {
+    final apiResponse = await AuthService().fetchUserDetails();
+    return RegisterResponse.fromJson(jsonDecode(apiResponse));
+  }
 }

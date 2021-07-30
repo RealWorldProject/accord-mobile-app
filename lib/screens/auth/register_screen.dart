@@ -58,8 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_formKey.currentState.validate()) {
       // user object
       User user = User(
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
+        fullName: "${_firstNameController.text} ${_lastNameController.text}",
         email: _emailController.text,
         password: _passwordController.text,
       );

@@ -15,7 +15,7 @@ class UserDetailSection extends StatefulWidget {
 
 class _UserDetailSectionState extends State<UserDetailSection> {
   XFile _image;
-  _previewImage(image){
+  _previewImage(image) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -105,7 +105,6 @@ class _UserDetailSectionState extends State<UserDetailSection> {
   Future<void> _getImagefromcamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     _previewImage(image);
-
   }
 
   Future<void> _getImagefromGallery() async {
@@ -150,7 +149,9 @@ class _UserDetailSectionState extends State<UserDetailSection> {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                              blurRadius: 4, color: Colors.black38, spreadRadius: 2)
+                              blurRadius: 4,
+                              color: Colors.black38,
+                              spreadRadius: 2)
                         ],
                       ),
                       child: Stack(children: [
@@ -243,7 +244,6 @@ class _UserDetailSectionState extends State<UserDetailSection> {
             ),
           ],
         ),
-
       ],
     );
   }
