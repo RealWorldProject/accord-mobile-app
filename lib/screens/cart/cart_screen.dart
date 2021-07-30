@@ -16,7 +16,7 @@ class _CartScreenState extends State<CartScreen> {
       extendBody: true,
       appBar: AppBar(
         title: Text(
-          "My Cart (1)",
+          "My Cart",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -32,20 +32,19 @@ class _CartScreenState extends State<CartScreen> {
       ),
       backgroundColor: Colors.grey[200],
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           child: Column(
-        children: [
-          CartShimmer(),
-          CartListView(),
-          CartListView(),
-          CartListView(),
-          CartListView(),
-          CartListView(),
-          SizedBox(
-            height: 210,
-          )
-        ],
-      )),
+            children: [
+              CartListView(),
+              CartListView(),
+              CartListView(),
+              CartListView(),
+              CartListView(),
+              SizedBox(
+                height: 210,
+              )
+            ],
+          )),
 
       bottomSheet: Container(
         height: 200,
@@ -93,28 +92,25 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 8,),
+              SizedBox(
+                height: 8,
+              ),
               Container(
                 child: GestureDetector(
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                   child: Container(
                     padding: EdgeInsets.all(8),
                     width: double.infinity,
                     decoration: BoxDecoration(
                         color: Colors.blue,
-                        borderRadius: BorderRadius.circular(5)
-                    ),
+                        borderRadius: BorderRadius.circular(5)),
                     child: Center(
                       child: Text(
                         "Confirm Order",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
-                          fontWeight: FontWeight.w500
-
-                        ),
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
