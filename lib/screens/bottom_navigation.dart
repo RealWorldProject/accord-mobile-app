@@ -2,9 +2,11 @@ import 'package:accord/screens/cart/cart_screen.dart';
 import 'package:accord/screens/home/home_screen.dart';
 import 'package:accord/screens/notification/notification_page.dart';
 import 'package:accord/screens/profile/profile_screen.dart';
+import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -12,23 +14,47 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int _selectedIndex = 0;
+  int _selectedPageIndex = 0;
 
-  static List<Widget> _screens = [
-    HomeScreen(),
-    CartScreen(),
-    NotificationScreen(),
-    ProfileScreen(),
-  ];
+  List<Widget> _pages;
+
+  PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedPageIndex = 0;
+
+    _pages = [
+      HomeScreen(),
+      ChangeNotifierProvider(
+        create: (context) => CartviewModel(),
+        child: CartScreen(),
+      ),
+      NotificationScreen(),
+      ProfileScreen(),
+    ];
+
+    _pageController = PageController(initialPage: _selectedPageIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       // body: SafeArea(child: _screens[_selectedIndex]),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
+      body: PageView(
+        controller: _pageController,
+        // prevents swiping between pages
+        physics: NeverScrollableScrollPhysics(),
+        children: _pages,
       ),
       bottomNavigationBar: Container(
         height: 75,
@@ -76,15 +102,17 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 text: 'Profile',
               ),
             ],
-            selectedIndex: _selectedIndex,
-            onTabChange: (index) {
+            selectedIndex: _selectedPageIndex,
+            onTabChange: (selectedPageIndex) {
               FocusScopeNode currentFocus = FocusScope.of(context);
+
               if (!currentFocus.hasPrimaryFocus) {
                 currentFocus.unfocus();
               }
 
               setState(() {
-                _selectedIndex = index;
+                _selectedPageIndex = selectedPageIndex;
+                _pageController.jumpToPage(selectedPageIndex);
               });
             },
           ),

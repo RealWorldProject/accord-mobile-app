@@ -12,47 +12,50 @@ class NotificationScreen extends StatefulWidget {
   _NotificationScreenState createState() => _NotificationScreenState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class _NotificationScreenState extends State<NotificationScreen>
+    with AutomaticKeepAliveClientMixin<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      extendBody: true,
-      appBar: AppBar(
-        title: Badge(
-          badgeColor: Colors.blue,
-          position: BadgePosition.topEnd(top: -12, end: -20),
-          badgeContent: Text(
-            '3',
-            style: TextStyle(color: Colors.white),
+        extendBody: true,
+        appBar: AppBar(
+          title: Badge(
+            badgeColor: Colors.blue,
+            position: BadgePosition.topEnd(top: -12, end: -20),
+            badgeContent: Text(
+              '3',
+              style: TextStyle(color: Colors.white),
+            ),
+            child: Text(
+              "Notifications",
+              style: TextStyle(color: Color(0xff13293d)),
+            ),
           ),
-          child: Text(
-            "Notifications",
-            style: TextStyle(color: Color(0xff13293d)),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          elevation: 0,
+          bottom: PreferredSize(
+            child: Container(
+              color: Colors.blue,
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(0.0),
           ),
         ),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        elevation: 0,
-        bottom: PreferredSize(
-          child: Container(
-            color: Colors.blue,
-            height: 1.0,
+        backgroundColor: Colors.grey[200],
+        body: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              NotificationTile(),
+              RequestNotification(),
+              NotificationShimmer(),
+            ],
           ),
-          preferredSize: Size.fromHeight(0.0),
-        ),
-      ),
-      backgroundColor: Colors.grey[200],
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            NotificationTile(),
-            RequestNotification(),
-            NotificationShimmer(),
-
-          ],
-        ),
-      )
-    );
+        ));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

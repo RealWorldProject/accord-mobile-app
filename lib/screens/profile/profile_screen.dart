@@ -17,7 +17,8 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen>
+    with AutomaticKeepAliveClientMixin<ProfileScreen> {
   Future<void> logout() async {
     await Storage().deleteToken();
     Navigator.pushReplacement(
@@ -29,6 +30,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Container(
       color: Color(0xfff1f1f1),
       child: Column(
@@ -263,6 +266,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   userDetailsDisplayer(User user) {
     return Container(

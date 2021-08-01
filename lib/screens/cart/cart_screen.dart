@@ -1,6 +1,8 @@
 import 'package:accord/screens/cart/cart_list_view.dart';
+import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key key}) : super(key: key);
@@ -9,9 +11,12 @@ class CartScreen extends StatefulWidget {
   _CartScreenState createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenState extends State<CartScreen>
+    with AutomaticKeepAliveClientMixin<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
@@ -36,96 +41,100 @@ class _CartScreenState extends State<CartScreen> {
         child: Container(
           margin: EdgeInsets.only(bottom: 130),
           child: Column(
-              children: [
-                CartListView(),
-
-              ],
-            ),
-        ),
-      ),
-
-      bottomSheet: Container(
-        height: 200,
-        color: Color(0xFF0E3311).withOpacity(0.0),
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // SizedBox(
-              //   height: 10,
-              // ),
-              Text(
-                "Order Info",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff13293d),
-                    fontSize: 18),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Grand Total",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff626364),
-                        fontSize: 16),
-                  ),
-                  Text(
-                    "Rs. 500",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xff006494),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Container(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Center(
-                      child: Text(
-                        "Confirm Order",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ),
-                ),
-              )
+              CartListView(),
             ],
           ),
         ),
       ),
-      // bottomSheet: Container(
-      //
-      //   height: 150,
-      //   decoration: BoxDecoration(
-      //     color:Colors.transparent,
-      //         borderRadius: BorderRadius.only(topLeft: Radius.circular(20),)
-      //   ),
-      // )
+      bottomSheet: ConfirmCartSection(),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}
+
+class ConfirmCartSection extends StatefulWidget {
+  const ConfirmCartSection({Key key}) : super(key: key);
+
+  @override
+  _ConfirmCartSectionState createState() => _ConfirmCartSectionState();
+}
+
+class _ConfirmCartSectionState extends State<ConfirmCartSection> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      color: Color(0xFF0E3311).withOpacity(0.0),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Order Info",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff13293d),
+                  fontSize: 18),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Grand Total",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff626364),
+                      fontSize: 16),
+                ),
+                Text(
+                  "Rs. 500",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xff006494),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+              child: GestureDetector(
+                onTap: () {},
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Center(
+                    child: Text(
+                      "Confirm Order",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
