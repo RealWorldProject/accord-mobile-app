@@ -29,7 +29,7 @@ class CartviewModel with ChangeNotifier {
     return CartResponse.fromJson(jsonDecode(apiResponse));
   }
 
-  Future<void> get fetchCartItems async {
+  Future<dynamic> get fetchCartItems async {
     // _cartItems = ResponseExposer.loading();
 
     try {

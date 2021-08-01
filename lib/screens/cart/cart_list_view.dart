@@ -2,6 +2,7 @@ import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/shimmer/cart_shimmer.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartListView extends StatefulWidget {
   const CartListView({Key key}) : super(key: key);
@@ -11,53 +12,48 @@ class CartListView extends StatefulWidget {
 }
 
 class _CartListViewState extends State<CartListView> {
-  final double imageHeight = 110.0;
-  final double imageWidth = 95.0;
+  static const double imageHeight = 110.0;
+  static const double imageWidth = 95.0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: FutureBuilder(
-          future: CartviewModel().fetchCartItems(),
-          builder: (context, cartSnap) {
-            if (cartSnap.hasData) {
-              // notifying users that there is no books added to the cart.
-              if (cartSnap.data.result.length == 0) {
-                return Container(
-
-                  padding: EdgeInsets.only(
-                    top: 1.5,
-                    left: 5,
-                    right: 2,
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Your cart list is empty.",
-                      style: TextStyle(
-                        color: Colors.black38,
-                        fontSize: 18,
-                        letterSpacing: -1,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                  shrinkWrap: true,
-
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: cartSnap.data.result.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      CartItem cartItem = cartSnap.data.result[index];
+    context.read<CartviewModel>().fetchCartItems;
+    return RefreshIndicator(
+        child: Consumer<CartviewModel>(builder: (context, cartviewModel, _) {
+      return cartviewModel.errorMessage == null &&
+              cartviewModel.cartItems == null
+          ? CartShimmer()
+          : cartviewModel.errorMessage != null
+              ? Center(
+                  child: Text(cartviewModel.errorMessage),
+                )
+              : ListView.builder(
+                  itemCount: cartviewModel.cartItems.isEmpty
+                      ? 1
+                      : cartviewModel.cartItems.length,
+                  itemBuilder: (context, index) {
+                    if (cartviewModel.cartItems.isNotEmpty) {
+                      CartItem cartItem = cartviewModel.cartItems[index];
                       return cartItemDesign(cartItem);
-                    });
-              }
-            }
-            return CartShimmer();
-          }),
-    );
+                    } else {
+                      return Container(
+                        padding: EdgeInsets.only(top: 20),
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          "No books added to the cart.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18,
+                              letterSpacing: -1,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black45),
+                        ),
+                      );
+                    }
+                  });
+    }), onRefresh: () async {
+      await context.read<CartviewModel>().fetchCartItems;
+    });
   }
 
   cartItemDesign(CartItem cartItem) {
@@ -69,7 +65,6 @@ class _CartListViewState extends State<CartListView> {
       height: 130,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-
         children: [
           Expanded(
             child: Row(
@@ -112,15 +107,6 @@ class _CartListViewState extends State<CartListView> {
                               color: Colors.grey[900]),
                           overflow: TextOverflow.ellipsis,
                         ),
-                        // Text(
-                        //   cartItem.author,
-                        //   style: TextStyle(
-                        //       fontSize: 14,
-                        //       fontWeight: FontWeight.w100,
-                        //       color: Colors.grey[700],
-                        //       fontStyle: FontStyle.italic),
-                        //   overflow: TextOverflow.ellipsis,
-                        // ),
                         Text(
                           cartItem.price.toString(),
                           style: TextStyle(
