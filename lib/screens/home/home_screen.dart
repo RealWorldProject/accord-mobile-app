@@ -11,9 +11,12 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       extendBody: true,
       body: Container(
@@ -55,4 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           alignment: Alignment(1, 0.81)),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
