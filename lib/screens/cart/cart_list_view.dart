@@ -17,7 +17,7 @@ class _CartListViewState extends State<CartListView> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<CartviewModel>().fetchCartItems;
+    context.watch<CartviewModel>().fetchCartItems;
     return RefreshIndicator(
         child: Consumer<CartviewModel>(builder: (context, cartviewModel, _) {
       return cartviewModel.errorMessage == null &&
