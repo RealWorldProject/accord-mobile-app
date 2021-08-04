@@ -38,15 +38,9 @@ class _CartScreenState extends State<CartScreen>
       backgroundColor: Colors.grey[200],
       body: Container(
         margin: EdgeInsets.only(bottom: 135),
-        child: ChangeNotifierProvider(
-          create: (context) => CartviewModel(),
-          child: CartListView(),
-        ),
+        child: CartListView(),
       ),
-      bottomSheet: ChangeNotifierProvider(
-        create: (context) => CartviewModel(),
-        child: ConfirmCartSection(),
-      ),
+      bottomSheet: ConfirmCartSection(),
     );
   }
 
@@ -54,17 +48,12 @@ class _CartScreenState extends State<CartScreen>
   bool get wantKeepAlive => true;
 }
 
-class ConfirmCartSection extends StatefulWidget {
+class ConfirmCartSection extends StatelessWidget {
   const ConfirmCartSection({Key key}) : super(key: key);
 
   @override
-  _ConfirmCartSectionState createState() => _ConfirmCartSectionState();
-}
-
-class _ConfirmCartSectionState extends State<ConfirmCartSection> {
-  @override
   Widget build(BuildContext context) {
-    context.watch<CartviewModel>().fetchCartItems;
+    context.read<CartviewModel>().fetchCartItems;
     return Container(
       height: 200,
       color: Color(0xFF0E3311).withOpacity(0.0),
@@ -98,21 +87,16 @@ class _ConfirmCartSectionState extends State<ConfirmCartSection> {
                       color: Color(0xff626364),
                       fontSize: 16),
                 ),
-                Consumer<CartviewModel>(builder: (context, cvm, _) {
-                  return Text(
-                    cvm.cartItems == null || cvm.cartItems.isEmpty
-                        ? "0"
-                        : cvm.cartItems
-                            .map((e) => e.totalPrice)
-                            .fold(0, (x, y) => x + y)
-                            .toString(),
+                Consumer<CartviewModel>(
+                  builder: (context, cvm, child) => Text(
+                    "\Rs.${cvm.overallPrice}",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w800,
                       color: Color(0xff006494),
                     ),
-                  );
-                }),
+                  ),
+                ),
               ],
             ),
             SizedBox(
