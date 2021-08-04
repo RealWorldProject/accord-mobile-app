@@ -13,8 +13,8 @@ class CartviewModel with ChangeNotifier {
   List<CartItem> _cartItems = [];
   List<CartItem> get cartItems => _cartItems;
 
-  int _overallPrice = 0;
-  int get overallPrice => _overallPrice;
+  int get overallPrice =>
+      cartItems.fold(0, (total, cartItem) => total + cartItem.totalPrice);
 
   List<String> _cartItemsID = [];
   List<String> get cartItemsID => _cartItemsID;
@@ -31,8 +31,6 @@ class CartviewModel with ChangeNotifier {
       _cartItems = CartResponse.fromJson(jsonDecode(apiResponse)).result;
       _cartLength = _cartItems.length;
       _cartItemsID = _cartItems.map((e) => e.bookID).toList();
-      _overallPrice =
-          _cartItems.map((e) => e.totalPrice).fold(0, (x, y) => x + y);
       _errorMessage = null;
     } catch (e) {
       _errorMessage = e.toString();
@@ -50,8 +48,6 @@ class CartviewModel with ChangeNotifier {
       // _cartItems = ResponseExposer.complete(items);
       _cartLength = _cartItems.length;
       _cartItemsID = _cartItems.map((e) => e.bookID).toList();
-      _overallPrice =
-          _cartItems.map((e) => e.totalPrice).fold(0, (x, y) => x + y);
       _errorMessage = null;
     } catch (e) {
       // _cartItems = ResponseExposer.error(e.toString());

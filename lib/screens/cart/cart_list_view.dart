@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/shimmer/cart_shimmer.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
@@ -17,7 +19,6 @@ class _CartListViewState extends State<CartListView> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<CartviewModel>().fetchCartItems;
     return RefreshIndicator(
         child: Consumer<CartviewModel>(builder: (context, cartviewModel, _) {
       return cartviewModel.errorMessage == null &&
@@ -124,18 +125,26 @@ class _CartListViewState extends State<CartListView> {
                             Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                onTap: () {},
+                                onTap: cartItem.quantity <= 1
+                                    ? null
+                                    : () {
+                                        decreaseItemQuantity(cartItem);
+                                      },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
-                                      color: Colors.blueAccent,
+                                      color: cartItem.quantity <= 1
+                                          ? Colors.grey.shade500
+                                          : Colors.blueAccent,
                                       width: 1.5,
                                     ),
                                   ),
                                   child: Icon(
                                     Icons.remove_rounded,
-                                    color: Colors.blueAccent,
+                                    color: cartItem.quantity <= 1
+                                        ? Colors.grey.shade500
+                                        : Colors.blueAccent,
                                     size: 18,
                                   ),
                                 ),
@@ -157,7 +166,9 @@ class _CartListViewState extends State<CartListView> {
                             Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  increaseItemQuantity(cartItem);
+                                },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
@@ -218,5 +229,21 @@ class _CartListViewState extends State<CartListView> {
         ],
       ),
     );
+  }
+
+  decreaseItemQuantity(CartItem cartItem) {
+    CartItem decreaseCartItem = new CartItem(
+      bookID: cartItem.bookID,
+      quantity: cartItem.quantity - 1,
+    );
+    String decreaseCartItemJson = jsonEncode(decreaseCartItem);
+    context.read<CartviewModel>().addToCart(decreaseCartItemJson);
+  }
+
+  increaseItemQuantity(CartItem cartItem) {
+    CartItem increaseCartItem =
+        new CartItem(bookID: cartItem.bookID, quantity: cartItem.quantity + 1);
+    String increaseCartItemJson = jsonEncode(increaseCartItem);
+    context.read<CartviewModel>().addToCart(increaseCartItemJson);
   }
 }
