@@ -7,6 +7,7 @@ import 'package:accord/screens/book_view/book_detail.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookDisplayFormat extends StatelessWidget {
   const BookDisplayFormat({
@@ -184,25 +185,7 @@ class BookDisplayFormat extends StatelessWidget {
                             color: Color(0xff247BA0),
                           ),
                         ),
-                        Container(
-                          height: 30,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            color: Color(0xff13293D),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              addBookToCart(book.id);
-                            },
-                            padding: EdgeInsets.zero,
-                            icon: Icon(Icons.shopping_cart),
-                            iconSize: 18,
-                            color: Colors.white,
-                          ),
-                        )
+                        AddToCart(bookID: book.id),
                       ],
                     )
                   ],
@@ -214,16 +197,47 @@ class BookDisplayFormat extends StatelessWidget {
       ),
     );
   }
+}
 
-  Future<void> addBookToCart(String bookID, [int quantity = 1]) async {
-    CartviewModel cartviewModel = new CartviewModel();
+class AddToCart extends StatelessWidget {
+  const AddToCart({Key key, this.bookID, this.quantity = 1}) : super(key: key);
+
+  final String bookID;
+  final int quantity;
+
+  @override
+  Widget build(BuildContext context) {
+    // json conversion for cartItem.
     CartItem cartItem = CartItem(bookID: bookID, quantity: quantity);
     String cartItemJson = jsonEncode(cartItem);
 
-    await cartviewModel.addToCart(cartItemJson).then((addResponse) {
-      if (addResponse.success) {
-        print(addResponse.result.last.name);
-      }
-    });
+    var isInCart = context.select<CartviewModel, bool>(
+      // listening to changes occured only in [cartItemsID]
+      (cart) => cart.cartItemsID.contains(bookID),
+    );
+
+    return Container(
+      height: 30,
+      width: 35,
+      decoration: BoxDecoration(
+        // altering color in reference to the presence of book in cart.
+        color: isInCart ? Colors.red.shade900 : Color(0xff13293D),
+        borderRadius: BorderRadius.all(
+          Radius.circular(5),
+        ),
+      ),
+      child: IconButton(
+        onPressed: isInCart
+            ? null
+            : () {
+                context.read<CartviewModel>().addToCart(cartItemJson);
+              },
+        padding: EdgeInsets.zero,
+        disabledColor: Colors.white,
+        icon: Icon(Icons.shopping_cart),
+        iconSize: 18,
+        color: Colors.white,
+      ),
+    );
   }
 }

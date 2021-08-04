@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/responses/cart_response.dart';
@@ -9,24 +10,34 @@ class CartviewModel with ChangeNotifier {
   // ResponseExposer<List<CartItem>> _cartItems;
   // ResponseExposer<List<CartItem>> get cartItems => _cartItems;
 
-  List<CartItem> _cartItems;
+  List<CartItem> _cartItems = [];
   List<CartItem> get cartItems => _cartItems;
 
+  int _overallPrice = 0;
+  int get overallPrice => _overallPrice;
+
+  List<String> _cartItemsID = [];
+  List<String> get cartItemsID => _cartItemsID;
+
   int _cartLength = 0;
-  int get cartLength {
-    print(_cartLength);
-    // notifyListeners();
-    return _cartLength;
-  }
+  int get cartLength => _cartLength;
 
   String _errorMessage;
   String get errorMessage => _errorMessage;
 
-  Future<CartResponse> addToCart(String cartItem) async {
-    final apiResponse = await CartService().addToCart(cartItem);
-    _cartLength++;
+  Future<dynamic> addToCart(String cartItem) async {
+    try {
+      final apiResponse = await CartService().addToCart(cartItem);
+      _cartItems = CartResponse.fromJson(jsonDecode(apiResponse)).result;
+      _cartLength = _cartItems.length;
+      _cartItemsID = _cartItems.map((e) => e.bookID).toList();
+      _overallPrice =
+          _cartItems.map((e) => e.totalPrice).fold(0, (x, y) => x + y);
+      _errorMessage = null;
+    } catch (e) {
+      _errorMessage = e.toString();
+    }
     notifyListeners();
-    return CartResponse.fromJson(jsonDecode(apiResponse));
   }
 
   Future<dynamic> get fetchCartItems async {
@@ -38,6 +49,9 @@ class CartviewModel with ChangeNotifier {
       // print(inspect(apiResponse));
       // _cartItems = ResponseExposer.complete(items);
       _cartLength = _cartItems.length;
+      _cartItemsID = _cartItems.map((e) => e.bookID).toList();
+      _overallPrice =
+          _cartItems.map((e) => e.totalPrice).fold(0, (x, y) => x + y);
       _errorMessage = null;
     } catch (e) {
       // _cartItems = ResponseExposer.error(e.toString());

@@ -2,7 +2,9 @@ import 'package:accord/screens/home/categories_section.dart';
 import 'package:accord/screens/home/featured_books.dart';
 import 'package:accord/screens/home/search_field.dart';
 import 'package:accord/screens/profile/user/book/post_book_screen.dart';
+import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -16,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    context.read<CartviewModel>().fetchCartItems;
 
     return Scaffold(
       extendBody: true,
