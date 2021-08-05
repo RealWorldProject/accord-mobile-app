@@ -1,60 +1,75 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/responses/cart_response.dart';
 import 'package:accord/services/cart_service.dart';
+import 'package:accord/services/handlers/exposer.dart';
 import 'package:flutter/foundation.dart';
 
 class CartviewModel with ChangeNotifier {
-  // ResponseExposer<List<CartItem>> _cartItems;
-  // ResponseExposer<List<CartItem>> get cartItems => _cartItems;
-
   List<CartItem> _cartItems = [];
   List<CartItem> get cartItems => _cartItems;
 
+  ResponseExposer _data;
+  ResponseExposer get data => _data;
+
+  // calculate the overall price of the books available in the cart.
   int get overallPrice =>
       cartItems.fold(0, (total, cartItem) => total + cartItem.totalPrice);
 
-  List<String> _cartItemsID = [];
-  List<String> get cartItemsID => _cartItemsID;
-
-  int _cartLength = 0;
-  int get cartLength => _cartLength;
-
-  String _errorMessage;
-  String get errorMessage => _errorMessage;
+  // create the [String] containing bookIDs. used to track book in cart.
+  List<String> get cartItemsID => cartItems.map((e) => e.bookID).toList();
 
   Future<dynamic> addToCart(String cartItem) async {
+    // set response status to LOADING.
+    _data = ResponseExposer.loading();
+
     try {
       final apiResponse = await CartService().addToCart(cartItem);
+
+      // json to object conversion. then, object's result is placed in _cartItems.
       _cartItems = CartResponse.fromJson(jsonDecode(apiResponse)).result;
-      _cartLength = _cartItems.length;
-      _cartItemsID = _cartItems.map((e) => e.bookID).toList();
-      _errorMessage = null;
+
+      // set response status to COMPLETE.
+      _data = ResponseExposer.complete();
     } catch (e) {
-      _errorMessage = e.toString();
+      // set response status to ERROR.
+      _data = ResponseExposer.error(e.toString());
     }
     notifyListeners();
   }
 
   Future<dynamic> get fetchCartItems async {
-    // _cartItems = ResponseExposer.loading();
+    _data = ResponseExposer.loading();
 
     try {
-      final apiResponse = await CartService().fetchCartItemss();
+      final apiResponse = await CartService().fetchCartItems();
       _cartItems = CartResponse.fromJson(jsonDecode(apiResponse)).result;
-      // print(inspect(apiResponse));
-      // _cartItems = ResponseExposer.complete(items);
-      _cartLength = _cartItems.length;
-      _cartItemsID = _cartItems.map((e) => e.bookID).toList();
-      _errorMessage = null;
+      _data = ResponseExposer.complete();
     } catch (e) {
-      // _cartItems = ResponseExposer.error(e.toString());
-      _cartLength = 0;
-      _errorMessage = e.toString();
-      // print(e.toString());
+      // resets [cartItems] in case of error.
+      _cartItems = [];
+      _data = ResponseExposer.error(e.toString());
     }
+    notifyListeners();
+  }
+
+  Future<dynamic> deleteCartItem(String cartItem) async {
+    _data = ResponseExposer.loading();
+
+    try {
+      final apiResponse = await CartService().deleteCartItem(cartItem);
+      _cartItems = CartResponse.fromJson(jsonDecode(apiResponse)).result;
+      _data = ResponseExposer.complete();
+    } catch (e) {
+      _data = ResponseExposer.error(e.toString());
+    }
+    notifyListeners();
+  }
+
+  // to reset when the screen.
+  void resetCartItems() {
+    _cartItems = [];
     notifyListeners();
   }
 }

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/shimmer/cart_shimmer.dart';
+import 'package:accord/screens/widgets/error_displayer.dart';
+import 'package:accord/services/handlers/exposer.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,40 +23,81 @@ class _CartListViewState extends State<CartListView> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
         child: Consumer<CartviewModel>(builder: (context, cartviewModel, _) {
-      return cartviewModel.errorMessage == null &&
-              cartviewModel.cartItems == null
-          ? CartShimmer()
-          : cartviewModel.errorMessage != null
-              ? Center(
-                  child: Text(cartviewModel.errorMessage),
-                )
-              : ListView.builder(
-                  itemCount: cartviewModel.cartItems.isEmpty
-                      ? 1
-                      : cartviewModel.cartItems.length,
-                  itemBuilder: (context, index) {
-                    if (cartviewModel.cartItems.isNotEmpty) {
-                      CartItem cartItem = cartviewModel.cartItems[index];
-                      return cartItemDesign(cartItem);
-                    } else {
-                      return Container(
-                        padding: EdgeInsets.only(top: 20),
-                        width: MediaQuery.of(context).size.width,
-                        child: Text(
-                          "No books added to the cart.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 18,
-                              letterSpacing: -1,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black45),
-                        ),
-                      );
-                    }
-                  });
+      // return cartviewModel.errorMessage == null &&
+      //         cartviewModel.cartItems.isEmpty
+      //     ? CartShimmer()
+      //     : cartviewModel.errorMessage != null
+      //         ? Center(
+      //             child: Text(cartviewModel.errorMessage),
+      //           )
+      //         : ListView.builder(
+      //             itemCount: cartviewModel.cartItems.isEmpty
+      //                 ? 1
+      //                 : cartviewModel.cartItems.length,
+      //             itemBuilder: (context, index) {
+      //               if (cartviewModel.cartItems.isNotEmpty) {
+      //                 CartItem cartItem = cartviewModel.cartItems[index];
+      //                 return cartItemDesign(cartItem);
+      //               } else {
+      //                 return Container(
+      //                   padding: EdgeInsets.only(top: 20),
+      //                   width: MediaQuery.of(context).size.width,
+      //                   child: Text(
+      //                     "No books added to the cart.",
+      //                     textAlign: TextAlign.center,
+      //                     style: TextStyle(
+      //                         fontSize: 18,
+      //                         letterSpacing: -1,
+      //                         fontWeight: FontWeight.w500,
+      //                         color: Colors.black45),
+      //                   ),
+      //                 );
+      //               }
+      //             });
+      switch (cartviewModel.data.status) {
+        case Status.LOADING:
+          return CartShimmer();
+        case Status.COMPLETE:
+          return ListView.builder(
+            itemCount: cartviewModel.cartItems.isEmpty
+                ? 1
+                : cartviewModel.cartItems.length,
+            itemBuilder: (context, index) {
+              if (cartviewModel.cartItems.isNotEmpty) {
+                CartItem cartItem = cartviewModel.cartItems[index];
+                return cartItemDesign(cartItem);
+              } else {
+                return Container(
+                  padding: EdgeInsets.only(top: 20),
+                  width: MediaQuery.of(context).size.width,
+                  child: Text(
+                    "No books added to the cart.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 18,
+                        letterSpacing: -1,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black45),
+                  ),
+                );
+              }
+            },
+          );
+        case Status.ERROR:
+          return ErrorDisplayer(
+            error: cartviewModel.data.errorMessage,
+            retryOption: retryAction,
+          );
+      }
+      return Container();
     }), onRefresh: () async {
       await context.read<CartviewModel>().fetchCartItems;
     });
+  }
+
+  void retryAction() {
+    context.read<CartviewModel>().resetCartItems();
+    context.read<CartviewModel>().fetchCartItems;
   }
 
   cartItemDesign(CartItem cartItem) {
@@ -200,7 +243,9 @@ class _CartListViewState extends State<CartListView> {
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                deleteCartItem(cartItem.bookID);
+                              },
                               child: SizedBox(
                                 width: 35,
                                 height: 35,
@@ -245,5 +290,11 @@ class _CartListViewState extends State<CartListView> {
         new CartItem(bookID: cartItem.bookID, quantity: cartItem.quantity + 1);
     String increaseCartItemJson = jsonEncode(increaseCartItem);
     context.read<CartviewModel>().addToCart(increaseCartItemJson);
+  }
+
+  deleteCartItem(String cartItemID) {
+    CartItem cartItem = new CartItem(bookID: cartItemID);
+    String cartItemJson = jsonEncode(cartItem);
+    context.read<CartviewModel>().deleteCartItem(cartItemJson);
   }
 }
