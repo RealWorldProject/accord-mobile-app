@@ -27,7 +27,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
     _selectedPageIndex = 0;
 
     _pages = [
-      HomeScreen(),
+      ChangeNotifierProvider(
+        create: (context) => CartviewModel(),
+        child: MaterialApp(
+          home: HomeScreen(),
+        ),
+      ),
       ChangeNotifierProvider(
         create: (context) => CartviewModel(),
         child: CartScreen(),
