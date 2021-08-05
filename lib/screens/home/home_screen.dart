@@ -24,23 +24,15 @@ class _HomeScreenState extends State<HomeScreen>
       extendBody: true,
       body: Container(
         padding: EdgeInsets.zero,
-        child: GestureDetector(
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: SingleChildScrollView(
-            child: SafeArea(
-              bottom: false,
-              child: Column(
-                children: [
-                  SearchField(),
-                  CategoriesSection(),
-                  FeaturedBooksSection(),
-                ],
-              ),
+        child: SingleChildScrollView(
+          child: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                SearchField(),
+                CategoriesSection(),
+                FeaturedBooksSection(),
+              ],
             ),
           ),
         ),

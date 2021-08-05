@@ -5,8 +5,10 @@ import 'package:accord/responses/fetch_books_response.dart';
 import 'package:accord/screens/shimmer/book_list_item.dart';
 import 'package:accord/screens/widgets/book_display_format.dart';
 import 'package:accord/viewModel/book_view_model.dart';
+import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -45,6 +47,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<CartviewModel>().fetchCartItems;
     return Scaffold(
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
