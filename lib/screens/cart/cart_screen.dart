@@ -37,7 +37,7 @@ class _CartScreenState extends State<CartScreen>
       ),
       backgroundColor: Colors.grey[200],
       body: Container(
-        margin: EdgeInsets.only(bottom: 135),
+        margin: EdgeInsets.only(bottom: 185),
         child: CartListView(),
       ),
       bottomSheet: ConfirmCartSection(),
@@ -57,6 +57,7 @@ class ConfirmCartSection extends StatelessWidget {
     return Container(
       height: 200,
       color: Color(0xFF0E3311).withOpacity(0.0),
+      // color: Colors.transparent,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         width: double.infinity,

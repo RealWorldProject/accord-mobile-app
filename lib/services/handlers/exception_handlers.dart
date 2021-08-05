@@ -9,7 +9,7 @@ class ExceptionHandler implements Exception {
 
   @override
   String toString() {
-    return "$_prefix: $_message";
+    return "$_prefix:\n$_message";
   }
 }
 
