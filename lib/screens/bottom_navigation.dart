@@ -4,8 +4,10 @@ import 'package:accord/screens/notification/notification_page.dart';
 import 'package:accord/screens/profile/profile_screen.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:icon_badge/icon_badge.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +18,8 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedPageIndex = 0;
+    bool _isCart = false;
+    bool _isNotification = false;
 
   List<Widget> _pages;
 
@@ -87,31 +91,61 @@ class _BottomNavigationState extends State<BottomNavigation> {
             child: GNav(
               rippleColor: Colors.blue[300],
               hoverColor: Colors.blue[100],
-              gap: 8,
+              gap: 6,
               activeColor: Colors.white,
               iconSize: 24,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               duration: Duration(milliseconds: 400),
               tabBackgroundColor: Colors.lightBlue,
               color: Colors.blue[400],
+
               tabs: [
                 GButton(
                   icon: LineIcons.home,
                   text: 'Home',
+
                 ),
+
+
+
                 GButton(
-                  icon: LineIcons.shoppingCart,
                   text: 'Cart',
+
+                  leading: Badge(
+                    badgeContent: Text('10',style: TextStyle(color: Colors.white,fontSize: 9,fontWeight: FontWeight.bold),),
+                    shape: BadgeShape.circle,
+                    alignment: Alignment.topRight,
+                    child: !_isCart?Icon(LineIcons.shoppingCart, color: Colors.blue[400],size: 27,):Icon(LineIcons.shoppingCart, color: Colors.white),
+
+                   position: BadgePosition.topEnd(),
+                    showBadge: !_isCart?true:false,
+                  )
+                  // leading: Stack(
+                  //   children: [
+                  //     Icon(LineIcons.shoppingCart),
+                  //
+                  //   ],
+                  // ),
                 ),
                 GButton(
-                  icon: LineIcons.bellAlt,
                   text: 'Notifications',
+                    leading: Badge(
+
+                      badgeContent: Text('2',style: TextStyle(color: Colors.white,fontSize: 9,fontWeight: FontWeight.bold),),
+                      shape: BadgeShape.circle,
+                      alignment: Alignment.topRight,
+                      child: !_isNotification?Icon(LineIcons.bellAlt, color: Colors.blue[400],size: 27,):Icon(LineIcons.bellAlt, color: Colors.white),
+
+                      position: BadgePosition.topEnd(),
+                      showBadge: !_isNotification?true:false,
+                    )
                 ),
                 GButton(
                   icon: LineIcons.user,
                   text: 'Profile',
                 ),
               ],
+
               selectedIndex: _selectedPageIndex,
               onTabChange: (selectedPageIndex) {
                 FocusScopeNode currentFocus = FocusScope.of(context);
@@ -119,9 +153,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 if (!currentFocus.hasPrimaryFocus) {
                   currentFocus.unfocus();
                 }
+                if(selectedPageIndex == 1){
+
+                  _isCart = true;
+                }else{
+                  _isCart = false;
+                }
+                if(selectedPageIndex == 2){
+
+                  _isNotification = true;
+                }else{
+                  _isNotification = false;
+                }
 
                 setState(() {
                   _selectedPageIndex = selectedPageIndex;
+                  // _isCart = !_isCart;
                   _pageController.jumpToPage(selectedPageIndex);
                 });
               },
