@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
-import 'package:accord/responses/cart_response.dart';
 import 'package:accord/screens/book_view/book_detail.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
@@ -200,44 +200,65 @@ class BookDisplayFormat extends StatelessWidget {
 }
 
 class AddToCart extends StatelessWidget {
-  const AddToCart({Key key, this.bookID, this.quantity = 1}) : super(key: key);
+  const AddToCart({Key key, this.bookID}) : super(key: key);
 
   final String bookID;
-  final int quantity;
 
   @override
   Widget build(BuildContext context) {
-    // json conversion for cartItem.
-    CartItem cartItem = CartItem(bookID: bookID, quantity: quantity);
-    String cartItemJson = jsonEncode(cartItem);
-
-    var isInCart = context.select<CartviewModel, bool>(
-      // listening to changes occured only in [cartItemsID]
-      (cart) => cart.cartItemsID.contains(bookID),
-    );
+    // bool isInCart = context.select<CartviewModel, bool>(
+    //     // listening to changes occured only in [cartItemsID]
+    //     (cvm) =>
+    //         cvm.cartItems.map((book) => book.bookID).toList().contains(bookID));
 
     return Container(
       height: 30,
       width: 35,
       decoration: BoxDecoration(
-        // altering color in reference to the presence of book in cart.
-        color: isInCart ? Colors.red.shade900 : Color(0xff13293D),
+        color: Color(0xff13293D),
         borderRadius: BorderRadius.all(
           Radius.circular(5),
         ),
       ),
       child: IconButton(
-        onPressed: isInCart
-            ? null
-            : () {
-                context.read<CartviewModel>().addToCart(cartItemJson);
-              },
+        onPressed: () {
+          addOrIncreaseItemQuantity(bookID, context);
+        },
         padding: EdgeInsets.zero,
-        disabledColor: Colors.white,
         icon: Icon(Icons.shopping_cart),
         iconSize: 18,
         color: Colors.white,
       ),
     );
+  }
+
+  addOrIncreaseItemQuantity(String bookID, BuildContext context) async {
+    // first, loads updated cart data on each cart-icon tap.
+    await context.read<CartviewModel>().fetchCartItems;
+    List<CartItem> cartItems = context.read<CartviewModel>().cartItems;
+
+    String cartItemJson;
+
+    if (!cartItems.map((book) => book.bookID).contains(bookID)) {
+      // checks if the book exists in cart.
+      // if not, create the cartItem object(i.e book) with default quantity = 1.
+      CartItem cartItem = CartItem(bookID: bookID, quantity: 1);
+      // json conversion.
+      cartItemJson = jsonEncode(cartItem);
+    } else {
+      // if book exists in the cart, gets the cart data of the book
+      CartItem currentCartItem = cartItems[
+          cartItems.indexWhere((cartItem) => cartItem.bookID == bookID)];
+
+      // creates new cartItem object(i.e book) with updated values.
+      // i.e, makes addition of 1 to existing quantity of the book.
+      CartItem increaseCartItem = CartItem(
+          bookID: currentCartItem.bookID,
+          quantity: currentCartItem.quantity + 1);
+      cartItemJson = jsonEncode(increaseCartItem);
+    }
+
+    // calls api to add cartItem(i.e, book) to cart
+    context.read<CartviewModel>().addToCart(cartItemJson);
   }
 }
