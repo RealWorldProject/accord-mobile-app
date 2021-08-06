@@ -1,3 +1,4 @@
+import 'package:accord/screens/cart/add_location_detail.dart';
 import 'package:accord/screens/cart/cart_list_view.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -105,7 +106,9 @@ class ConfirmCartSection extends StatelessWidget {
             ),
             Container(
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> AddLocationDetail()));
+                },
                 child: Container(
                   padding: EdgeInsets.all(8),
                   width: double.infinity,

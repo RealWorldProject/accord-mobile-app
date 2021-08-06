@@ -20,8 +20,8 @@ class CustomButton extends StatelessWidget {
       height: 50,
       decoration: BoxDecoration(
         borderRadius: (() {
-          if (buttonKey == "btnPostBook") {
-            return BorderRadius.circular(10);
+          if (buttonKey == "btnPostBook" ||buttonKey == "btnAddAddress") {
+            return BorderRadius.circular(5);
           } else {
             return BorderRadius.circular(40);
           }

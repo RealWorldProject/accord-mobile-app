@@ -87,14 +87,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
             child: GNav(
               rippleColor: Colors.blue[300],
               hoverColor: Colors.blue[100],
               gap: 6,
               activeColor: Colors.white,
               iconSize: 24,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               duration: Duration(milliseconds: 400),
               tabBackgroundColor: Colors.lightBlue,
               color: Colors.blue[400],
@@ -102,6 +102,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               tabs: [
                 GButton(
                   icon: LineIcons.home,
+
                   text: 'Home',
 
                 ),
@@ -112,12 +113,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   text: 'Cart',
 
                   leading: Badge(
-                    badgeContent: Text('10',style: TextStyle(color: Colors.white,fontSize: 9,fontWeight: FontWeight.bold),),
+                    badgeContent: Text('3',style: TextStyle(color: Colors.white,fontSize: 9,fontWeight: FontWeight.bold),),
                     shape: BadgeShape.circle,
                     alignment: Alignment.topRight,
                     child: !_isCart?Icon(LineIcons.shoppingCart, color: Colors.blue[400],size: 27,):Icon(LineIcons.shoppingCart, color: Colors.white),
-
-                   position: BadgePosition.topEnd(),
+                   position: BadgePosition.topEnd(top: -8,end: -10),
                     showBadge: !_isCart?true:false,
                   )
                   // leading: Stack(
@@ -133,16 +133,17 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
                       badgeContent: Text('2',style: TextStyle(color: Colors.white,fontSize: 9,fontWeight: FontWeight.bold),),
                       shape: BadgeShape.circle,
-                      alignment: Alignment.topRight,
+                      // alignment: Alignment.centerRight,
                       child: !_isNotification?Icon(LineIcons.bellAlt, color: Colors.blue[400],size: 27,):Icon(LineIcons.bellAlt, color: Colors.white),
 
-                      position: BadgePosition.topEnd(),
+                      position: BadgePosition.topEnd(top: -8,end: -6),
                       showBadge: !_isNotification?true:false,
                     )
                 ),
                 GButton(
                   icon: LineIcons.user,
                   text: 'Profile',
+                  iconSize: 27,
                 ),
               ],
 
