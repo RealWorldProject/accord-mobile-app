@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/responses/cart_response.dart';
@@ -17,9 +18,7 @@ class CartviewModel with ChangeNotifier {
   int get overallPrice =>
       cartItems.fold(0, (total, cartItem) => total + cartItem.totalPrice);
 
-  // create the [String] containing bookIDs. used to track book in cart.
-  List<String> get cartItemsID => cartItems.map((e) => e.bookID).toList();
-
+  // add to cart
   Future<dynamic> addToCart(String cartItem) async {
     // set response status to LOADING.
     _data = ResponseExposer.loading();
@@ -39,6 +38,7 @@ class CartviewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  // fetch cart items
   Future<dynamic> get fetchCartItems async {
     _data = ResponseExposer.loading();
 
@@ -54,6 +54,7 @@ class CartviewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  // delete cart item
   Future<dynamic> deleteCartItem(String cartItem) async {
     _data = ResponseExposer.loading();
 
