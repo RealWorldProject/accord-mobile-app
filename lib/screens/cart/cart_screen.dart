@@ -1,4 +1,6 @@
-import 'package:accord/screens/cart/add_location_detail.dart';
+import 'dart:async';
+
+import 'package:accord/screens/cart/order_details.dart';
 import 'package:accord/screens/cart/cart_list_view.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,16 +43,25 @@ class _CartScreenState extends State<CartScreen>
         margin: EdgeInsets.only(bottom: 185),
         child: CartListView(),
       ),
-      bottomSheet: ConfirmCartSection(),
+      bottomSheet: ConfirmCartSection(
+        cartReloader: reloadCart,
+      ),
     );
   }
 
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
+
+  FutureOr<dynamic> reloadCart(dynamic value) async {
+    await context.read<CartviewModel>().fetchCartItems;
+    setState(() {});
+  }
 }
 
 class ConfirmCartSection extends StatelessWidget {
-  const ConfirmCartSection({Key key}) : super(key: key);
+  const ConfirmCartSection({Key key, this.cartReloader}) : super(key: key);
+
+  final FutureOr cartReloader;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +118,11 @@ class ConfirmCartSection extends StatelessWidget {
             Container(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> AddLocationDetail()));
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddLocationDetail()))
+                      .then(cartReloader);
                 },
                 child: Container(
                   padding: EdgeInsets.all(8),
