@@ -1,5 +1,7 @@
 import 'package:accord/constant/constant.dart';
+import 'package:accord/screens/widgets/exchange_request_dialog_box.dart';
 import 'package:flutter/material.dart';
+
 class CustomOutlineButton extends StatefulWidget {
   const CustomOutlineButton({Key key}) : super(key: key);
 
@@ -14,13 +16,37 @@ class _CustomOutlineButtonState extends State<CustomOutlineButton> {
       height: 35,
       width: 145,
       child: OutlinedButton(
-
-        child: Text("Request Exchange",style: TextStyle(color: Constant.primary_blue_color,fontWeight: FontWeight.w600,fontSize: 12),),
+        onPressed: () {
+          showExchnageDialog();
+        },
+        child: Text(
+          "Request Exchange",
+          style: TextStyle(
+              color: Constant.primary_blue_color,
+              fontWeight: FontWeight.w600,
+              fontSize: 12),
+        ),
         style: OutlinedButton.styleFrom(
           primary: Constant.primary_blue_color,
-          side: BorderSide(color: Constant.primary_blue_color,width: 1.5)
+          side: BorderSide(color: Constant.primary_blue_color, width: 1.5),
         ),
       ),
+    );
+  }
+
+  Future<dynamic> showExchnageDialog() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ExchangeRequestDialogBox(
+            // title: "Action: Log out!",
+            // confirmMessage: "Are you sure you want to logout?",
+            // dontText: "Stay In",
+            // dontAction: () => Navigator.pop(context),
+            // doText: "Log Out",
+            // doAction: logout,
+            );
+      },
     );
   }
 }
