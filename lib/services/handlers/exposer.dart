@@ -1,14 +1,14 @@
 class ResponseExposer<T> {
   Status status;
-  String errorMessage;
+  String message;
 
   ResponseExposer.loading() : status = Status.LOADING;
-  ResponseExposer.complete() : status = Status.COMPLETE;
-  ResponseExposer.error(this.errorMessage) : status = Status.ERROR;
+  ResponseExposer.complete(this.message) : status = Status.COMPLETE;
+  ResponseExposer.error(this.message) : status = Status.ERROR;
 
   @override
   String toString() {
-    return "Status: $status\nMessage: $errorMessage";
+    return "Status: $status\nMessage: $message";
   }
 }
 

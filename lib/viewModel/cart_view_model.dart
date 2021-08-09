@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/responses/cart_response.dart';
@@ -27,10 +26,11 @@ class CartviewModel with ChangeNotifier {
       final apiResponse = await CartService().addToCart(cartItem);
 
       // json to object conversion. then, object's result is placed in _cartItems.
-      _cartItems = CartResponse.fromJson(jsonDecode(apiResponse)).result;
+      var responseObj = CartResponse.fromJson(jsonDecode(apiResponse));
+      _cartItems = responseObj.result;
 
       // set response status to COMPLETE.
-      _data = ResponseExposer.complete();
+      _data = ResponseExposer.complete(responseObj.message);
     } catch (e) {
       // set response status to ERROR.
       _data = ResponseExposer.error(e.toString());
@@ -44,8 +44,11 @@ class CartviewModel with ChangeNotifier {
 
     try {
       final apiResponse = await CartService().fetchCartItems();
-      _cartItems = CartResponse.fromJson(jsonDecode(apiResponse)).result;
-      _data = ResponseExposer.complete();
+
+      var responseObj = CartResponse.fromJson(jsonDecode(apiResponse));
+      _cartItems = responseObj.result;
+
+      _data = ResponseExposer.complete(responseObj.message);
     } catch (e) {
       // resets [cartItems] in case of error.
       _cartItems = [];
@@ -60,8 +63,11 @@ class CartviewModel with ChangeNotifier {
 
     try {
       final apiResponse = await CartService().deleteCartItem(cartItem);
-      _cartItems = CartResponse.fromJson(jsonDecode(apiResponse)).result;
-      _data = ResponseExposer.complete();
+
+      var responseObj = CartResponse.fromJson(jsonDecode(apiResponse));
+      _cartItems = responseObj.result;
+
+      _data = ResponseExposer.complete(responseObj.message);
     } catch (e) {
       _data = ResponseExposer.error(e.toString());
     }

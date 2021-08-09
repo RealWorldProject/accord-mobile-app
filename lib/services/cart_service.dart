@@ -49,7 +49,7 @@ class CartService {
     } on DioError catch (e) {
       return responsebase.apiResponse(e.response);
     } on SocketException {
-      throw FetchDataException("Error while connecting to the server.");
+      throw FetchDataException(Constant.connectionErrorMessage);
     }
   }
 
@@ -70,7 +70,7 @@ class CartService {
     } on DioError catch (e) {
       return responsebase.apiResponse(e.response);
     } on SocketException {
-      throw FetchDataException("Error while connecting to the server.");
+      throw FetchDataException(Constant.connectionErrorMessage);
     }
   }
 }

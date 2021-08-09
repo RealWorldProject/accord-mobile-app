@@ -23,37 +23,6 @@ class _CartListViewState extends State<CartListView> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
         child: Consumer<CartviewModel>(builder: (context, cartviewModel, _) {
-      // return cartviewModel.errorMessage == null &&
-      //         cartviewModel.cartItems.isEmpty
-      //     ? CartShimmer()
-      //     : cartviewModel.errorMessage != null
-      //         ? Center(
-      //             child: Text(cartviewModel.errorMessage),
-      //           )
-      //         : ListView.builder(
-      //             itemCount: cartviewModel.cartItems.isEmpty
-      //                 ? 1
-      //                 : cartviewModel.cartItems.length,
-      //             itemBuilder: (context, index) {
-      //               if (cartviewModel.cartItems.isNotEmpty) {
-      //                 CartItem cartItem = cartviewModel.cartItems[index];
-      //                 return cartItemDesign(cartItem);
-      //               } else {
-      //                 return Container(
-      //                   padding: EdgeInsets.only(top: 20),
-      //                   width: MediaQuery.of(context).size.width,
-      //                   child: Text(
-      //                     "No books added to the cart.",
-      //                     textAlign: TextAlign.center,
-      //                     style: TextStyle(
-      //                         fontSize: 18,
-      //                         letterSpacing: -1,
-      //                         fontWeight: FontWeight.w500,
-      //                         color: Colors.black45),
-      //                   ),
-      //                 );
-      //               }
-      //             });
       switch (cartviewModel.data.status) {
         case Status.LOADING:
           return CartShimmer();
@@ -85,8 +54,8 @@ class _CartListViewState extends State<CartListView> {
           );
         case Status.ERROR:
           return ErrorDisplayer(
-            error: cartviewModel.data.errorMessage,
-            retryOption: retryAction,
+            error: cartviewModel.data.message,
+            retryOption: reloadCart,
           );
       }
       return Container();
@@ -95,7 +64,7 @@ class _CartListViewState extends State<CartListView> {
     });
   }
 
-  void retryAction() {
+  void reloadCart() {
     context.read<CartviewModel>().resetCartItems();
     context.read<CartviewModel>().fetchCartItems;
   }
