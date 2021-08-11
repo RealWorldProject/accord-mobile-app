@@ -17,6 +17,8 @@ class AuthService {
         options: Options(responseType: ResponseType.plain),
       );
       return res.data.toString().replaceAll("\n", "");
+    } on SocketException {
+      throw Exception(Constant.connectionErrorMessage);
     } on DioError catch (e) {
       return e.response.data.toString().replaceAll("\n", "");
     }
@@ -30,22 +32,24 @@ class AuthService {
         options: Options(responseType: ResponseType.plain),
       );
       return res.data;
+    } on SocketException {
+      throw Exception(Constant.connectionErrorMessage);
     } on DioError catch (e) {
       return e.response.data;
     }
   }
 
-  Future<String> fetchUserDetails() async {
+  Future<String> fetchUserDetails([String userId = null]) async {
     final userToken = await Storage().fetchToken();
-    final Map<String, dynamic> user = JwtDecoder.decode(userToken);
+    userId = userId == null ? JwtDecoder.decode(userToken)['id'] : userId;
     try {
-      final res = await dio.get('$baseURL/user/profile/${user['id']}',
+      final res = await dio.get('$baseURL/user/profile/$userId',
           options: Options(
               responseType: ResponseType.plain,
               headers: {HttpHeaders.authorizationHeader: userToken}));
       return res.data;
     } on SocketException {
-      throw Exception("Error while connecting to the server.");
+      throw Exception(Constant.connectionErrorMessage);
     } on DioError catch (e) {
       throw Exception(e.response.data.message);
     }

@@ -4,8 +4,19 @@ import 'package:accord/models/book.dart';
 import 'package:accord/responses/book_response.dart';
 import 'package:accord/responses/fetch_books_response.dart';
 import 'package:accord/services/book_service.dart';
+import 'package:accord/services/handlers/exposer.dart';
+import 'package:flutter/foundation.dart';
 
-class BookViewModel {
+class BookViewModel extends ChangeNotifier {
+  Book _book;
+  Book get book => _book;
+
+  List<Book> _books;
+  List<Book> get books => _books;
+
+  ResponseExposer _data;
+  ResponseExposer get data => _data;
+
   Future<BookResponse> postBook(String book) async {
     final postBookResponseAPI = await BookService().postBook(book);
     // sending json response to BookResponse to convert into object

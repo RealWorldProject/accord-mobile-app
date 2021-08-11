@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
-import 'package:accord/screens/book_view/book_detail.dart';
+import 'package:accord/screens/book_view/book_screen.dart';
 import 'package:accord/screens/book_view/rating_stars.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,11 @@ class BookDisplayFormat extends StatelessWidget {
           splashColor: Colors.white60,
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => BookDetail()));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BookScreen(
+                          book: book,
+                        )));
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -206,30 +210,62 @@ class AddToCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // bool isInCart = context.select<CartviewModel, bool>(
-    //     // listening to changes occured only in [cartItemsID]
-    //     (cvm) =>
-    //         cvm.cartItems.map((book) => book.bookID).toList().contains(bookID));
+    bool isInCart = context.select<CartviewModel, bool>(
+        // listening to changes occured only in [cartItemsID]
+        (cvm) =>
+            cvm.cartItems.map((book) => book.bookID).toList().contains(bookID));
 
     return Container(
-      height: 30,
-      width: 35,
-      decoration: BoxDecoration(
-        color: Color(0xff13293D),
-        borderRadius: BorderRadius.all(
-          Radius.circular(5),
+        height: 30,
+        width: 35,
+        decoration: BoxDecoration(
+          color: Color(0xff13293D),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
         ),
-      ),
-      child: IconButton(
-        onPressed: () {
-          addOrIncreaseItemQuantity(bookID, context);
-        },
-        padding: EdgeInsets.zero,
-        icon: Icon(Icons.shopping_cart),
-        iconSize: 18,
-        color: Colors.white,
-      ),
-    );
+        child: !isInCart
+            ? IconButton(
+                onPressed: () {
+                  addOrIncreaseItemQuantity(bookID, context);
+                },
+                padding: EdgeInsets.zero,
+                icon: Icon(Icons.shopping_cart),
+                iconSize: 18,
+                color: Colors.white,
+              )
+            : Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      addOrIncreaseItemQuantity(bookID, context);
+                    },
+                    padding: EdgeInsets.zero,
+                    icon: Icon(Icons.shopping_cart),
+                    iconSize: 18,
+                    color: Colors.white,
+                  ),
+                  Container(
+                    height: 12,
+                    width: 12,
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: 2, right: 8),
+                    decoration: BoxDecoration(
+                      color: Color(0xff13293D),
+                      // color: Colors.red,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      size: 12,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ));
   }
 
   addOrIncreaseItemQuantity(String bookID, BuildContext context) async {
