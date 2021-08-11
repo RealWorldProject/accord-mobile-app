@@ -186,6 +186,20 @@ class _IncomingRequestState extends State<IncomingRequest> {
             return Dismissible(
               key: UniqueKey(),
               child: _incomingRequestBuilder(),
+              onDismissed: (direction) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Removed Item'),
+                    action: SnackBarAction(
+                      label: "UNDO",
+                      onPressed: (){
+
+                      },
+                    ),
+                  ),
+                );
+              },
+              background: Container(color:Colors.red),
             );
           }),
     );
