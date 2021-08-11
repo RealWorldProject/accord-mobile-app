@@ -1,17 +1,23 @@
 import 'package:accord/constant/constant.dart';
-import 'package:accord/screens/book_view/rating_stars.dart';
+import 'package:accord/screens/home/book_view/rating_stars.dart';
 import 'package:accord/screens/widgets/back_button.dart';
 import 'package:accord/screens/widgets/custom_like_button.dart';
 import 'package:flutter/material.dart';
-class BookDetailSection extends StatefulWidget {
-  const BookDetailSection({Key key}) : super(key: key);
 
-  @override
-  _BookDetailSectionState createState() => _BookDetailSectionState();
-}
+class BookDetailSection extends StatelessWidget {
+  const BookDetailSection({
+    Key key,
+    this.images,
+    this.name,
+    this.author,
+    this.exchangable,
+  }) : super(key: key);
 
-class _BookDetailSectionState extends State<BookDetailSection> {
-  bool isLiked = false;
+  final List<String> images;
+  final String name;
+  final String author;
+  final bool exchangable;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,13 +31,15 @@ class _BookDetailSectionState extends State<BookDetailSection> {
               Container(
                 height: MediaQuery.of(context).size.height / 2,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                    ),
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/book2.jpg"),
-                        fit: BoxFit.contain)),
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
+                  ),
+                  image: DecorationImage(
+                    image: NetworkImage(images[0]),
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
               Positioned.fill(
                 child: Container(
@@ -57,27 +65,29 @@ class _BookDetailSectionState extends State<BookDetailSection> {
             ],
           ),
           Container(
-
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "The King of Drugs",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Constant.full_dark_blue_color),
+                  name,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Constant.full_dark_blue_color),
                 ),
                 RichText(
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "By",
+                        text: "By ",
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                         ),
                       ),
                       TextSpan(
-                        text: " Nora Barrett",
+                        text: author,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -90,16 +100,25 @@ class _BookDetailSectionState extends State<BookDetailSection> {
                     ),
                   ),
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 RatingStars(4.5, 20),
                 Text(
                   "Available for Exchange",
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff1b98e0)),
-                )
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w600,
+                    color: exchangable == true
+                        ? Color(0xff1b98e0)
+                        : Colors.grey[600],
+                    decoration: exchangable == false
+                        ? (TextDecoration.lineThrough)
+                        : (TextDecoration.none),
+                  ),
+                ),
               ],
             ),
           )

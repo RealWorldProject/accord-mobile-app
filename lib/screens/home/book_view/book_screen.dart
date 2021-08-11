@@ -1,23 +1,19 @@
 import 'package:accord/constant/constant.dart';
-import 'package:accord/screens/book_view/book_description.dart';
-import 'package:accord/screens/book_view/book_detail_section.dart';
-import 'package:accord/screens/book_view/book_rating.dart';
-import 'package:accord/screens/book_view/rating_stars.dart';
-import 'package:accord/screens/widgets/back_button.dart';
-import 'package:accord/screens/widgets/custom_like_button.dart';
+import 'package:accord/models/book.dart';
+import 'package:accord/screens/home/book_view/book_description.dart';
+import 'package:accord/screens/home/book_view/book_detail_section.dart';
+import 'package:accord/screens/home/book_view/book_rating.dart';
+import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:provider/provider.dart';
 
-import 'book_uploaded_user_info.dart';
+import 'book_owner.dart';
 
-class BookDetail extends StatefulWidget {
-  const BookDetail({Key key}) : super(key: key);
+class BookScreen extends StatelessWidget {
+  const BookScreen({Key key, this.book}) : super(key: key);
 
-  @override
-  _BookDetailState createState() => _BookDetailState();
-}
+  final Book book;
 
-class _BookDetailState extends State<BookDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,9 +24,23 @@ class _BookDetailState extends State<BookDetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BookDetailSection(),
-              BookUploadedUserInfo(),
-              BookDescription(),
+              BookDetailSection(
+                images: book.images,
+                name: book.name,
+                author: book.author,
+                exchangable: book.isAvailableForExchange,
+              ),
+              MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(create: (_) => UserViewModel())
+                ],
+                child: BookOwner(
+                    ownerID: book.userId,
+                    exchangable: book.isAvailableForExchange),
+              ),
+              BookDescription(
+                description: book.description,
+              ),
               BookRating(),
               SizedBox(
                 height: 100,
@@ -43,7 +53,6 @@ class _BookDetailState extends State<BookDetail> {
         height: 80,
         color: Color(0xFF0E3311).withOpacity(0.0),
         child: Container(
-
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           width: double.infinity,
           decoration: BoxDecoration(
@@ -64,7 +73,10 @@ class _BookDetailState extends State<BookDetail> {
                 ),
                 Text(
                   "Rs. 999",
-                  style: TextStyle(color: Constant.semi_dark_blue_color,fontWeight: FontWeight.bold,fontSize: 22),
+                  style: TextStyle(
+                      color: Constant.semi_dark_blue_color,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22),
                 ),
               ]),
               Container(
@@ -78,13 +90,25 @@ class _BookDetailState extends State<BookDetail> {
                   color: Colors.transparent,
                   child: InkWell(
                     splashColor: Colors.white60,
-                    onTap: (){},
+                    onTap: () {},
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.shopping_cart_rounded,size: 25,color: Colors.white,),
-                        SizedBox(width: 10,),
-                        Text("Add to Cart",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),)
+                        Icon(
+                          Icons.shopping_cart_rounded,
+                          size: 25,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Add to Cart",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        )
                       ],
                     ),
                   ),
@@ -92,7 +116,6 @@ class _BookDetailState extends State<BookDetail> {
               )
             ],
           ),
-
         ),
       ),
     );
