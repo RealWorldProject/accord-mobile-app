@@ -12,6 +12,7 @@ class CustomTextField<T> extends StatelessWidget {
   final bool obscureText;
   final String hintText;
   final FieldValidator fieldValidator;
+  final String initialValue;
 
   CustomTextField({
     this.formType,
@@ -19,6 +20,7 @@ class CustomTextField<T> extends StatelessWidget {
     this.obscureText,
     this.hintText,
     this.fieldValidator,
+    this.initialValue,
   });
 
   @override
@@ -67,6 +69,8 @@ class CustomTextField<T> extends StatelessWidget {
         }
       }()),
       textInputAction: TextInputAction.next,
+      initialValue: initialValue,
+
     );
   }
 }

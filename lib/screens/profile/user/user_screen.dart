@@ -1,4 +1,5 @@
 import 'package:accord/screens/profile/user/book/post_book_screen.dart';
+import 'package:accord/screens/profile/user/edit/user_edit_detail.dart';
 import 'package:accord/screens/profile/user/user_owned_books_section.dart';
 import 'package:accord/screens/profile/user/user_detail_section.dart';
 import 'package:accord/screens/shimmer/view_profile_shimmer.dart';
@@ -42,6 +43,7 @@ class _UserScreenState extends State<UserScreen> {
                       child: InkWell(
                         onTap: () {
                           print("Edit Profile");
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => UserEditDetail()));
                         },
                         child: Container(
                           padding:

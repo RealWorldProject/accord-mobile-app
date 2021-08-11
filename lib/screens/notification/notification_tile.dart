@@ -55,9 +55,7 @@ class _NotificationTileState extends State<NotificationTile> {
                         TextSpan(
                           text:
                               " accepted your request. You can now see the contact information of ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+
                         ),
                         // TextSpan(
                         //   text:
@@ -69,13 +67,15 @@ class _NotificationTileState extends State<NotificationTile> {
                         TextSpan(
                           text: "John Doe.",
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
                             color: Color(0xff13293d),
+                            fontWeight: FontWeight.bold,
+
                           ),
                         ),
                       ],
                       style: const TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w600,
                         color: Color(0xff606060),
                       ),
                     ),
@@ -84,7 +84,7 @@ class _NotificationTileState extends State<NotificationTile> {
                   Text(
                     "12 hour ago",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff1b98e0),
                     ),

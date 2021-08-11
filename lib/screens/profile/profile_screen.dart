@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:accord/models/user.dart';
+import 'package:accord/screens/Request/request_tab_view.dart';
 import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/profile/password/change_password.dart';
 import 'package:accord/screens/profile/user/user_screen.dart';
@@ -149,7 +150,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                           Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RequestTabView()));
+                              },
                               child: ListTile(
                                 leading: Icon(
                                   Icons.menu_book_rounded,
@@ -157,7 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   color: Color(0xff0a78b2),
                                 ),
                                 title: Text(
-                                  "My Books",
+                                  "My Books Request",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,
