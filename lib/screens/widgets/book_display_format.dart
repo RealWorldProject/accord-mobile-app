@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
-import 'package:accord/screens/book_view/book_screen.dart';
-import 'package:accord/screens/book_view/rating_stars.dart';
+import 'package:accord/screens/home/book_view/book_screen.dart';
+import 'package:accord/screens/home/book_view/rating_stars.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

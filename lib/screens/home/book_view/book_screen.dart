@@ -1,8 +1,8 @@
 import 'package:accord/constant/constant.dart';
 import 'package:accord/models/book.dart';
-import 'package:accord/screens/book_view/book_description.dart';
-import 'package:accord/screens/book_view/book_detail_section.dart';
-import 'package:accord/screens/book_view/book_rating.dart';
+import 'package:accord/screens/home/book_view/book_description.dart';
+import 'package:accord/screens/home/book_view/book_detail_section.dart';
+import 'package:accord/screens/home/book_view/book_rating.dart';
 import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

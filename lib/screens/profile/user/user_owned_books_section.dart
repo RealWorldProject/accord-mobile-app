@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:accord/models/book.dart';
-import 'package:accord/screens/book_view/rating_stars.dart';
+import 'package:accord/screens/home/book_view/rating_stars.dart';
 import 'package:accord/screens/profile/user/book/edit_book_screen.dart';
 import 'package:accord/screens/shimmer/view_profile_shimmer.dart';
 import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
@@ -239,7 +239,7 @@ class _UserOwnedBooksSectionState extends State<UserOwnedBooksSection> {
                       color: Colors.grey[700],
                       fontStyle: FontStyle.italic),
                 ),
-                RatingStars(5,18),
+                RatingStars(5, 18),
                 Text(
                   book.isAvailableForExchange
                       ? "Available for exchange"

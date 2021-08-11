@@ -1,5 +1,5 @@
 import 'package:accord/constant/constant.dart';
-import 'package:accord/screens/book_view/rating_stars.dart';
+import 'package:accord/screens/home/book_view/rating_stars.dart';
 import 'package:flutter/material.dart';
 
 class BookRating extends StatelessWidget {
