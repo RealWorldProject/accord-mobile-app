@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:accord/models/user.dart';
 import 'package:accord/screens/Request/request_tab_view.dart';
 import 'package:accord/screens/auth/login_screen.dart';
+import 'package:accord/screens/order/order_screen.dart';
 import 'package:accord/screens/profile/password/change_password.dart';
 import 'package:accord/screens/profile/user/user_screen.dart';
 import 'package:accord/screens/widgets/custom_dialog_box.dart';
@@ -152,13 +153,49 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RequestTabView()));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => OrderScreen(),
+                                  ),
+                                );
                               },
                               child: ListTile(
                                 leading: Icon(
                                   Icons.menu_book_rounded,
+                                  size: 28,
+                                  color: Color(0xff0a78b2),
+                                ),
+                                title: Text(
+                                  "My Orders",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff1b98e0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            height: 0,
+                            thickness: 1,
+                            indent: 13,
+                            endIndent: 13,
+                            color: Color(0xffafa9a9),
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            RequestTabView()));
+                              },
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.send,
                                   size: 28,
                                   color: Color(0xff0a78b2),
                                 ),
@@ -213,36 +250,36 @@ class _ProfileScreenState extends State<ProfileScreen>
                             endIndent: 13,
                             color: Color(0xffafa9a9),
                           ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                showLogoutDialog();
-                              },
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.logout,
-                                  size: 28,
-                                  color: Color(0xff0a78b2),
-                                ),
-                                title: Text(
-                                  "Logout",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff1b98e0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            height: 0,
-                            thickness: 1,
-                            indent: 13,
-                            endIndent: 13,
-                            color: Color(0xffafa9a9),
-                          ),
+                          // Material(
+                          //   color: Colors.transparent,
+                          //   child: InkWell(
+                          //     onTap: () {
+                          //       showLogoutDialog();
+                          //     },
+                          //     child: ListTile(
+                          //       leading: Icon(
+                          //         Icons.logout,
+                          //         size: 28,
+                          //         color: Color(0xff0a78b2),
+                          //       ),
+                          //       title: Text(
+                          //         "Logout",
+                          //         style: TextStyle(
+                          //           fontSize: 18,
+                          //           fontWeight: FontWeight.w500,
+                          //           color: Color(0xff1b98e0),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // Divider(
+                          //   height: 0,
+                          //   thickness: 1,
+                          //   indent: 13,
+                          //   endIndent: 13,
+                          //   color: Color(0xffafa9a9),
+                          // ),
                           SizedBox(
                             height: 20,
                           )
