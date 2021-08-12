@@ -52,10 +52,8 @@ class _RequestTabViewState extends State<RequestTabView>
           controller: _controller,
           tabs: list,
         ),
-        title: CustomText(
-          textToShow: "Requests",
-          textColor: Colors.blue,
-        ),
+        title: Text("My Orders",style: TextStyle(color: Constant.primary_blue_color),),
+
       ),
       body: TabBarView(
         controller: _controller,
