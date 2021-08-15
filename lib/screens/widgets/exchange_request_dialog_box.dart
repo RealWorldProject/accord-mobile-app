@@ -1,4 +1,4 @@
-import 'package:accord/constant/constant.dart';
+import 'package:accord/constant/accord_colors.dart';
 import 'package:direct_select/direct_select.dart';
 import "package:flutter/material.dart";
 
@@ -29,7 +29,6 @@ class _ExchangeRequestDialogBoxState extends State<ExchangeRequestDialogBox> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,7 +76,6 @@ class _ExchangeRequestDialogBoxState extends State<ExchangeRequestDialogBox> {
         ],
       ),
       actions: [
-
         SizedBox(
           height: 30,
           width: 80,
@@ -85,7 +83,10 @@ class _ExchangeRequestDialogBoxState extends State<ExchangeRequestDialogBox> {
             style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
             ),
-            child: Text("Cancel",style: TextStyle(color: Colors.red),),
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.red),
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -97,7 +98,7 @@ class _ExchangeRequestDialogBoxState extends State<ExchangeRequestDialogBox> {
           child: TextButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
-               Constant.primary_blue_color,
+                AccordColors.primary_blue_color,
               ),
               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
             ),
@@ -105,8 +106,7 @@ class _ExchangeRequestDialogBoxState extends State<ExchangeRequestDialogBox> {
               "Confirm",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ),
       ],
@@ -146,7 +146,6 @@ class MySelectionItem extends StatelessWidget {
                 ),
               ),
       ),
-
     );
   }
 

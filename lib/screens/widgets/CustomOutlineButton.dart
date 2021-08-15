@@ -1,6 +1,8 @@
 import 'package:accord/constant/accord_colors.dart';
 import 'package:flutter/material.dart';
 
+import 'exchange_request_dialog_box.dart';
+
 class CustomOutlineButton extends StatelessWidget {
   const CustomOutlineButton({Key key, this.enable}) : super(key: key);
 
@@ -14,7 +16,8 @@ class CustomOutlineButton extends StatelessWidget {
       width: 145,
       child: OutlinedButton(
         onPressed: () {
-          showExchnageDialog();},
+          showExchnageDialog(context);
+        },
         child: Text(
           "Request Exchange",
           style: TextStyle(
@@ -34,7 +37,7 @@ class CustomOutlineButton extends StatelessWidget {
     );
   }
 
-  Future<dynamic> showExchnageDialog() {
+  Future<dynamic> showExchnageDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {

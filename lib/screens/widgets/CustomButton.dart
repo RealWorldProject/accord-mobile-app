@@ -1,4 +1,4 @@
-import 'package:accord/constant/constant.dart';
+import 'package:accord/constant/accord_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -10,7 +10,8 @@ class CustomButton extends StatelessWidget {
     return TextButton(
       onPressed: () {},
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Constant.primary_blue_color),
+        backgroundColor:
+            MaterialStateProperty.all(AccordColors.primary_blue_color),
         padding: MaterialStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(horizontal: 20)),
       ),
