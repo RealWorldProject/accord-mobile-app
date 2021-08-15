@@ -1,12 +1,15 @@
+import 'package:accord/models/category.dart';
+import 'package:accord/models/user.dart';
+
 class Book {
   final String id;
   final String name;
   final String author;
-  final String category;
+  final dynamic category;
   final double price;
   final String description;
   final List<String> images;
-  final String userId;
+  final dynamic userId;
   final bool isNewBook;
   final bool isAvailableForExchange;
 
@@ -29,11 +32,11 @@ class Book {
       id: json['_id'],
       name: json['name'],
       author: json['author'],
-      category: json['category'],
+      category: Category.fromJson(json['category']),
       price: double.parse(json['price'].toString()),
       description: json['description'],
       images: new List<String>.from(json['images']),
-      userId: json['userId'],
+      userId: User.fromJson(json['userId']),
       isNewBook: json['isNewBook'],
       isAvailableForExchange: json['isAvailableForExchange'],
     );

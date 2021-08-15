@@ -1,15 +1,12 @@
-import 'package:accord/constant/constant.dart';
-import 'package:accord/screens/widgets/exchange_request_dialog_box.dart';
+import 'package:accord/constant/accord_colors.dart';
 import 'package:flutter/material.dart';
 
-class CustomOutlineButton extends StatefulWidget {
-  const CustomOutlineButton({Key key}) : super(key: key);
+class CustomOutlineButton extends StatelessWidget {
+  const CustomOutlineButton({Key key, this.enable}) : super(key: key);
 
-  @override
-  _CustomOutlineButtonState createState() => _CustomOutlineButtonState();
-}
+  // used for separating the widget's visuals
+  final bool enable;
 
-class _CustomOutlineButtonState extends State<CustomOutlineButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -17,19 +14,22 @@ class _CustomOutlineButtonState extends State<CustomOutlineButton> {
       width: 145,
       child: OutlinedButton(
         onPressed: () {
-          showExchnageDialog();
-        },
+          showExchnageDialog();},
         child: Text(
           "Request Exchange",
           style: TextStyle(
-              color: Constant.primary_blue_color,
-              fontWeight: FontWeight.w600,
-              fontSize: 12),
+            color: enable ? AccordColors.primary_blue_color : Colors.black26,
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
         ),
         style: OutlinedButton.styleFrom(
-          primary: Constant.primary_blue_color,
-          side: BorderSide(color: Constant.primary_blue_color, width: 1.5),
-        ),
+            splashFactory: enable ? null : NoSplash.splashFactory,
+            primary: AccordColors.primary_blue_color,
+            side: BorderSide(
+              color: enable ? AccordColors.primary_blue_color : Colors.black26,
+              width: 1.5,
+            )),
       ),
     );
   }

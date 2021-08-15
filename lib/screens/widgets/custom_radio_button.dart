@@ -31,7 +31,10 @@ class CustomRadioButton<T> extends StatelessWidget {
               groupValue: groupValue,
               onChanged: onChanged,
             ),
-            CustomText(holderKey: "rdo", textToShow: text),
+            CustomText(
+              textToShow: text,
+              fontSize: 16,
+            ),
           ],
         ),
       ),

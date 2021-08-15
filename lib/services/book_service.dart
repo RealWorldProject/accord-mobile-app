@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/constant/constant.dart';
+import 'package:accord/services/handlers/exception_handlers.dart';
+import 'package:accord/services/handlers/response_base.dart';
 import 'package:accord/services/storage.dart';
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -24,8 +27,10 @@ class BookService {
         ),
       );
       return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
-      return e.response.data;
+      return ResponseBase().apiResponse(e.response);
     }
   }
 
@@ -47,8 +52,10 @@ class BookService {
         ),
       );
       return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
-      return e.response.data;
+      return ResponseBase().apiResponse(e.response);
     }
   }
 
@@ -69,8 +76,10 @@ class BookService {
         ),
       );
       return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
-      return e.response.data;
+      return ResponseBase().apiResponse(e.response);
     }
   }
 
@@ -92,8 +101,10 @@ class BookService {
         ),
       );
       return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
-      return e.response.data;
+      return ResponseBase().apiResponse(e.response);
     }
   }
 
@@ -116,17 +127,19 @@ class BookService {
         ),
       );
       return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
-      return e.response.data;
+      return ResponseBase().apiResponse(e.response);
     }
   }
 
-  Future<String> updateBook(String updatedBook, String bookID) async {
+  Future<String> updateBook(String updatedBookInfo, String bookID) async {
     userToken = await Storage().fetchToken();
     try {
       final res = await dio.put(
         '$baseURL/book/$bookID',
-        data: updatedBook,
+        data: updatedBookInfo,
         options: Options(
           responseType: ResponseType.plain,
           headers: {
@@ -135,8 +148,10 @@ class BookService {
         ),
       );
       return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
-      return e.response.data;
+      return ResponseBase().apiResponse(e.response);
     }
   }
 
@@ -153,8 +168,10 @@ class BookService {
         ),
       );
       return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
-      return e.response.data;
+      return ResponseBase().apiResponse(e.response);
     }
   }
 }

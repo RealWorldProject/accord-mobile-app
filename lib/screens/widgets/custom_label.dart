@@ -8,48 +8,41 @@ class CustomText extends StatelessWidget {
   // these prefix must be only 3 characters.
 
   // `textToShow` is the main parameter while the remaining depends on developer's need
-  final String holderKey;
+  final double fontSize;
   final String textToShow;
   final Color textColor;
   final FontWeight fontWeight;
+  final int noOfLines;
+  final TextOverflow overflow;
+  final double letterSpacing;
+  final FontStyle fontStyle;
+  final TextDecoration textDecoration;
 
   CustomText({
-    this.holderKey,
-    this.textToShow,
+    this.fontSize = 18,
+    @required this.textToShow,
     this.textColor,
-    this.fontWeight,
+    this.fontWeight = FontWeight.w500,
+    this.noOfLines = 1,
+    this.overflow,
+    this.letterSpacing = 0,
+    this.fontStyle = FontStyle.normal,
+    this.textDecoration,
   });
 
   @override
   Widget build(BuildContext context) {
-    // checking if holderKey is null and fetching its prefix.
-    final keyPrefix = (holderKey == null) ? "" : holderKey.substring(0, 3);
     return Text(
       textToShow,
       style: TextStyle(
-        // differentiating font size in reference to the prefix of holderKey.
-        fontSize: (() {
-          if (keyPrefix == "rdo" || keyPrefix == "lnk" || keyPrefix == "ask") {
-            return 16.toDouble();
-          } else if (keyPrefix == "ttl" || keyPrefix == "grt") {
-            return 30.toDouble();
-          } else {
-            return 18.toDouble();
-          }
-        }()),
-        // differentiating font weight in reference to the prefix of holderKey.
-        fontWeight: (() {
-          if (keyPrefix == "lnk" ||
-              keyPrefix == "ask" ||
-              keyPrefix == "tag" ||
-              keyPrefix == "gid") {
-            return null;
-          } else {
-            return FontWeight.w600;
-          }
-        }()),
-        color: textColor,
-      ),
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: textColor,
+          letterSpacing: letterSpacing,
+          fontStyle: fontStyle,
+          decoration: textDecoration),
+      maxLines: noOfLines,
+      overflow: overflow == null ? null : overflow,
     );
   }
 }

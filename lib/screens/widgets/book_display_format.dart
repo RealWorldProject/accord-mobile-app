@@ -4,6 +4,7 @@ import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/home/book_view/book_screen.dart';
 import 'package:accord/screens/home/book_view/rating_stars.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -88,6 +89,7 @@ class BookDisplayFormat extends StatelessWidget {
                         ],
                       ),
                       child: IconButton(
+                        onPressed: () {},
                         padding: EdgeInsets.only(
                             top: 4, bottom: 0, left: 0, right: 0),
                         alignment: Alignment.center,
@@ -115,22 +117,19 @@ class BookDisplayFormat extends StatelessWidget {
                               ),
                             )
                           : BoxDecoration(
-                              color: Colors.greenAccent[700],
+                              color: Color(0xff009900),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(5),
                               ),
                             ),
-                      child: book.isNewBook == false
-                          ? Text(
-                              "old",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                            )
-                          : Text(
-                              "new",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                            ),
+                      child: Text(
+                        book.isNewBook ? "New" : "Old",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          letterSpacing: 1,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -156,8 +155,8 @@ class BookDisplayFormat extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.w100,
-                          color: Colors.grey[700],
+                          fontWeight: FontWeight.w300,
+                          color: Colors.grey[800],
                           fontStyle: FontStyle.italic),
                     ),
                     RatingStars(4.5, 18),
@@ -166,10 +165,10 @@ class BookDisplayFormat extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 11,
-                          fontWeight: FontWeight.w100,
+                          fontWeight: FontWeight.w300,
                           color: book.isAvailableForExchange == true
-                              ? Colors.blue
-                              : Colors.grey[800],
+                              ? Colors.blue[600]
+                              : Colors.grey[600],
                           decoration: book.isAvailableForExchange == false
                               ? (TextDecoration.lineThrough)
                               : (TextDecoration.none),
@@ -214,62 +213,56 @@ class AddToCart extends StatelessWidget {
         (cvm) =>
             cvm.cartItems.map((book) => book.bookID).toList().contains(bookID));
 
-    return Container(
-        height: 30,
-        width: 35,
-        decoration: BoxDecoration(
-          color: Color(0xff13293D),
-          borderRadius: BorderRadius.all(
-            Radius.circular(5),
+    return Material(
+      color: Color(0xff13293D),
+      borderRadius: BorderRadius.all(
+        Radius.circular(5),
+      ),
+      child: InkWell(
+        onTap: () {
+          context.read<CartviewModel>().data.status == Status.LOADING
+              ? null
+              : addOrIncreaseItemQuantity(bookID, context);
+        },
+        child: Container(
+          height: 30,
+          width: 35,
+          alignment: Alignment.center,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Icon(
+                Icons.shopping_cart,
+                size: 18,
+                color: Colors.white,
+              ),
+              isInCart
+                  ? Container(
+                      height: 12,
+                      width: 12,
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(bottom: 15, left: 7),
+                      decoration: BoxDecoration(
+                        color: Color(0xff13293D),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        size: 12,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Container(),
+            ],
           ),
         ),
-        child: !isInCart
-            ? IconButton(
-                onPressed: () {
-                  addOrIncreaseItemQuantity(bookID, context);
-                },
-                padding: EdgeInsets.zero,
-                icon: Icon(Icons.shopping_cart),
-                iconSize: 18,
-                color: Colors.white,
-              )
-            : Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      addOrIncreaseItemQuantity(bookID, context);
-                    },
-                    padding: EdgeInsets.zero,
-                    icon: Icon(Icons.shopping_cart),
-                    iconSize: 18,
-                    color: Colors.white,
-                  ),
-                  Container(
-                    height: 12,
-                    width: 12,
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(top: 2, right: 8),
-                    decoration: BoxDecoration(
-                      color: Color(0xff13293D),
-                      // color: Colors.red,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.add,
-                      size: 12,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ));
+      ),
+    );
   }
 
-  addOrIncreaseItemQuantity(String bookID, BuildContext context) async {
-    // first, loads updated cart data on each cart-icon tap.
-    await context.read<CartviewModel>().fetchCartItems;
+  addOrIncreaseItemQuantity(String bookID, BuildContext context) {
     List<CartItem> cartItems = context.read<CartviewModel>().cartItems;
 
     String cartItemJson;
@@ -278,6 +271,7 @@ class AddToCart extends StatelessWidget {
       // checks if the book exists in cart.
       // if not, create the cartItem object(i.e book) with default quantity = 1.
       CartItem cartItem = CartItem(bookID: bookID, quantity: 1);
+
       // json conversion.
       cartItemJson = jsonEncode(cartItem);
     } else {

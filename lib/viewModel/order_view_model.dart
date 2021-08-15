@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:accord/models/order.dart';
 import 'package:accord/responses/order_response.dart';
-import 'package:accord/services/handlers/exposer.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:accord/services/order_service.dart';
 import 'package:flutter/foundation.dart';
 

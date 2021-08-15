@@ -1,3 +1,4 @@
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/responses/login_response.dart';
 import 'package:accord/screens/auth/register_screen.dart';
 import 'package:accord/screens/widgets/conceal_password.dart';
@@ -25,11 +26,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordcontroller = TextEditingController();
 
   // input field validation
-  final _requireEmail =
-      MultiValidator([RequiredValidator(errorText: "Email is required!")]);
+  final _requireEmail = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.email))
+  ]);
 
-  final _requirePassword =
-      MultiValidator([RequiredValidator(errorText: "Password is required!")]);
+  final _requirePassword = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.password))
+  ]);
 
   // Toggles the password show status
   bool _obscurePassword = true;
@@ -58,8 +63,11 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) => BottomNavigation()));
       } else {
         //else displaying error messages.
-        ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(_loginResponse.message, "Try Again", this.context));
+        ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
+          content: _loginResponse.message,
+          context: context,
+          actionLabel: AccordLabels.tryAgain,
+        ));
       }
     }
   }
@@ -100,16 +108,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         FadeAnimation(
                           1,
                           CustomText(
-                            holderKey: "grtUser",
-                            textToShow: "Welcome Back!",
+                            textToShow: AccordLabels.greet,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         FadeAnimation(
                           1.3,
                           CustomText(
-                            holderKey: "gidLogin",
-                            textToShow: "Login to the Accord!",
+                            textToShow: AccordLabels.loginGuide,
                             textColor: Colors.grey.shade700,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         SizedBox(
@@ -124,9 +133,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   children: <Widget>[
                                     Container(
                                       child: CustomTextField(
+                                        designType: DesignType.UNDERLINE,
                                         fieldController: _emailController,
-                                        obscureText: _obscurePassword,
-                                        hintText: "Email",
+                                        hintText: AccordLabels.email,
                                         fieldValidator: _requireEmail,
                                       ),
                                     ),
@@ -134,9 +143,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                       alignment: Alignment.centerRight,
                                       children: <Widget>[
                                         CustomTextField(
-                                          fieldController: _passwordcontroller,
+                                          designType: DesignType.UNDERLINE,
                                           obscureText: _obscurePassword,
-                                          hintText: "Password",
+                                          fieldController: _passwordcontroller,
+                                          hintText: AccordLabels.password,
                                           fieldValidator: _requirePassword,
                                         ),
                                         Positioned(
@@ -162,9 +172,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             FadeAnimation(
                               1.5,
                               CustomText(
-                                holderKey: "ask",
-                                textToShow: "Forgot Password?",
+                                textToShow: AccordLabels.forgotPassword,
                                 textColor: Colors.grey.shade700,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],
@@ -175,8 +186,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         FadeAnimation(
                           1.6,
                           CustomButton(
-                            buttonKey: "btnLogin",
-                            buttonText: "Login",
+                            buttonShape: ButtonShape.OVAL,
+                            buttonText: AccordLabels.login,
                             triggerAction: _validateLogin,
                           ),
                         ),
@@ -189,15 +200,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             FadeAnimation(
                               1.7,
                               CustomText(
-                                holderKey: "askRegister",
-                                textToShow: "Don't have an account? ",
+                                textToShow: AccordLabels.askRegister,
                                 textColor: Colors.grey.shade700,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             FadeAnimation(
                               1.8,
                               GestureDetector(
-                                key: Key("lnkRegister"),
                                 onTap: () {
                                   Navigator.push(
                                       context,
@@ -206,9 +217,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                               RegisterScreen()));
                                 },
                                 child: CustomText(
-                                  holderKey: "lnkRegister",
-                                  textToShow: "Register",
+                                  textToShow: AccordLabels.register,
                                   textColor: Colors.blue,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             )

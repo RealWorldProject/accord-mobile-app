@@ -160,9 +160,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       CustomText(
-                                        holderKey: "ask",
                                         textToShow: "Forgot Password?",
                                         textColor: Colors.grey.shade700,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
                                       ),
                                     ],
                                   ),
@@ -170,7 +171,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     height: 20,
                                   ),
                                   CustomButton(
-                                    buttonKey: "btnCngPassword",
+                                    buttonShape: ButtonShape.OVAL,
                                     buttonText: "Change Password",
                                     // triggerAction: _validateLogin,
                                   ),
