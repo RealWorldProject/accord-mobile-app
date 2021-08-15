@@ -1,4 +1,3 @@
-import 'package:accord/screens/home/book_view/rating_stars.dart';
 import 'package:flutter/material.dart';
 
 class OrderListView extends StatelessWidget {
@@ -120,8 +119,9 @@ class OrderListView extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 3,),
-
+          SizedBox(
+            height: 3,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -133,7 +133,9 @@ class OrderListView extends StatelessWidget {
                   color: Colors.grey[800],
                 ),
               ),
-              SizedBox(width: 3,),
+              SizedBox(
+                width: 3,
+              ),
               Text(
                 "Total:",
                 style: TextStyle(
@@ -142,17 +144,17 @@ class OrderListView extends StatelessWidget {
                   color: Colors.grey[800],
                 ),
               ),
-              SizedBox(width: 3,),
+              SizedBox(
+                width: 3,
+              ),
               Text(
                 "Rs. 250",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Color(0xff247BA0),
-
                 ),
               ),
-
             ],
           )
         ],
