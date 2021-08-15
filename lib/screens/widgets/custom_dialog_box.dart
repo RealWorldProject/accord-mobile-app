@@ -33,9 +33,11 @@ class CustomDialogBox extends StatelessWidget {
                 letterSpacing: -1,
               ),
             ),
-      content: Text(
-        confirmMessage,
-      ),
+      content: confirmMessage == null
+          ? null
+          : Text(
+              confirmMessage,
+            ),
       actions: [
         SizedBox(
           height: 30,
@@ -44,7 +46,7 @@ class CustomDialogBox extends StatelessWidget {
             style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
             ),
-            child: Text(dontText),
+            child: dontText == null ? null : Text(dontText),
             onPressed: () {
               dontAction();
             },
@@ -60,10 +62,12 @@ class CustomDialogBox extends StatelessWidget {
               ),
               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
             ),
-            child: Text(
-              doText,
-              style: TextStyle(color: Colors.white),
-            ),
+            child: doText == null
+                ? null
+                : Text(
+                    doText,
+                    style: TextStyle(color: Colors.white),
+                  ),
             onPressed: () {
               doAction();
             },

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 class NotificationTile extends StatefulWidget {
   const NotificationTile({Key key}) : super(key: key);
@@ -27,7 +26,7 @@ class _NotificationTileState extends State<NotificationTile> {
                   backgroundImage: AssetImage(
                     "assets/images/user2.png",
                   ),
-                  radius: 30 ,
+                  radius: 30,
                 )
               ],
             ),
@@ -80,7 +79,9 @@ class _NotificationTileState extends State<NotificationTile> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 1.8,),
+                  SizedBox(
+                    height: 1.8,
+                  ),
                   Text(
                     "12 hour ago",
                     style: TextStyle(
@@ -97,8 +98,15 @@ class _NotificationTileState extends State<NotificationTile> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: (){ },
-                child: SizedBox(width: 35,height: 35,child: Icon(Icons.more_vert,color: Colors.grey[600],),),
+                onTap: () {},
+                child: SizedBox(
+                  width: 35,
+                  height: 35,
+                  child: Icon(
+                    Icons.more_vert,
+                    color: Colors.grey[600],
+                  ),
+                ),
               ),
             ),
           ),

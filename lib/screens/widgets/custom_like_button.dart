@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class CustomLikeButton extends StatelessWidget {
   const CustomLikeButton({Key key}) : super(key: key);
 
@@ -9,8 +10,7 @@ class CustomLikeButton extends StatelessWidget {
       height: 28,
       width: 30,
       decoration: BoxDecoration(
-        color: Colors.black54,
-          borderRadius: BorderRadius.circular(5)),
+          color: Colors.black54, borderRadius: BorderRadius.circular(5)),
       child: IconButton(
         padding: EdgeInsets.only(left: 0),
         onPressed: () {

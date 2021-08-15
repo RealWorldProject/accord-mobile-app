@@ -15,37 +15,35 @@ const NOTIFICATION_SCREEN = 2;
 const PROFILE_SCREEN = 3;
 
 class ScreenViewModel extends ChangeNotifier {
-  int _currentScreenIndex = HOME_SCREEN;
-
+  static int _currentScreenIndex = HOME_SCREEN;
   int get currentScreenIndex => _currentScreenIndex;
+
+  PageController _pageController = PageController(initialPage: HOME_SCREEN);
+  PageController get pageController => _pageController;
 
   final Map<int, Screen> _screens = {
     HOME_SCREEN: Screen(
-      name: "Home",
+      label: "Home",
       icon: LineIcons.home,
       child: HomeScreen(),
-      navigatorState: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
     ),
     CART_SCREEN: Screen(
-      name: "Cart",
+      label: "Cart",
       icon: LineIcons.shoppingCart,
       child: CartScreen(),
-      navigatorState: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
     ),
     NOTIFICATION_SCREEN: Screen(
-      name: "Notification",
+      label: "Notification",
       icon: LineIcons.bellAlt,
       child: NotificationScreen(),
-      navigatorState: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
     ),
     PROFILE_SCREEN: Screen(
-      name: "Profile",
+      label: "Profile",
       icon: LineIcons.user,
       child: ProfileScreen(),
-      navigatorState: GlobalKey<NavigatorState>(),
     ),
   };
 
@@ -53,12 +51,22 @@ class ScreenViewModel extends ChangeNotifier {
 
   Screen get currentScreen => _screens[_currentScreenIndex];
 
+  void restoreInitialTab(int screenIndex) {
+    _currentScreenIndex = screenIndex;
+  }
+
   // set currently visible tab
-  void setTab(int screen) {
+  void setScreen(int screen) {
     if (screen == currentScreenIndex) {
       _scrollToStart();
     } else {
       _currentScreenIndex = screen;
+
+      pageController.animateToPage(
+        _currentScreenIndex,
+        duration: Duration(milliseconds: 90),
+        curve: Curves.easeInOut,
+      );
       notifyListeners();
     }
   }
@@ -78,27 +86,48 @@ class ScreenViewModel extends ChangeNotifier {
 
   // WillPopScope, back-button callback manager
   Future<bool> onWillPop(BuildContext context) async {
-    final currentNavigatorState = currentScreen.navigatorState.currentState;
-
-    if (currentNavigatorState.canPop()) {
-      currentNavigatorState.pop();
+    if (currentScreenIndex != HOME_SCREEN) {
+      setScreen(HOME_SCREEN);
       return false;
     } else {
-      if (currentScreenIndex != HOME_SCREEN) {
-        setTab(HOME_SCREEN);
-        return false;
-      } else {
-        return await showDialog(
-          context: context,
-          builder: (context) => CustomDialogBox(
-            title: "Exit Accord?",
-            dontText: "Cancel",
-            dontAction: () => Navigator.of(context).pop(false),
-            doText: "Exit",
-            doAction: () => Navigator.of(context).pop(true),
-          ),
-        );
-      }
+      return await showDialog(
+        context: context,
+        builder: (context) => CustomDialogBox(
+          title: "Exit Accord?",
+          dontText: "Cancel",
+          dontAction: () => Navigator.of(context).pop(false),
+          doText: "Exit",
+          doAction: () => Navigator.of(context).pop(true),
+        ),
+      );
     }
   }
 }
+
+// class DisplayBadge extends StatelessWidget {
+//   const DisplayBadge({Key key, this.icon}) : super(key: key);
+
+//   final IconData icon;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Badge(
+//       badgeContent: Text(
+//         '2',
+//         style: TextStyle(
+//           color: Colors.white,
+//           fontSize: 9,
+//           fontWeight: FontWeight.bold,
+//         ),
+//       ),
+//       shape: BadgeShape.circle,
+//       child: Icon(
+//         icon,
+//         color: Colors.blue[400],
+//         size: 27,
+//       ),
+//       position: BadgePosition.topEnd(top: -8, end: -6),
+//       // showBadge: inBadgeScreen ? false : true,
+//     );
+//   }
+// }
