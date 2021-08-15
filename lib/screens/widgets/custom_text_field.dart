@@ -32,6 +32,7 @@ class CustomTextField extends StatelessWidget {
 
   // validation, if required, for the field.
   final FieldValidator fieldValidator;
+  final String initialValue;
 
   CustomTextField({
     this.designType = DesignType.BORDER,
@@ -41,6 +42,7 @@ class CustomTextField extends StatelessWidget {
     this.hintText = "",
     this.noOfLines = 1,
     this.fieldValidator,
+    this.initialValue,
   });
 
   @override
@@ -77,6 +79,8 @@ class CustomTextField extends StatelessWidget {
               ),
             ),
       textInputAction: TextInputAction.next,
+      initialValue: initialValue,
+
     );
 
     // return TextFormField(

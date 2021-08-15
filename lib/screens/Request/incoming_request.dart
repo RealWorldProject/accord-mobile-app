@@ -1,33 +1,25 @@
 import 'package:flutter/material.dart';
 
-import 'notification_action.dart';
+class IncomingRequest extends StatefulWidget {
+  const IncomingRequest({Key key}) : super(key: key);
 
-class RequestNotification extends StatefulWidget {
   @override
-  _RequestNotificationState createState() => _RequestNotificationState();
+  _IncomingRequestState createState() => _IncomingRequestState();
 }
 
-class _RequestNotificationState extends State<RequestNotification> {
-  bool isSeen = false;
-
-  Future<void> _toggleBookIsSeen() async {
-    setState(() {
-      isSeen = !isSeen;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+class _IncomingRequestState extends State<IncomingRequest> {
+  _incomingRequestBuilder() {
     return Container(
-      color: isSeen ? Colors.white : Colors.blue[100],
+      color: Colors.white,
+      margin: EdgeInsets.symmetric(vertical: 5),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 2,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
                   backgroundImage: AssetImage(
@@ -58,24 +50,29 @@ class _RequestNotificationState extends State<RequestNotification> {
                             color: Color(0xff13293d),
                           ),
                         ),
-                        // TextSpan(
-                        //   text: " sent you a request to exchange a book ",
-                        //
-                        // ),
                         TextSpan(
-                          text: " sent you a request to view your information.",
+                          text: " sent you request to exchange book ",
                         ),
-
-                        // TextSpan(
-                        //   text: "Harry Potter.",
-                        //   style: TextStyle(
-                        //     fontWeight: FontWeight.bold,
-                        //     color: Color(0xff13293d),
-                        //   ),
-                        // ),
+                        TextSpan(
+                          text: "Harry Potter",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff13293d),
+                          ),
+                        ),
+                        TextSpan(
+                          text: " for ",
+                        ),
+                        TextSpan(
+                          text: "50 Shades of Grey.",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff13293d),
+                          ),
+                        ),
                       ],
                       style: const TextStyle(
-                        fontSize: 13.0,
+                        fontSize: 15.0,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff606060),
                       ),
@@ -85,9 +82,9 @@ class _RequestNotificationState extends State<RequestNotification> {
                     height: 1.8,
                   ),
                   Text(
-                    "2 July 2021",
+                    "12 hour ago",
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff1b98e0),
                     ),
@@ -110,13 +107,13 @@ class _RequestNotificationState extends State<RequestNotification> {
                           child: InkWell(
                             onTap: () {},
                             child: Container(
-                              padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
                               child: Center(
                                 child: Text(
                                   "Accept",
                                   style: TextStyle(
-                                      fontSize: 13,
+                                      fontSize: 14,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -127,23 +124,24 @@ class _RequestNotificationState extends State<RequestNotification> {
                       ),
                       Container(
                         width: 120,
-
-                        // width: MediaQuery.of(context).size.width/2.2,
                         decoration: BoxDecoration(
                             color: Color(0xff13293d),
                             borderRadius: BorderRadius.circular(5)),
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {},
+                            borderRadius: BorderRadius.circular(5),
+                            onTap: () {
+                              print("decline");
+                            },
                             child: Container(
-                              padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
                               child: Center(
                                 child: Text(
                                   "Decline",
                                   style: TextStyle(
-                                      fontSize: 13,
+                                      fontSize: 14,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -162,14 +160,7 @@ class _RequestNotificationState extends State<RequestNotification> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) => NotificationAction(
-                            markasreadOption: _toggleBookIsSeen,
-                            value: isSeen,
-                          ));
-                },
+                onTap: () {},
                 child: SizedBox(
                   width: 35,
                   height: 35,
@@ -181,24 +172,36 @@ class _RequestNotificationState extends State<RequestNotification> {
               ),
             ),
           ),
-          // IconButton(
-          //   padding: EdgeInsets.zero,
-          //   alignment: Alignment.centerRight,
-          //   icon: Icon(
-          //     Icons.more_vert,
-          //     color: Colors.grey[600],
-          //   ),
-          //   onPressed: () {
-          //     showModalBottomSheet(
-          //         context: context,
-          //         builder: (context) => NotificationAction(
-          //               markasreadOption: _toggleBookIsSeen,
-          //               value: isSeen,
-          //             ));
-          //   },
-          // ),
         ],
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ListView.builder(
+          itemCount: 8,
+          itemBuilder: (context, index) {
+            return Dismissible(
+              key: UniqueKey(),
+              child: _incomingRequestBuilder(),
+              onDismissed: (direction) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Removed Item'),
+                    action: SnackBarAction(
+                      label: "UNDO",
+                      onPressed: (){
+
+                      },
+                    ),
+                  ),
+                );
+              },
+              background: Container(color:Colors.red),
+            );
+          }),
     );
   }
 }

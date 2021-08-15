@@ -13,7 +13,8 @@ class CustomOutlineButton extends StatelessWidget {
       height: 35,
       width: 145,
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: () {
+          showExchnageDialog();},
         child: Text(
           "Request Exchange",
           style: TextStyle(
@@ -30,6 +31,22 @@ class CustomOutlineButton extends StatelessWidget {
               width: 1.5,
             )),
       ),
+    );
+  }
+
+  Future<dynamic> showExchnageDialog() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ExchangeRequestDialogBox(
+            // title: "Action: Log out!",
+            // confirmMessage: "Are you sure you want to logout?",
+            // dontText: "Stay In",
+            // dontAction: () => Navigator.pop(context),
+            // doText: "Log Out",
+            // doAction: logout,
+            );
+      },
     );
   }
 }

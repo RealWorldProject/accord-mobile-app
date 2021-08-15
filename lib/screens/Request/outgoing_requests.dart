@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 
-class NotificationTile extends StatefulWidget {
-  const NotificationTile({Key key}) : super(key: key);
+class OutgoingRequest extends StatefulWidget {
+  const OutgoingRequest({Key key}) : super(key: key);
 
   @override
-  _NotificationTileState createState() => _NotificationTileState();
+  _OutgoingRequestState createState() => _OutgoingRequestState();
 }
 
-class _NotificationTileState extends State<NotificationTile> {
-  @override
-  Widget build(BuildContext context) {
+class _OutgoingRequestState extends State<OutgoingRequest> {
+  _outgoingBuilder() {
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.symmetric(vertical: 5),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 2,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
                   backgroundImage: AssetImage(
@@ -45,6 +44,10 @@ class _NotificationTileState extends State<NotificationTile> {
                     text: TextSpan(
                       children: [
                         TextSpan(
+                          text: "Exchange request sent to ",
+
+                        ),
+                        TextSpan(
                           text: "Keanu Reeves",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -52,29 +55,32 @@ class _NotificationTileState extends State<NotificationTile> {
                           ),
                         ),
                         TextSpan(
-                          text:
-                              " accepted your request. You can now see the contact information of ",
+                          text: " to exchange book ",
 
                         ),
-                        // TextSpan(
-                        //   text:
-                        //   " declined your request. You can not see the contact information of ",
-                        //   style: TextStyle(
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
                         TextSpan(
-                          text: "John Doe.",
+                          text: "Harry Potter",
                           style: TextStyle(
-                            color: Color(0xff13293d),
                             fontWeight: FontWeight.bold,
+                            color: Color(0xff13293d),
+                          ),
+                        ),
+                        TextSpan(
+                          text: " for ",
 
+                        ),
+                        TextSpan(
+                          text: "50 Shades of Grey.",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff13293d),
                           ),
                         ),
                       ],
                       style: const TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 15.0,
                         fontWeight: FontWeight.w600,
+
                         color: Color(0xff606060),
                       ),
                     ),
@@ -85,7 +91,7 @@ class _NotificationTileState extends State<NotificationTile> {
                   Text(
                     "12 hour ago",
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff1b98e0),
                     ),
@@ -112,6 +118,40 @@ class _NotificationTileState extends State<NotificationTile> {
           ),
         ],
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ListView.builder(
+        itemCount: 8,
+        itemBuilder: (context, index) {
+          return Dismissible(
+            // key: ObjectKey(item[index]),
+            key: UniqueKey(),
+            child: _outgoingBuilder(),
+            onDismissed: (direction) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Removed request'),
+                  action: SnackBarAction(
+                    label: "UNDO",
+                    onPressed: (){
+
+                    },
+                  ),
+                ),
+              );
+            },
+            background: Container(color:Colors.red),
+          );
+        },
+      ),
+      // child: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children: [_outgoingBuilder()],
+      // ),
     );
   }
 }
