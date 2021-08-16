@@ -1,7 +1,9 @@
 import 'package:accord/constant/accord_colors.dart';
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/user.dart';
-import 'package:accord/screens/widgets/CustomOutlineButton.dart';
+import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/screens/widgets/exchange_request_dialog_box.dart';
 import 'package:accord/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +51,25 @@ class BookOwnerSection extends StatelessWidget {
               ),
             ],
           ),
-          CustomOutlineButton(enable: exchangable),
+          CustomButton(
+            height: 35,
+            width: 145,
+            buttonLabel: AccordLabels.requestBook,
+            buttonType: ButtonType.OUTLINED,
+            enable: exchangable,
+            triggerAction: exchangable == false
+                ? () {}
+                : () {
+                    final rootContext = context
+                        .findRootAncestorStateOfType<NavigatorState>()
+                        .context;
+                    print("object");
+                    showDialog(
+                      context: rootContext,
+                      builder: (context) => ExchangeRequestDialogBox(),
+                    );
+                  },
+          ),
         ],
       ),
     );

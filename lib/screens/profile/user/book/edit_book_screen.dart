@@ -58,6 +58,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
     _authorNameController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
+
     super.dispose();
   }
 
@@ -173,10 +174,9 @@ class _EditBookScreenState extends State<EditBookScreen> {
           showDialog(
             context: context,
             builder: (context) => InformationDialogBox(
-              icon: LineIcons.check,
-              message: bookViewModel.data.message,
-              actionText: "Okay",
-              action: () => Navigator.of(context, rootNavigator: true).pop(),
+              contentType: ContentType.DONE,
+              content: bookViewModel.data.message,
+              actionText: AccordLabels.okay,
             ),
           );
         } else if (bookViewModel.data.status == Status.ERROR) {
@@ -419,8 +419,8 @@ class _EditBookScreenState extends State<EditBookScreen> {
                         height: 10,
                       ),
                       CustomButton(
-                        buttonShape: ButtonShape.ROUNDED_EDGES,
-                        buttonText: AccordLabels.updateBook,
+                        buttonType: ButtonType.ROUNDED_EDGE,
+                        buttonLabel: AccordLabels.updateBook,
                         triggerAction: _validateEditBook,
                       ),
                     ],

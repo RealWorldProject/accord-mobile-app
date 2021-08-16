@@ -1,3 +1,4 @@
+import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -5,38 +6,49 @@ class CustomDialogBox extends StatelessWidget {
   const CustomDialogBox({
     Key key,
     this.title,
-    this.confirmMessage,
-    this.dontText,
-    this.doText,
-    this.dontAction,
-    this.doAction,
+    this.content,
+    this.neglectLabel,
+    this.neglectAction,
+    @required this.performLabel,
+    this.performAction,
   }) : super(key: key);
 
+  /// title of the dialog box
   final String title;
-  final String confirmMessage;
-  final String dontText;
-  final String doText;
-  final VoidCallback dontAction;
-  final VoidCallback doAction;
+
+  /// message showed in dialog box
+  final String content;
+
+  /// text displayed in cancel button of dialog
+  final String neglectLabel;
+
+  /// action performed by cancel button of dialog.
+  /// default action set to close the dialog box.
+  final VoidCallback neglectAction;
+
+  /// text displayed in proceed button of dialog
+  final String performLabel;
+
+  /// action performed by proceed button of dialog.
+  /// default action set to close the dialog box too.
+  final VoidCallback performAction;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: title == null
           ? null
-          : Text(
-              title,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.red.shade400,
-                letterSpacing: -1,
-              ),
+          : CustomText(
+              textToShow: title,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              textColor: Colors.red.shade400,
+              letterSpacing: -1,
             ),
-      content: confirmMessage == null
+      content: content == null
           ? null
           : Text(
-              confirmMessage,
+              content,
             ),
       actions: [
         SizedBox(
@@ -46,9 +58,11 @@ class CustomDialogBox extends StatelessWidget {
             style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
             ),
-            child: dontText == null ? null : Text(dontText),
+            child: neglectLabel == null ? null : Text(neglectLabel),
             onPressed: () {
-              dontAction();
+              neglectAction == null
+                  ? Navigator.of(context, rootNavigator: true).pop()
+                  : neglectAction();
             },
           ),
         ),
@@ -62,14 +76,16 @@ class CustomDialogBox extends StatelessWidget {
               ),
               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
             ),
-            child: doText == null
+            child: performLabel == null
                 ? null
-                : Text(
-                    doText,
-                    style: TextStyle(color: Colors.white),
+                : CustomText(
+                    textToShow: performLabel,
+                    textColor: Colors.white,
                   ),
             onPressed: () {
-              doAction();
+              performAction == null
+                  ? Navigator.of(context, rootNavigator: true).pop()
+                  : performAction();
             },
           ),
         ),

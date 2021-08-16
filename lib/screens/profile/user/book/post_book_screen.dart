@@ -46,6 +46,16 @@ class _PostBookScreenState extends State<PostBookScreen> {
     _categories = context.read<CategoryViewModel>().categories;
   }
 
+  @override
+  void dispose() {
+    _bookNameController.dispose();
+    _authorNameController.dispose();
+    _priceController.dispose();
+    _descriptionController.dispose();
+
+    super.dispose();
+  }
+
   // field validations
   final _acquireBookName = MultiValidator([
     RequiredValidator(
@@ -132,12 +142,10 @@ class _PostBookScreenState extends State<PostBookScreen> {
           showDialog(
             context: context,
             builder: (context) => InformationDialogBox(
-              icon: LineIcons.check,
-              message: bookViewModel.data.message +
+              contentType: ContentType.DONE,
+              content: bookViewModel.data.message +
                   "It will be made public if approved.",
               actionText: AccordLabels.okay,
-              action: () =>
-                  Navigator.of(context, rootNavigator: true).pop(context),
             ),
           );
         } else if (bookViewModel.data.status == Status.ERROR) {
@@ -365,8 +373,8 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         height: 10,
                       ),
                       CustomButton(
-                        buttonShape: ButtonShape.ROUNDED_EDGES,
-                        buttonText: AccordLabels.postBook,
+                        buttonType: ButtonType.ROUNDED_EDGE,
+                        buttonLabel: AccordLabels.postBook,
                         triggerAction: _validatePostBook,
                       ),
                     ],

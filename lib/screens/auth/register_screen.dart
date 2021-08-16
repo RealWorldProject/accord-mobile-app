@@ -57,6 +57,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    super.dispose();
+  }
+
   Future<void> _registerUser() async {
     UserViewModel _userViewModel = new UserViewModel();
     RegisterResponse _registerResponse;
@@ -225,8 +235,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         FadeAnimation(
                           1.6,
                           CustomButton(
-                            buttonShape: ButtonShape.OVAL,
-                            buttonText: AccordLabels.register,
+                            buttonType: ButtonType.OVAL,
+                            buttonLabel: AccordLabels.register,
                             triggerAction: _registerUser,
                           ),
                         ),

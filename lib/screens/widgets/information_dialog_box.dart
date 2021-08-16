@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 
 class InformationDialogBox extends StatelessWidget {
-  const InformationDialogBox(
-      {Key key, this.icon, this.message, this.actionText, this.action})
-      : super(key: key);
+  const InformationDialogBox({
+    Key key,
+    @required this.contentType,
+    @required this.content,
+    @required this.actionText,
+    this.action,
+  }) : super(key: key);
 
-  // icon to denote the information type i.e, error, information, etc.
-  final IconData icon;
+  /// Type of information to be displayed.
+  final ContentType contentType;
 
-  final String message;
+  /// Message to display in dialog.
+  final String content;
 
-  // label for the available action
+  /// Label for the available action
   final String actionText;
 
-  // action: void function that perform certain task.
+  /// (Optional) Function that perform certain task.
+  /// Default set to close the dialog box.
   final VoidCallback action;
 
   static const double padding = 10;
@@ -56,7 +63,7 @@ class InformationDialogBox extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                message,
+                content,
                 style: TextStyle(fontSize: 14),
                 textAlign: TextAlign.center,
               ),
@@ -87,14 +94,37 @@ class InformationDialogBox extends StatelessWidget {
             radius: infoIconRadius,
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(infoIconRadius)),
-              child: Icon(
-                icon,
-                size: 35,
-              ),
+              child: (() {
+                if (contentType == ContentType.INFORMATION) {
+                  return Icon(
+                    LineIcons.info,
+                    color: Colors.blue,
+                    size: 35,
+                  );
+                } else if (contentType == ContentType.ERROR) {
+                  return Icon(
+                    LineIcons.cross,
+                    color: Colors.red,
+                    size: 35,
+                  );
+                } else {
+                  return Icon(
+                    LineIcons.doubleCheck,
+                    color: Colors.green,
+                    size: 35,
+                  );
+                }
+              }()),
             ),
           ),
         ),
       ],
     );
   }
+}
+
+enum ContentType {
+  INFORMATION,
+  ERROR,
+  DONE,
 }
