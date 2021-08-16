@@ -16,7 +16,7 @@ class RequestService {
     userToken = await Storage().fetchToken();
     try {
       var res = await dio.post(
-        "$baseUrl/",
+        "$baseUrl/request",
         data: requestInfo,
         options: Options(
           responseType: ResponseType.plain,
@@ -31,5 +31,5 @@ class RequestService {
     }
   }
 
-  Future<String> fetchIncomingRequests() async {}
+  // Future<String> fetchIncomingRequests() async {}
 }

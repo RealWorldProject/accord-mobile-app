@@ -20,7 +20,6 @@ import 'package:accord/viewModel/category_view_model.dart';
 import 'package:accord/viewModel/image_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
 class PostBookScreen extends StatefulWidget {

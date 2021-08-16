@@ -5,20 +5,30 @@ import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/exchange_request_dialog_box.dart';
 import 'package:accord/utils/text_utils.dart';
+import 'package:accord/viewModel/book_view_model.dart';
+import 'package:accord/viewModel/request_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookOwnerSection extends StatelessWidget {
   const BookOwnerSection({
     Key key,
     this.owner,
     this.exchangable,
+    this.bookName,
+    this.bookID,
   }) : super(key: key);
 
   final User owner;
   final bool exchangable;
+  final String bookName;
+  final String bookID;
 
   @override
   Widget build(BuildContext context) {
+    BookViewModel bookViewModel = context.read<BookViewModel>();
+    RequestViewModel requestViewModel = context.read<RequestViewModel>();
+
     return Container(
       margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -60,13 +70,24 @@ class BookOwnerSection extends StatelessWidget {
             triggerAction: exchangable == false
                 ? () {}
                 : () {
-                    final rootContext = context
-                        .findRootAncestorStateOfType<NavigatorState>()
-                        .context;
-                    print("object");
                     showDialog(
-                      context: rootContext,
-                      builder: (context) => ExchangeRequestDialogBox(),
+                      context: context,
+                      builder: (context) {
+                        return ChangeNotifierProvider.value(
+                          value: bookViewModel,
+                          builder: (context, child) {
+                            return ChangeNotifierProvider.value(
+                              value: requestViewModel,
+                              builder: (context, child) {
+                                return ExchangeRequestDialogBox(
+                                  requestedBookName: bookName,
+                                  requestedBookID: bookID,
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
                     );
                   },
           ),
