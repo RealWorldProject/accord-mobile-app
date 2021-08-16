@@ -4,59 +4,185 @@ import 'package:accord/models/book.dart';
 import 'package:accord/responses/book_response.dart';
 import 'package:accord/responses/fetch_books_response.dart';
 import 'package:accord/services/book_service.dart';
-import 'package:accord/services/handlers/exposer.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:flutter/foundation.dart';
 
 class BookViewModel extends ChangeNotifier {
-  Book _book;
-  Book get book => _book;
-
   List<Book> _books;
   List<Book> get books => _books;
+
+  List<Book> _categoricalBooks;
+  List<Book> get categoricalBooks => _categoricalBooks;
+
+  List<Book> _searchedBooks = [];
+  List<Book> get searchedBooks => _searchedBooks;
+
+  List<Book> _userOwnedBooks;
+  List<Book> get userOwnedBooks => _userOwnedBooks;
 
   ResponseExposer _data;
   ResponseExposer get data => _data;
 
-  Future<BookResponse> postBook(String book) async {
-    final postBookResponseAPI = await BookService().postBook(book);
-    // sending json response to BookResponse to convert into object
-    return BookResponse.fromJson(jsonDecode(postBookResponseAPI));
+  // post book
+  Future<void> postBook(String book) async {
+    _data = ResponseExposer.loading();
+
+    try {
+      final postBookResponseAPI = await BookService().postBook(book);
+
+      // sending json response to BookResponse to convert into object
+      var responseObj = BookResponse.fromJson(jsonDecode(postBookResponseAPI));
+
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
   }
 
-  Future<FetchBooksResponse> fetchBooksInCategory(String categoryID) async {
-    final apiResponse = await BookService().fetchBooksInCategory(categoryID);
-    // sending json response to FetchBooksResponse to convert into object
-    return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+  // fetch all books
+  Future<void> fetchAllBooks() async {
+    _data = ResponseExposer.loading();
+
+    try {
+      final apiResponse = await BookService().fetchAllBooks();
+
+      // sending json response to FetchBooksResponse to convert into object
+      var responseObj = FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+      _books = responseObj.result;
+
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      _books = [];
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
   }
 
-  Future<FetchBooksResponse> fetchAllBooks() async {
-    final apiResponse = await BookService().fetchAllBooks();
-    // sending json response to FetchBooksResponse to convert into object
-    return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+  // fetch category books
+  Future<void> fetchBooksInCategory(String categoryID) async {
+    _data = ResponseExposer.loading();
+
+    try {
+      final apiResponse = await BookService().fetchBooksInCategory(categoryID);
+
+      // sending json response to FetchBooksResponse to convert into object
+      // then, getting the response object's result
+      var responseObj = FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+      _categoricalBooks = responseObj.result;
+
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      _categoricalBooks = [];
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
   }
 
-  Future<FetchBooksResponse> fetchSearchedBooks(String searchTerm) async {
-    final apiResponse = await BookService().fetchSearchedBooks(searchTerm);
-    // sending json response to FetchBooksResponse to convert into object
-    return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+  // fetch searched books
+  Future<void> fetchSearchedBooks(String searchTerm) async {
+    _data = ResponseExposer.loading();
+
+    try {
+      final apiResponse = await BookService().fetchSearchedBooks(searchTerm);
+
+      // sending json response to FetchBooksResponse to convert into object
+      // then, getting the response object's result
+      var responseObj = FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+      _searchedBooks = responseObj.result;
+
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      _searchedBooks = [];
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
   }
 
-  Future<FetchBooksResponse> fetchUserPostedBooks() async {
-    final apiResponse = await BookService().fetchUserPostedBooks();
-    // sending json response to FetchBooksResponse to convert into object
-    return FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+  // fetch user's books
+  Future<void> fetchUserPostedBooks() async {
+    _data = ResponseExposer.loading();
+
+    try {
+      final apiResponse = await BookService().fetchUserPostedBooks();
+
+      // sending json response to FetchBooksResponse to convert into object
+      // then, getting the response object's result
+      var responseObj = FetchBooksResponse.fromJson(jsonDecode(apiResponse));
+      _userOwnedBooks = responseObj.result;
+
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      _userOwnedBooks = [];
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
   }
 
-  Future<BookResponse> updateBook(String updatedBook, String bookID) async {
-    final apiResponse = await BookService().updateBook(updatedBook, bookID);
-    // sending json response to BookResponse to convert into object
-    return BookResponse.fromJson(jsonDecode(apiResponse));
+  // update book
+  Future<void> updateBook(String updatedBookInfo, String bookID) async {
+    _data = ResponseExposer.loading();
+
+    try {
+      final apiResponse =
+          await BookService().updateBook(updatedBookInfo, bookID);
+
+      // sending json response to FetchBooksResponse to convert into object
+      // then, getting the response object's result
+      var responseObj = BookResponse.fromJson(jsonDecode(apiResponse));
+      Book updatedBook = responseObj.result;
+
+      // find the index of the deleted book index in [userOwnedBooks] by its id
+      int updatedBookIndex =
+          _userOwnedBooks.indexWhere((book) => updatedBook.id == book.id);
+
+      // injects the updatedBook object in the given index
+      _userOwnedBooks[updatedBookIndex] = updatedBook;
+
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      _userOwnedBooks = [];
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
   }
 
-  Future<BookResponse> deleteBook(String bookID) async {
-    final apiResponse = await BookService().deleteBook(bookID);
-    // sending json response to BookResponse to convert into object
-    return BookResponse.fromJson(jsonDecode(apiResponse));
+  // delete book
+  Future<void> deleteBook(String bookID) async {
+    _data = ResponseExposer.loading();
+    try {
+      final apiResponse = await BookService().deleteBook(bookID);
+
+      // sending json response to BookResponse to convert into object
+      // gets the deleted book object.
+      var responseObj = BookResponse.fromJson(jsonDecode(apiResponse));
+      Book deletedBook = responseObj.result;
+
+      // find the index of the deleted book index in [userOwnedBooks] by its id
+      int deletedBookIndex =
+          _userOwnedBooks.indexWhere((book) => deletedBook.id == book.id);
+
+      // removes the book from given index.
+      _userOwnedBooks.removeAt(deletedBookIndex);
+
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      _userOwnedBooks = [];
+      _data = ResponseExposer.error(e.toString());
+    }
+    notifyListeners();
+  }
+
+  // reset functions.
+  void resetSearch() {
+    _searchedBooks = [];
+    notifyListeners();
   }
 }
 

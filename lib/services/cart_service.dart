@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/constant/constant.dart';
 import 'package:accord/services/handlers/exception_handlers.dart';
 import 'package:accord/services/handlers/response_base.dart';
@@ -26,10 +27,10 @@ class CartService {
         ),
       );
       return res.data;
-    } on DioError catch (e) {
-      return responsebase.apiResponse(e.response);
     } on SocketException {
       throw FetchDataException("Error while connecting to the server.");
+    } on DioError catch (e) {
+      return responsebase.apiResponse(e.response);
     }
   }
 
@@ -46,10 +47,10 @@ class CartService {
         ),
       );
       return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       return responsebase.apiResponse(e.response);
-    } on SocketException {
-      throw FetchDataException(Constant.connectionErrorMessage);
     }
   }
 
@@ -67,10 +68,10 @@ class CartService {
         ),
       );
       return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       return responsebase.apiResponse(e.response);
-    } on SocketException {
-      throw FetchDataException(Constant.connectionErrorMessage);
     }
   }
 }

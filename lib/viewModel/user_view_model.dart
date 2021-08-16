@@ -4,7 +4,7 @@ import 'package:accord/models/user.dart';
 import 'package:accord/responses/login_response.dart';
 import 'package:accord/responses/register_response.dart';
 import 'package:accord/services/auth_service.dart';
-import 'package:accord/services/handlers/exposer.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:flutter/foundation.dart';
 
 class UserViewModel extends ChangeNotifier {
@@ -37,6 +37,7 @@ class UserViewModel extends ChangeNotifier {
       final apiResponse = await AuthService().fetchUserDetails(userId);
       _user = RegisterResponse.fromJson(jsonDecode(apiResponse)).result;
       _data = ResponseExposer.complete();
+      print(inspect(_user));
     } catch (e) {
       _data = ResponseExposer.error(e.toString());
     }

@@ -1,10 +1,16 @@
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
-import 'package:accord/screens/widgets/book_display_format.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/screens/widgets/error_displayer.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator_view/loading_indicator_view.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'result_display_format.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key key}) : super(key: key);
@@ -140,11 +146,13 @@ class _SearchPageState extends State<SearchPage> {
                           )),
                 transition: CircularFloatingSearchBarTransition(),
                 physics: BouncingScrollPhysics(),
-                title: Text(selectedTerm ?? 'Search for books...',
-                    style: TextStyle(
-                      color: Colors.black87,
-                    )),
-                hint: 'Search for books...',
+                title: CustomText(
+                  textToShow: selectedTerm ?? AccordLabels.searchForBooksLabel,
+                  textColor: Colors.black87,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w300,
+                ),
+                hint: AccordLabels.searchForBooksLabel,
                 actions: [
                   FloatingSearchBarAction.searchToClear(),
                 ],
@@ -178,11 +186,13 @@ class _SearchPageState extends State<SearchPage> {
                                 height: 56,
                                 width: double.infinity,
                                 alignment: Alignment.center,
-                                child: Text(
-                                  'Search & Explore new books',
-                                  maxLines: 1,
+                                child: CustomText(
+                                  textToShow:
+                                      AccordLabels.emptySearchHisotyLabel,
+                                  noOfLines: 1,
+                                  fontSize: 14,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.caption,
+                                  textColor: Colors.black38,
                                 ),
                               );
                             } else if (filteredSearchHistoy.isEmpty) {
@@ -262,130 +272,101 @@ class SearchResultsListView extends StatelessWidget {
               size: 64,
               color: Colors.black38,
             ),
-            Text(
-              "Start your book exploration.",
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black38,
-                fontWeight: FontWeight.w500,
-              ),
+            CustomText(
+              textToShow: AccordLabels.initialSearchPageLabel,
+              fontSize: 20,
+              textColor: Colors.black38,
+              fontWeight: FontWeight.w400,
             )
           ],
         ),
       );
     }
 
+    context.read<BookViewModel>().fetchSearchedBooks(searchTerm);
+
     // search result container
     return Container(
       padding: EdgeInsets.only(top: fsb.widget.height * 1.5, left: 2, right: 2),
-      child: FutureBuilder(
-          future: BookViewModel().fetchSearchedBooks(searchTerm),
-          builder: (context, searchSnap) {
-            if (searchSnap.hasData) {
-              // notifying users that there is no books available
-              // related to the term they just searched.
-              if (searchSnap.data.result.length == 0) {
-                return Container(
-                  padding: EdgeInsets.only(
-                    top: fsb.widget.height * 1.5,
-                    left: 5,
-                    right: 2,
-                  ),
-                  child: Text(
-                    "Sorry, we couldn't find any books containing words, $searchTerm.",
-                    style: TextStyle(
-                      color: Colors.black38,
-                      fontSize: 18,
-                      letterSpacing: -1,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                );
-              } else {
-                // the above future returns the response containing a List<Book>
-                // here,converting that List<Book> into Map<String, List<Book>>
-                // in order to categorize books according to their category.
-                Map<String, List<Book>> categorizedBooks = categorizeBooks(
-                    searchSnap.data.result, (book) => book.category);
+      child: Consumer<BookViewModel>(
+        builder: (context, bookViewModel, _) {
+          switch (bookViewModel.data.status) {
+            case Status.LOADING:
+              return Center(
+                child: BallClipRotateMultipleIndicator(
+                  maxRadius: 50,
+                  minRadius: 30,
+                  dashCircleRadius: 15,
+                  color: Colors.black26,
+                ),
+              );
+            case Status.COMPLETE:
+              // the above future returns the response containing a List<Book>
+              // here,converting that List<Book> into Map<String, List<Book>>
+              // in order to categorize books according to their category.
+              Map<String, List<Book>> categorizedBooks = categorizeBooks(
+                  (book) => book.category.category,
+                  bookViewModel.searchedBooks);
 
-                return ListView.builder(
-                    itemCount: categorizedBooks.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      // keys: categoryID as key in map
-                      String categoryTitle =
-                          categorizedBooks.keys.elementAt(index);
-                      // values: List<Book>
-                      List<Book> books =
-                          categorizedBooks.values.elementAt(index);
-                      return Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.bottomLeft,
-                              margin: EdgeInsets.only(left: 5),
-                              child: Text(
-                                categoryTitle,
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 22.5,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            CustomScrollView(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              primary: false,
-                              slivers: <Widget>[
-                                SliverGrid.count(
-                                  crossAxisCount: 2,
-                                  childAspectRatio:
-                                      MediaQuery.of(context).size.width /
-                                          (MediaQuery.of(context).size.height),
-                                  children:
-                                      List.generate(books.length, (index) {
-                                    Book book = books[index];
-                                    return BookDisplayFormat(
-                                      book: book,
-                                      index: index,
-                                    );
-                                  }),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      );
-                    });
-              }
-            }
-            // displaying progress while searching takes place.
-            return Center(
-              child: BallClipRotateMultipleIndicator(
-                maxRadius: 50,
-                minRadius: 30,
-                dashCircleRadius: 15,
-                color: Colors.black26,
-              ),
-            );
-          }),
+              return ListView.builder(
+                itemCount: bookViewModel.searchedBooks.isEmpty
+                    ? 1
+                    : categorizedBooks.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (bookViewModel.searchedBooks.isEmpty) {
+                    return Text(
+                      "Sorry, we couldn't find any books containing words, $searchTerm.",
+                      style: TextStyle(
+                        color: Colors.black38,
+                        fontSize: 18,
+                        letterSpacing: -1,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    );
+                  } else {
+                    // keys: categoryID as key in map
+                    String categoryTitle =
+                        categorizedBooks.keys.elementAt(index);
+                    // values: List<Book>
+                    List<Book> books = categorizedBooks.values.elementAt(index);
+                    return ResultDisplayFormat(
+                      categoryTitle: categoryTitle,
+                      books: books,
+                    );
+                  }
+                },
+              );
+            case Status.ERROR:
+              return ErrorDisplayer(
+                error: bookViewModel.data.message,
+                retryOption: () {
+                  bookViewModel.resetSearch();
+                  bookViewModel.fetchSearchedBooks(searchTerm);
+                },
+              );
+          }
+          return Container();
+        },
+      ),
     );
   }
 }
 
 // mapping: categorizing books according to their category.
-// takes a List<Book> & categoryID (key) as inputs.
-// arranges books with same categoryID as a whole list (List<Book>)
+// takes a List<Book> & category-name (these names are unique) as inputs.
+// arranges books with same category-name as a whole list (List<Book>)
 // denoted by its corresponding key (categoryID).
 // return Map<String, List<Book>>.
-Map<String, List<Book>> categorizeBooks<Book, String>(
-    List<Book> books, String Function(Book) key) {
+Map<String, List<Book>> categorizeBooks<String, Book>(
+    String Function(Book) category, List<Book> books) {
+  // empty map declaration
   var mapBooks = <String, List<Book>>{};
+
+  // assigning values according to the key.
+  // (mapBooks[category(book)]) checks if the given key has any value (list)
+  // if not, empty list i.e, [] is assigned to that key and then the book is added.
   for (Book book in books) {
-    (mapBooks[key(book)] ??= []).add(book);
+    (mapBooks[category(book)] ??= []).add(book);
   }
   return mapBooks;
 }

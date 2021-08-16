@@ -1,18 +1,17 @@
-import 'dart:developer';
-
-import 'package:accord/models/user.dart';
-import 'package:accord/screens/Request/request_tab_view.dart';
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/auth/login_screen.dart';
-import 'package:accord/screens/order/order_screen.dart';
-import 'package:accord/screens/profile/password/change_password.dart';
-import 'package:accord/screens/profile/user/user_screen.dart';
 import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/services/storage.dart';
-import 'package:accord/utils/text_utils.dart';
-import 'package:accord/viewModel/user_view_model.dart';
+import 'package:accord/viewModel/screen_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:provider/provider.dart';
+
+import 'password/change_password.dart';
+import 'user/user_screen.dart';
+import 'user_avatar_displayer.dart';
+import 'user_term_displayer.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -21,15 +20,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin<ProfileScreen> {
-  Future<void> logout() async {
-    await Storage().deleteToken();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
-  }
-
-  // set up the buttons
-  // Widget cancelButton =
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -51,8 +41,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                       image: DecorationImage(
                         image: AssetImage("assets/images/profileBG.png"),
                         fit: BoxFit.cover,
-
-                        // image: Image.asset("assets/images/profileBG.png",height: MediaQuery.of(context).size.height,fit: BoxFit.cover,),
                       ),
                     ),
                   ),
@@ -62,19 +50,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                 margin: EdgeInsets.only(top: 95),
                 child: Column(
                   children: [
-                    FutureBuilder(
-                        future: UserViewModel().fetchUserDetails(),
-                        builder: (context, userSnap) {
-                          if (userSnap.hasData) {
-                            User user = userSnap.data.result;
-                            return userDetailsDisplayer(user);
-                          }
-                          return userDetailsDisplayer(User(
-                            email: "dummyuser@gmail.com",
-                            image: "",
-                            fullName: "dummy user",
-                          ));
-                        }),
+                    Container(
+                      child: Column(
+                        children: [
+                          // displays user profile images
+                          Center(
+                            child: UserAvatarDisplayer(
+                              outerRadius: 74,
+                              innerRadius: 70,
+                              outerColor: Colors.white,
+                            ),
+                          ),
+                          // displays user terms i.e, name & email
+                          UserTermDisplayer(
+                            termColor: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
                     SizedBox(
                       height: 30,
                     ),
@@ -89,197 +82,46 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => UserScreen()));
-                              },
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.person_rounded,
-                                  size: 28,
-                                  color: Color(0xff0a78b2),
-                                ),
-                                title: Text(
-                                  "View Profile",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff1b98e0)),
-                                ),
+                          ActionTab(
+                            action: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserScreen(),
                               ),
                             ),
+                            icon: Icons.person_rounded,
+                            iconColor: Color(0xff0a78b2),
+                            label: AccordLabels.myProfile,
                           ),
-                          Divider(
-                            height: 0,
-                            thickness: 1,
-                            indent: 13,
-                            endIndent: 13,
-                            color: Color(0xffafa9a9),
+                          ActionTab(
+                            action: () {},
+                            icon: Icons.favorite,
+                            iconColor: Colors.red[700],
+                            label: AccordLabels.favorites,
                           ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {},
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.favorite,
-                                  size: 28,
-                                  color: Colors.redAccent[700],
-                                ),
-                                title: Text(
-                                  "Favourites",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff1b98e0)),
-                                ),
+                          ActionTab(
+                            action: () {},
+                            icon: Icons.menu_book_rounded,
+                            iconColor: Color(0xff0a78b2),
+                            label: AccordLabels.myBooks,
+                          ),
+                          ActionTab(
+                            action: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChangePassword(),
                               ),
                             ),
+                            icon: Icons.edit,
+                            iconColor: Color(0xff0a78b2),
+                            label: AccordLabels.changePassword,
                           ),
-                          Divider(
-                            height: 0,
-                            thickness: 1,
-                            indent: 13,
-                            endIndent: 13,
-                            color: Color(0xffafa9a9),
+                          ActionTab(
+                            action: showLogoutDialog,
+                            icon: Icons.logout,
+                            iconColor: Color(0xff0a78b2),
+                            label: AccordLabels.logout,
                           ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => OrderScreen(),
-                                  ),
-                                );
-                              },
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.menu_book_rounded,
-                                  size: 28,
-                                  color: Color(0xff0a78b2),
-                                ),
-                                title: Text(
-                                  "My Orders",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff1b98e0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            height: 0,
-                            thickness: 1,
-                            indent: 13,
-                            endIndent: 13,
-                            color: Color(0xffafa9a9),
-                          ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            RequestTabView()));
-                              },
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.send,
-                                  size: 28,
-                                  color: Color(0xff0a78b2),
-                                ),
-                                title: Text(
-                                  "My Books Request",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff1b98e0)),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            height: 0,
-                            thickness: 1,
-                            indent: 13,
-                            endIndent: 13,
-                            color: Color(0xffafa9a9),
-                          ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChangePassword(),
-                                  ),
-                                );
-                              },
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.edit,
-                                  size: 28,
-                                  color: Color(0xff0a78b2),
-                                ),
-                                title: Text(
-                                  "Change Password",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff1b98e0)),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            height: 0,
-                            thickness: 1,
-                            indent: 13,
-                            endIndent: 13,
-                            color: Color(0xffafa9a9),
-                          ),
-                          // Material(
-                          //   color: Colors.transparent,
-                          //   child: InkWell(
-                          //     onTap: () {
-                          //       showLogoutDialog();
-                          //     },
-                          //     child: ListTile(
-                          //       leading: Icon(
-                          //         Icons.logout,
-                          //         size: 28,
-                          //         color: Color(0xff0a78b2),
-                          //       ),
-                          //       title: Text(
-                          //         "Logout",
-                          //         style: TextStyle(
-                          //           fontSize: 18,
-                          //           fontWeight: FontWeight.w500,
-                          //           color: Color(0xff1b98e0),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                          // Divider(
-                          //   height: 0,
-                          //   thickness: 1,
-                          //   indent: 13,
-                          //   endIndent: 13,
-                          //   color: Color(0xffafa9a9),
-                          // ),
                           SizedBox(
                             height: 20,
                           )
@@ -313,35 +155,19 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   bool get wantKeepAlive => true;
 
-  userDetailsDisplayer(User user) {
-    return Container(
-      child: Column(
-        children: [
-          Center(
-            child: CircleAvatar(
-              radius: 74.0,
-              backgroundColor: Colors.white,
-              child: CircleAvatar(
-                radius: 70.0,
-                backgroundImage: user.image == "dummy.png" || user.image == ""
-                    ? AssetImage("assets/images/user2.png")
-                    : NetworkImage(user.image),
-                backgroundColor: Colors.transparent,
-              ),
-            ),
-          ),
-          Text(
-            TextUtils().capitalizeAll(user.fullName),
-            style: TextStyle(
-                color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            user.email,
-            style: TextStyle(color: Colors.white, fontSize: 16),
-          ),
-        ],
-      ),
-    );
+  // logout function.
+  Future<void> logout() async {
+    await Storage().deleteToken();
+
+    // sets active bottom navigation tab to home screen.
+    context.read<ScreenViewModel>().restoreInitialTab(HOME_SCREEN);
+
+    // navigates to login screen
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+
+    // removes dialog box after navigation
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   Future<dynamic> showLogoutDialog() {
@@ -349,14 +175,70 @@ class _ProfileScreenState extends State<ProfileScreen>
       context: context,
       builder: (BuildContext context) {
         return CustomDialogBox(
-          // title: "Action: Log out!",
           confirmMessage: "Are you sure you want to logout?",
-          dontText: "Stay In",
+          dontText: AccordLabels.stayIn,
           dontAction: () => Navigator.pop(context),
-          doText: "Log Out",
+          doText: AccordLabels.logout,
           doAction: logout,
         );
       },
+    );
+  }
+}
+
+// widget to display each tabs in profile screen
+class ActionTab extends StatelessWidget {
+  const ActionTab({
+    Key key,
+    @required this.action,
+    @required this.icon,
+    @required this.iconColor,
+    @required this.label,
+  }) : super(key: key);
+
+  // on tab action
+  final VoidCallback action;
+
+  // icon to display
+  final IconData icon;
+  final Color iconColor;
+
+  // text to show
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => action(),
+            child: ListTile(
+              leading: Icon(
+                icon,
+                size: 28,
+                color: iconColor,
+              ),
+              title: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff1b98e0),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Divider(
+          height: 0,
+          thickness: 1,
+          indent: 13,
+          endIndent: 13,
+          color: Color(0xffafa9a9),
+        ),
+      ],
     );
   }
 }

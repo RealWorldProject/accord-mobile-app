@@ -1,28 +1,20 @@
 import 'dart:convert';
 
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/shimmer/cart_shimmer.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
-import 'package:accord/services/handlers/exposer.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CartListView extends StatefulWidget {
+class CartListView extends StatelessWidget {
   const CartListView({Key key}) : super(key: key);
 
   @override
-  _CartListViewState createState() => _CartListViewState();
-}
-
-class _CartListViewState extends State<CartListView> {
-  static const double imageHeight = 110.0;
-  static const double imageWidth = 95.0;
-
-  @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-        child: Consumer<CartviewModel>(builder: (context, cartviewModel, _) {
+    return Consumer<CartviewModel>(builder: (context, cartviewModel, _) {
       switch (cartviewModel.data.status) {
         case Status.LOADING:
           return CartShimmer();
@@ -34,13 +26,13 @@ class _CartListViewState extends State<CartListView> {
             itemBuilder: (context, index) {
               if (cartviewModel.cartItems.isNotEmpty) {
                 CartItem cartItem = cartviewModel.cartItems[index];
-                return cartItemDesign(cartItem);
+                return CartItemDesign(cartItem: cartItem);
               } else {
                 return Container(
                   padding: EdgeInsets.only(top: 20),
                   width: MediaQuery.of(context).size.width,
                   child: Text(
-                    "No books added to the cart.",
+                    AccordLabels.emptyCartMessage,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 18,
@@ -55,21 +47,28 @@ class _CartListViewState extends State<CartListView> {
         case Status.ERROR:
           return ErrorDisplayer(
             error: cartviewModel.data.message,
-            retryOption: reloadCart,
+            retryOption: () {
+              context.read<CartviewModel>().resetCartItems();
+              context.read<CartviewModel>().fetchCartItems;
+            },
           );
       }
       return Container();
-    }), onRefresh: () async {
-      await context.read<CartviewModel>().fetchCartItems;
     });
   }
+}
 
-  void reloadCart() {
-    context.read<CartviewModel>().resetCartItems();
-    context.read<CartviewModel>().fetchCartItems;
-  }
+// display format for cart items
+class CartItemDesign extends StatelessWidget {
+  const CartItemDesign({Key key, this.cartItem}) : super(key: key);
 
-  cartItemDesign(CartItem cartItem) {
+  final CartItem cartItem;
+
+  static const double imageHeight = 110.0;
+  static const double imageWidth = 95.0;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -124,7 +123,7 @@ class _CartListViewState extends State<CartListView> {
                           cartItem.price.toString(),
                           style: TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.w100,
+                              fontWeight: FontWeight.w400,
                               color: Colors.blue[400],
                               fontStyle: FontStyle.italic),
                         ),
@@ -140,7 +139,7 @@ class _CartListViewState extends State<CartListView> {
                                 onTap: cartItem.quantity <= 1
                                     ? null
                                     : () {
-                                        decreaseItemQuantity(cartItem);
+                                        decreaseItemQuantity(context, cartItem);
                                       },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -179,7 +178,7 @@ class _CartListViewState extends State<CartListView> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
-                                  increaseItemQuantity(cartItem);
+                                  increaseItemQuantity(context, cartItem);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -213,7 +212,7 @@ class _CartListViewState extends State<CartListView> {
                           color: Colors.transparent,
                           child: InkWell(
                               onTap: () {
-                                deleteCartItem(cartItem.bookID);
+                                deleteCartItem(context, cartItem.bookID);
                               },
                               child: SizedBox(
                                 width: 35,
@@ -245,7 +244,10 @@ class _CartListViewState extends State<CartListView> {
     );
   }
 
-  decreaseItemQuantity(CartItem cartItem) {
+  decreaseItemQuantity(BuildContext context, CartItem cartItem) {
+    // subtracts 1 from the given cartItem quantity
+    // then, creates its object (CartItem objects)
+    // converts created CartItem object to json, then send to api.
     CartItem decreaseCartItem = new CartItem(
       bookID: cartItem.bookID,
       quantity: cartItem.quantity - 1,
@@ -254,14 +256,18 @@ class _CartListViewState extends State<CartListView> {
     context.read<CartviewModel>().addToCart(decreaseCartItemJson);
   }
 
-  increaseItemQuantity(CartItem cartItem) {
-    CartItem increaseCartItem =
-        new CartItem(bookID: cartItem.bookID, quantity: cartItem.quantity + 1);
+  increaseItemQuantity(BuildContext context, CartItem cartItem) {
+    // adds 1 to the given cartItem quantity
+    CartItem increaseCartItem = new CartItem(
+      bookID: cartItem.bookID,
+      quantity: cartItem.quantity + 1,
+    );
     String increaseCartItemJson = jsonEncode(increaseCartItem);
     context.read<CartviewModel>().addToCart(increaseCartItemJson);
   }
 
-  deleteCartItem(String cartItemID) {
+  deleteCartItem(BuildContext context, String cartItemID) {
+    // deletes cart item by its id.
     CartItem cartItem = new CartItem(bookID: cartItemID);
     String cartItemJson = jsonEncode(cartItem);
     context.read<CartviewModel>().deleteCartItem(cartItemJson);

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/constant/constant.dart';
 import 'package:accord/services/handlers/exception_handlers.dart';
 import 'package:accord/services/handlers/response_base.dart';
@@ -26,7 +27,7 @@ class OrderService {
       );
       return res.data;
     } on SocketException {
-      throw FetchDataException(Constant.connectionErrorMessage);
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       return ResponseBase().apiResponse(e.response);
     }

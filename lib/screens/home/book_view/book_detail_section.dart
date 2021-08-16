@@ -1,7 +1,10 @@
-import 'package:accord/constant/constant.dart';
+import 'package:accord/constant/accord_colors.dart';
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/home/book_view/rating_stars.dart';
 import 'package:accord/screens/widgets/back_button.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_like_button.dart';
+import 'package:accord/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailSection extends StatelessWidget {
@@ -70,12 +73,11 @@ class BookDetailSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Constant.full_dark_blue_color),
+                CustomText(
+                  textToShow: TextUtils().capitalizeAll(name),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  textColor: AccordColors.full_dark_blue_color,
                 ),
                 RichText(
                   text: TextSpan(
@@ -87,7 +89,7 @@ class BookDetailSection extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: author,
+                        text: TextUtils().capitalizeAll(author),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -105,12 +107,12 @@ class BookDetailSection extends StatelessWidget {
                 ),
                 RatingStars(4.5, 20),
                 Text(
-                  "Available for Exchange",
+                  AccordLabels.availableForExchange,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 12,
                     fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w400,
                     color: exchangable == true
                         ? Color(0xff1b98e0)
                         : Colors.grey[600],
