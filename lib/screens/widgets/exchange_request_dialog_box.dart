@@ -1,71 +1,118 @@
+import 'dart:convert';
+
 import 'package:accord/constant/accord_colors.dart';
+import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/models/book.dart';
+import 'package:accord/models/request.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/utils/exposer.dart';
+import 'package:accord/viewModel/book_view_model.dart';
+import 'package:accord/viewModel/request_view_model.dart';
 import 'package:direct_select/direct_select.dart';
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
+import 'information_dialog_box.dart';
+
 class ExchangeRequestDialogBox extends StatelessWidget {
-  ExchangeRequestDialogBox({Key key}) : super(key: key);
+  const ExchangeRequestDialogBox({
+    Key key,
+    @required this.requestedBookName,
+    @required this.requestedBookID,
+  }) : super(key: key);
 
-  final books = [
-    "Harry Potter the harry potter of the harry",
-    "Book 2",
-    "Book 3",
-    "Book 4",
-  ];
+  /// name of the book being requested.
+  final String requestedBookName;
 
-  int selectedIndex = 0;
-
-  List<Widget> _buildItems3() {
-    return books
-        .map((val) => MySelectionItem(
-              title: val,
-            ))
-        .toList();
-  }
+  /// id of the book being requested.
+  final String requestedBookID;
 
   @override
   Widget build(BuildContext context) {
+    final BookViewModel bookViewModel = context.read<BookViewModel>();
+    bookViewModel.fetchUserPostedBooks();
+
+    List<Book> userOwnedBooks;
+
     return AlertDialog(
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Exchange For:",
-            style: TextStyle(fontSize: 11),
+            AccordLabels.requestedBookLabel,
+            style: TextStyle(fontSize: 13),
           ),
           SizedBox(
             height: 5,
           ),
-          Text(
-            "Harry Potter the harry potter of the harry",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
-            textAlign: TextAlign.center,
+          CustomText(
+            textToShow: requestedBookName,
+            fontWeight: FontWeight.w600,
           ),
           SizedBox(
             height: 20,
           ),
           Text(
-            "Exchange Request For:",
-            style: TextStyle(fontSize: 11),
+            AccordLabels.bookInOffer,
+            style: TextStyle(fontSize: 13),
           ),
           SizedBox(
             height: 5,
           ),
-          DirectSelect(
-              itemExtent: 35.0,
-              backgroundColor: Colors.white,
-              selectedIndex: selectedIndex,
-              child: Container(
-                child: MySelectionItem(
-                  isForList: false,
-                  title: books[selectedIndex],
-                ),
-              ),
-              onSelectedItemChanged: (index) {},
-              items: _buildItems3()),
+          Consumer<BookViewModel>(
+            builder: (context, bookViewModel, child) {
+              if (bookViewModel.data.status == Status.COMPLETE) {
+                // get user owned books data if the data status in
+                //[BookViewModel] is [COMPLETE]
+                userOwnedBooks = bookViewModel.userOwnedBooks;
+
+                return Consumer<RequestViewModel>(
+                  builder: (context, requestViewModel, child) {
+                    // list of books imposed to [DirectSelect] format styles
+                    final selectMenuItems = context
+                        .read<BookViewModel>()
+                        .userOwnedBooks
+                        .map((book) => MySelectionItem(
+                              title: book.name,
+                            ))
+                        .toList();
+
+                    // current selected index in the [List<Book>]
+                    final currenBookIndex = requestViewModel.currentBookIndex;
+
+                    return DirectSelect(
+                      itemExtent: 35.0,
+                      backgroundColor: Colors.white,
+                      selectedIndex: currenBookIndex,
+                      child: Container(
+                        child: MySelectionItem(
+                          isForList: false,
+                          title: userOwnedBooks[currenBookIndex].name,
+                        ),
+                      ),
+                      onSelectedItemChanged: (selectedIndex) {
+                        requestViewModel.setIndex(selectedIndex);
+                      },
+                      items: selectMenuItems,
+                    );
+                  },
+                );
+              } else {
+                return Container(
+                  height: 45,
+                  padding: EdgeInsets.all(10),
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey[100],
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                );
+              }
+            },
+          )
         ],
       ),
       actions: [
@@ -74,11 +121,13 @@ class ExchangeRequestDialogBox extends StatelessWidget {
           width: 80,
           child: TextButton(
             style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                EdgeInsets.all(0),
+              ),
             ),
-            child: Text(
-              "Cancel",
-              style: TextStyle(color: Colors.red),
+            child: CustomText(
+              textToShow: AccordLabels.cancel,
+              textColor: Colors.red,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -93,17 +142,67 @@ class ExchangeRequestDialogBox extends StatelessWidget {
               backgroundColor: MaterialStateProperty.all(
                 AccordColors.primary_blue_color,
               ),
-              padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                EdgeInsets.all(0),
+              ),
             ),
-            child: Text(
-              "Confirm",
-              style: TextStyle(color: Colors.white),
+            child: CustomText(
+              textToShow: AccordLabels.confirm,
+              textColor: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              // gets selected book's id.
+              final String offeredBookID = bookViewModel
+                  .userOwnedBooks[
+                      context.read<RequestViewModel>().currentBookIndex]
+                  .id;
+
+              // function to request book.
+              requestBook(
+                context,
+                requestedBookID,
+                offeredBookID,
+              );
+            },
           ),
-        ),
+        )
       ],
     );
+  }
+
+  Future<void> requestBook(
+      BuildContext context, String requestBookID, String offeredBookID) async {
+    RequestViewModel requestViewModel = context.read<RequestViewModel>();
+    final Request request = new Request(
+      requestedBook: requestedBookID,
+      proposedExchangeBook: offeredBookID,
+    );
+
+    final String requestJson = jsonEncode(request);
+
+    await requestViewModel.requestBook(requestJson);
+
+    if (requestViewModel.data.status == Status.COMPLETE) {
+      Navigator.of(context, rootNavigator: true).pop();
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.DONE,
+          content: requestViewModel.data.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    } else {
+      Navigator.of(context, rootNavigator: true).pop();
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.ERROR,
+          content: requestViewModel.data.message,
+          actionText: AccordLabels.tryAgain,
+        ),
+      );
+    }
   }
 }
 
@@ -111,8 +210,11 @@ class MySelectionItem extends StatelessWidget {
   final String title;
   final bool isForList;
 
-  const MySelectionItem({Key key, this.title, this.isForList = true})
-      : super(key: key);
+  const MySelectionItem({
+    Key key,
+    this.title,
+    this.isForList = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +228,6 @@ class MySelectionItem extends StatelessWidget {
               )
             : Card(
                 color: Colors.grey[100],
-
-                // margin: EdgeInsets.symmetric(horizontal: 10.0),
                 child: Stack(
                   children: <Widget>[
                     _buildItem(context),
@@ -148,9 +248,10 @@ class MySelectionItem extends StatelessWidget {
       alignment: Alignment.center,
       child: Container(
         margin: EdgeInsets.only(left: 5, right: 18),
-        child: Text(
-          title,
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        child: CustomText(
+          textToShow: title,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
           overflow: TextOverflow.ellipsis,
         ),
       ),

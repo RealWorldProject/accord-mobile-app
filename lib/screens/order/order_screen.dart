@@ -1,5 +1,4 @@
 import 'package:accord/constant/accord_colors.dart';
-import 'package:accord/constant/constant.dart';
 import 'package:accord/screens/order/order_list_view.dart';
 import 'package:flutter/material.dart';
 

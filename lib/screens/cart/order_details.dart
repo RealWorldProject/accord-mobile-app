@@ -14,7 +14,6 @@ import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:accord/viewModel/order_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetails extends StatefulWidget {

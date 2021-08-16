@@ -31,6 +31,8 @@ class BookScreen extends StatelessWidget {
               BookOwnerSection(
                 owner: book.userId,
                 exchangable: book.isAvailableForExchange,
+                bookID: book.id,
+                bookName: book.name,
               ),
               BookDescriptionSection(
                 description: book.description,
