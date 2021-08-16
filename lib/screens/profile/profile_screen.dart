@@ -1,5 +1,7 @@
 import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/screens/Request/request_tab_view.dart';
 import 'package:accord/screens/auth/login_screen.dart';
+import 'package:accord/screens/order/order_screen.dart';
 import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/services/storage.dart';
 import 'package:accord/viewModel/screen_view_model.dart';
@@ -90,7 +92,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                             ),
                             icon: Icons.person_rounded,
-                            iconColor: Color(0xff0a78b2),
                             label: AccordLabels.myProfile,
                           ),
                           ActionTab(
@@ -100,10 +101,22 @@ class _ProfileScreenState extends State<ProfileScreen>
                             label: AccordLabels.favorites,
                           ),
                           ActionTab(
-                            action: () {},
+                            action: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrderScreen()),
+                            ),
                             icon: Icons.menu_book_rounded,
-                            iconColor: Color(0xff0a78b2),
-                            label: AccordLabels.myBooks,
+                            label: AccordLabels.myOrders,
+                          ),
+                          ActionTab(
+                            action: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RequestTabView()),
+                            ),
+                            icon: Icons.send,
+                            label: AccordLabels.myRequests,
                           ),
                           ActionTab(
                             action: () => Navigator.push(
@@ -113,14 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                             ),
                             icon: Icons.edit,
-                            iconColor: Color(0xff0a78b2),
                             label: AccordLabels.changePassword,
-                          ),
-                          ActionTab(
-                            action: showLogoutDialog,
-                            icon: Icons.logout,
-                            iconColor: Color(0xff0a78b2),
-                            label: AccordLabels.logout,
                           ),
                           SizedBox(
                             height: 20,
@@ -175,11 +181,10 @@ class _ProfileScreenState extends State<ProfileScreen>
       context: context,
       builder: (BuildContext context) {
         return CustomDialogBox(
-          confirmMessage: "Are you sure you want to logout?",
-          dontText: AccordLabels.stayIn,
-          dontAction: () => Navigator.pop(context),
-          doText: AccordLabels.logout,
-          doAction: logout,
+          content: "Are you sure you want to logout?",
+          neglectLabel: AccordLabels.stayIn,
+          performLabel: AccordLabels.logout,
+          performAction: logout,
         );
       },
     );
@@ -192,7 +197,7 @@ class ActionTab extends StatelessWidget {
     Key key,
     @required this.action,
     @required this.icon,
-    @required this.iconColor,
+    this.iconColor,
     @required this.label,
   }) : super(key: key);
 
@@ -218,7 +223,7 @@ class ActionTab extends StatelessWidget {
               leading: Icon(
                 icon,
                 size: 28,
-                color: iconColor,
+                color: iconColor ?? Color(0xff0a78b2),
               ),
               title: Text(
                 label,

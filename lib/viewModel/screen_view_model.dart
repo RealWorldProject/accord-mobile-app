@@ -94,10 +94,10 @@ class ScreenViewModel extends ChangeNotifier {
         context: context,
         builder: (context) => CustomDialogBox(
           title: "Exit Accord?",
-          dontText: "Cancel",
-          dontAction: () => Navigator.of(context).pop(false),
-          doText: "Exit",
-          doAction: () => Navigator.of(context).pop(true),
+          neglectLabel: "Cancel",
+          neglectAction: () => Navigator.of(context).pop(false),
+          performLabel: "Exit",
+          performAction: () => Navigator.of(context).pop(true),
         ),
       );
     }

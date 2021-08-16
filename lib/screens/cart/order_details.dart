@@ -125,8 +125,8 @@ class _OrderDetailsState extends State<OrderDetails> {
         showDialog(
             context: context,
             builder: (context) => InformationDialogBox(
-                  icon: LineIcons.info,
-                  message: orderViewModel.data.message,
+                  contentType: ContentType.INFORMATION,
+                  content: orderViewModel.data.message,
                   actionText: AccordLabels.okay,
                 ));
         // ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
@@ -280,8 +280,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                         height: 10,
                       ),
                       CustomButton(
-                        buttonShape: ButtonShape.ROUNDED_EDGES,
-                        buttonText: AccordLabels.submitButton,
+                        buttonType: ButtonType.ROUNDED_EDGE,
+                        buttonLabel: AccordLabels.submitButton,
                         triggerAction: _validateOrderCheckout,
                       ),
                     ],
