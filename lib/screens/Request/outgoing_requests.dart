@@ -125,7 +125,7 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-        itemCount: 8,
+        itemCount: 1,
         itemBuilder: (context, index) {
           return Dismissible(
             // key: ObjectKey(item[index]),
