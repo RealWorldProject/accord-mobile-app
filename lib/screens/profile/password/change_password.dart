@@ -23,6 +23,17 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _requireCmfPassword = MultiValidator(
       [RequiredValidator(errorText: "Please confirm your new Password!")]);
 
+  @override
+  void dispose() {
+    _oldPasswordController.dispose();
+    _newPasswordController.dispose();
+    _cmfPasswordController.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> changePassword() async {}
+
   bool _oldPassword = true;
   bool _newPassword = true;
   bool _cmfPassword = true;
@@ -181,9 +192,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     height: 20,
                                   ),
                                   CustomButton(
-                                    buttonShape: ButtonShape.OVAL,
-                                    buttonText: "Change Password",
-                                    // triggerAction: _validateLogin,
+                                    buttonType: ButtonType.OVAL,
+                                    buttonLabel: "Change Password",
+                                    triggerAction: changePassword,
                                   ),
                                 ],
                               ),

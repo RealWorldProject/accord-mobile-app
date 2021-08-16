@@ -82,13 +82,10 @@ class BookFeedformat extends StatelessWidget {
                 value: bookViewModel,
                 builder: (context, child) => CustomDialogBox(
                   title: "Action: Book Deletion!!!",
-                  confirmMessage:
-                      "Are you sure you want to delete, '${book.name}'?",
-                  dontText: "Keep!",
-                  dontAction: () =>
-                      Navigator.of(context, rootNavigator: true).pop(),
-                  doText: AccordLabels.delete,
-                  doAction: () async {
+                  content: "Are you sure you want to delete, '${book.name}'?",
+                  neglectLabel: "Keep!",
+                  performLabel: AccordLabels.delete,
+                  performAction: () async {
                     BookViewModel bookViewModel = context.read<BookViewModel>();
                     await bookViewModel.deleteBook(book.id);
 
@@ -99,12 +96,9 @@ class BookFeedformat extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (context) => InformationDialogBox(
-                          icon: Icons.error,
-                          message: bookViewModel.data.message,
+                          contentType: ContentType.ERROR,
+                          content: bookViewModel.data.message,
                           actionText: AccordLabels.tryAgain,
-                          action: () =>
-                              Navigator.of(context, rootNavigator: true)
-                                  .pop(context),
                         ),
                       );
                     }

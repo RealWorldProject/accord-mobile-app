@@ -166,7 +166,7 @@ class OrderListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-          itemCount: 8,
+          itemCount: 1,
           itemBuilder: (context, index) {
             return _orderListView();
           }),

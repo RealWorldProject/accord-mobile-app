@@ -71,6 +71,7 @@ class AccordLabels {
   // Book view screen labels
   static const String featuredBooksLabel = "Featured Books";
   static const String availableForExchange = "Available for Exchange";
+  static const String requestBook = "Request Book";
   static const String ratingAndReviewTitle = "Rating & Reviews";
   static const String viewMore = "View More";
   static const String bookPriceLabel = "Book's Price";
@@ -79,7 +80,8 @@ class AccordLabels {
   // Profile screen lables
   static const String myProfile = "My Profile";
   static const String favorites = "Favorites";
-  static const String myBooks = "My Books";
+  static const String myOrders = "My Orders";
+  static const String myRequests = "My Requests";
   static const String changePassword = "Change Password";
   static const String editDetails = "Edit Details";
   static const String editBook = "Edit Book";

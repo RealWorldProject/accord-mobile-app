@@ -25,7 +25,7 @@ class BookDescriptionSection extends StatelessWidget {
         collapsed: Text(
           description,
           softWrap: true,
-          maxLines: 5,
+          maxLines: 4,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
               fontWeight: FontWeight.w700,

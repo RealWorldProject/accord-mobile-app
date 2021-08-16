@@ -2,13 +2,10 @@ import 'package:accord/constant/accord_colors.dart';
 import 'package:direct_select/direct_select.dart';
 import "package:flutter/material.dart";
 
-class ExchangeRequestDialogBox extends StatefulWidget {
-  @override
-  _ExchangeRequestDialogBoxState createState() =>
-      _ExchangeRequestDialogBoxState();
-}
+// ignore: must_be_immutable
+class ExchangeRequestDialogBox extends StatelessWidget {
+  ExchangeRequestDialogBox({Key key}) : super(key: key);
 
-class _ExchangeRequestDialogBoxState extends State<ExchangeRequestDialogBox> {
   final books = [
     "Harry Potter the harry potter of the harry",
     "Book 2",
@@ -67,11 +64,7 @@ class _ExchangeRequestDialogBoxState extends State<ExchangeRequestDialogBox> {
                   title: books[selectedIndex],
                 ),
               ),
-              onSelectedItemChanged: (index) {
-                setState(() {
-                  selectedIndex = index;
-                });
-              },
+              onSelectedItemChanged: (index) {},
               items: _buildItems3()),
         ],
       ),

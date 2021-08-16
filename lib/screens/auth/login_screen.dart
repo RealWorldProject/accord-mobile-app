@@ -44,6 +44,14 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordcontroller.dispose();
+
+    super.dispose();
+  }
+
   Future<void> _validateLogin() async {
     String _email = _emailController.text;
     String _password = _passwordcontroller.text;
@@ -186,8 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         FadeAnimation(
                           1.6,
                           CustomButton(
-                            buttonShape: ButtonShape.OVAL,
-                            buttonText: AccordLabels.login,
+                            buttonType: ButtonType.OVAL,
+                            buttonLabel: AccordLabels.login,
                             triggerAction: _validateLogin,
                           ),
                         ),
