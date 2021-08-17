@@ -24,11 +24,14 @@ class RatingStars extends StatelessWidget {
     return RatingBar(
       initialRating: rating,
       direction: Axis.horizontal,
+      wrapAlignment: WrapAlignment.start,
+      tapOnlyMode: false,
+      ignoreGestures: true,
       allowHalfRating: true,
       itemCount: 5,
       ratingWidget: RatingWidget(
         full: Icon(
-          Icons.star_rate_rounded,
+          Icons.star_rounded,
           color: Color(0xffffbb00),
         ),
         half: Icon(
@@ -36,10 +39,11 @@ class RatingStars extends StatelessWidget {
           color: Color(0xffffbb00),
         ),
         empty: Icon(
-          Icons.star_outline_rounded,
+          Icons.star_border_rounded,
           color: Color(0xffffbb00),
         ),
       ),
+
       itemPadding: EdgeInsets.zero,
 
       // onRatingUpdate: (rating) {

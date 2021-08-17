@@ -1,6 +1,7 @@
 import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/home/book_view/rating_stars.dart';
+import 'package:accord/screens/rating/rating_and_review_screen.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,12 @@ class BookRatingSection extends StatelessWidget {
                 textColor: AccordColors.semi_dark_blue_color,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => RatingAndReveiwScreen()));
+                },
                 child: CustomText(
                   textToShow: AccordLabels.viewMore,
                   fontSize: 12,

@@ -34,6 +34,10 @@ class CustomTextField extends StatelessWidget {
   final FieldValidator fieldValidator;
   final String initialValue;
 
+  final double designTypeBorderRadius;
+  final double contentHorizontalPadding;
+  final double contentVerticalPadding;
+
   CustomTextField({
     this.designType = DesignType.BORDER,
     this.fieldType = FieldType.TEXT,
@@ -43,6 +47,9 @@ class CustomTextField extends StatelessWidget {
     this.noOfLines = 1,
     this.fieldValidator,
     this.initialValue,
+    this.designTypeBorderRadius=8,
+    this.contentHorizontalPadding=10,
+    this.contentVerticalPadding=0,
   });
 
   @override
@@ -61,12 +68,12 @@ class CustomTextField extends StatelessWidget {
       validator: fieldValidator,
       decoration: designType == DesignType.BORDER
           ? InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+              contentPadding: EdgeInsets.symmetric(horizontal: contentHorizontalPadding,vertical: contentVerticalPadding),
               hintText: hintText,
               hintStyle: TextStyle(color: Colors.grey),
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(designTypeBorderRadius),
               ),
             )
           : InputDecoration(
@@ -80,6 +87,7 @@ class CustomTextField extends StatelessWidget {
             ),
       textInputAction: TextInputAction.next,
       initialValue: initialValue,
+
 
     );
 

@@ -9,24 +9,34 @@ class RateBook extends StatefulWidget {
 }
 
 class _RateBookState extends State<RateBook> {
+  static const bool isEditable = true;
   @override
   Widget build(BuildContext context) {
     return  Center(
       child: RatingBar(
-        initialRating: 3.5,
+        initialRating: isEditable?3.5:0,
         direction: Axis.horizontal,
         allowHalfRating: true,
         itemCount: 5,
         ratingWidget: RatingWidget(
-          full: Icon(Icons.star_rate_rounded,),
-          half: Icon(Icons.star_half_rounded),
-          empty: Icon(Icons.star_outline_rounded,),
+          full: Icon(
+            Icons.star_rounded,
+            color: Color(0xffffbb00),
+          ),
+          half: Icon(
+            Icons.star_half_rounded,
+            color: Color(0xffffbb00),
+          ),
+          empty: Icon(
+            Icons.star_border_rounded,
+            color: Color(0xffffbb00),
+          ),
         ),
         itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
-        // onRatingUpdate: (rating) {
-        //   print(rating);
-        // },
-        itemSize: 18,
+        onRatingUpdate: (rating) {
+          print(rating);
+        },
+        itemSize: 60,
       ),
     );
   }

@@ -21,182 +21,186 @@ class BookDisplayFormat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      padding: EdgeInsets.all(7.0),
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          splashColor: Colors.white60,
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BookScreen(
-                          book: book,
-                        )));
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
+    return Wrap(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          padding: EdgeInsets.all(7.0),
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              splashColor: Colors.white60,
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BookScreen(
+                              book: book,
+                            )));
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 219.0,
-                    width: 175.0,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(book.images[0]),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Container(
-                      height: 219.0,
-                      width: 175.0,
-                      decoration: BoxDecoration(
-                        color: Colors.black26,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: -20,
-                    right: 10,
-                    child: Container(
-                      padding: EdgeInsets.zero,
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 3,
-                            offset: Offset(0, 2), // changes position of shadow
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        height: 219.0,
+                        width: 175.0,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(book.images[0]),
+                            fit: BoxFit.cover,
                           ),
-                        ],
-                      ),
-                      child: IconButton(
-                        onPressed: () {},
-                        padding: EdgeInsets.only(
-                            top: 4, bottom: 0, left: 0, right: 0),
-                        alignment: Alignment.center,
-                        // icon: book.isLiked == false
-                        //     ? Icon(Icons.favorite_outline_rounded)
-                        icon: Icon(
-                          Icons.favorite,
-                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                        iconSize: 25,
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                      alignment: Alignment.center,
-                      decoration: book.isNewBook == false
-                          ? BoxDecoration(
-                              color: Colors.purple,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5),
+                      Positioned.fill(
+                        child: Container(
+                          height: 219.0,
+                          width: 175.0,
+                          decoration: BoxDecoration(
+                            color: Colors.black26,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: -20,
+                        right: 10,
+                        child: Container(
+                          padding: EdgeInsets.zero,
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 3,
+                                offset: Offset(0, 2), // changes position of shadow
                               ),
-                            )
-                          : BoxDecoration(
-                              color: Color(0xff009900),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5),
+                            ],
+                          ),
+                          child: IconButton(
+                            onPressed: () {},
+                            padding: EdgeInsets.only(
+                                top: 4, bottom: 0, left: 0, right: 0),
+                            alignment: Alignment.center,
+                            // icon: book.isLiked == false
+                            //     ? Icon(Icons.favorite_outline_rounded)
+                            icon: Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            ),
+                            iconSize: 25,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                          alignment: Alignment.center,
+                          decoration: book.isNewBook == false
+                              ? BoxDecoration(
+                                  color: Colors.purple,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5),
+                                  ),
+                                )
+                              : BoxDecoration(
+                                  color: Color(0xff009900),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5),
+                                  ),
+                                ),
+                          child: Text(
+                            book.isNewBook ? "New" : "Old",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 2),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          book.name,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[900]),
+                        ),
+                        Text(
+                          book.author,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.grey[800],
+                              fontStyle: FontStyle.italic),
+                        ),
+                        RatingStars(4.5, 18),
+                        Text(
+                          "Available for Exchange",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w300,
+                              color: book.isAvailableForExchange == true
+                                  ? Colors.blue[600]
+                                  : Colors.grey[600],
+                              decoration: book.isAvailableForExchange == false
+                                  ? (TextDecoration.lineThrough)
+                                  : (TextDecoration.none),
+                              fontStyle: FontStyle.italic),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Rs. ${book.price.toString()}",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xff247BA0),
                               ),
                             ),
-                      child: Text(
-                        book.isNewBook ? "New" : "Old",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          letterSpacing: 1,
-                        ),
-                      ),
+                            AddToCart(bookID: book.id),
+                          ],
+                        )
+                      ],
                     ),
                   ),
                 ],
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      book.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[900]),
-                    ),
-                    Text(
-                      book.author,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.grey[800],
-                          fontStyle: FontStyle.italic),
-                    ),
-                    RatingStars(4.5, 18),
-                    Text(
-                      "Available for Exchange",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w300,
-                          color: book.isAvailableForExchange == true
-                              ? Colors.blue[600]
-                              : Colors.grey[600],
-                          decoration: book.isAvailableForExchange == false
-                              ? (TextDecoration.lineThrough)
-                              : (TextDecoration.none),
-                          fontStyle: FontStyle.italic),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Rs. ${book.price.toString()}",
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xff247BA0),
-                          ),
-                        ),
-                        AddToCart(bookID: book.id),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

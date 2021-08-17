@@ -100,7 +100,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                 color: Color(0xff13293d)),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 25,
                           ),
                           Container(
                             child: Form(
@@ -111,6 +111,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
                                       CustomTextField(
+                                        designType: DesignType.UNDERLINE,
+
                                         fieldController: _oldPasswordController,
                                         obscureText: _oldPassword,
                                         hintText: "Old Password",
@@ -126,10 +128,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                                       ),
                                     ],
                                   ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   Stack(
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
                                       CustomTextField(
+                                        designType: DesignType.UNDERLINE,
                                         fieldController: _newPasswordController,
                                         obscureText: _newPassword,
                                         hintText: "New Password",
@@ -145,10 +151,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                                       ),
                                     ],
                                   ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   Stack(
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
                                       CustomTextField(
+                                        designType: DesignType.UNDERLINE,
                                         fieldController: _cmfPasswordController,
                                         obscureText: _cmfPassword,
                                         hintText: "Confirm Password",
