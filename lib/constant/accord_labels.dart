@@ -114,6 +114,12 @@ class AccordLabels {
   static const String updateBookTitle = "Update your Book";
   static const String updateBook = "Update Book";
 
+  // Request screen labels
+  static const String outgoingRequestLabel = "Outgoing Requests";
+  static const String incomingRequestLabel = "Incoming Requests";
+  static String emptyRequestMessage(String requestTab) =>
+      "Your $requestTab is empty.";
+
   // Error labels
   static const String connectionErrorMessage =
       "Error while connecting to the server";
