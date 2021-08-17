@@ -14,7 +14,7 @@ class RatingAndReveiwScreen extends StatefulWidget {
 }
 
 class _RatingAndReveiwScreenState extends State<RatingAndReveiwScreen> {
-  final bool isEditable = true;
+  final bool isEditable = false;
 
   @override
   Widget build(BuildContext context) {

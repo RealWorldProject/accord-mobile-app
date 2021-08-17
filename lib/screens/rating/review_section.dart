@@ -1,12 +1,24 @@
 import 'package:accord/constant/accord_colors.dart';
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/home/book_view/rating_stars.dart';
+import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
+import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/material.dart';
 
-class ReviewSection extends StatelessWidget {
+class ReviewSection extends StatefulWidget {
   const ReviewSection({Key key}) : super(key: key);
 
-  _ReviewListView(){
+  @override
+  _ReviewSectionState createState() => _ReviewSectionState();
+}
+
+class _ReviewSectionState extends State<ReviewSection> {
+
+  final bool isMyReview = false;
+
+
+  _ReviewListView(context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +88,33 @@ class ReviewSection extends StatelessWidget {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) => CustomBottomSheet(
+                              // option 1
+                              option1: AccordLabels.editReviewButtonTitle,
+                              iconOpt1: Icons.edit_rounded,
+                              action1: () {},
+
+                              //option 2
+                              option2: AccordLabels.deleteReviewButtonTitle,
+                              iconOpt2: Icons.delete_forever_rounded,
+                              action2: (){
+                                showDialog(context: context, builder: (context){
+                                  return CustomDialogBox(
+                                    content: "Are you sure you want to delete, 'this review'?",
+                                    neglectLabel: "Keep!",
+                                    performLabel: AccordLabels.delete,
+
+                                  );
+                                });
+
+                              },
+                            ),
+                          );
+
+                        },
                         child: SizedBox(
                           width: 35,
                           height: 35,
@@ -90,17 +128,16 @@ class ReviewSection extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Text(
                 "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
                 style: TextStyle(
                     fontWeight: FontWeight.normal,
                     fontSize: 12,
-                    color: Colors.grey[600]
-
-                ),
+                    color: Colors.grey[600]),
                 overflow: TextOverflow.clip,
-
               ),
               Divider(
                 height: 35,
@@ -109,7 +146,6 @@ class ReviewSection extends StatelessWidget {
                 endIndent: 0,
                 color: Color(0xffcdcdcd),
               ),
-
             ],
           ),
         ),
@@ -125,7 +161,7 @@ class ReviewSection extends StatelessWidget {
           itemCount: 5,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            return _ReviewListView();
+            return _ReviewListView(context);
           }),
     );
   }

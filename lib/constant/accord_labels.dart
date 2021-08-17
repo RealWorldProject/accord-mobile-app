@@ -95,6 +95,7 @@ class AccordLabels {
   static const String addReviewButtonTitle = "Write a Review";
   static const String submitReviewButtonTitle = "Submit Review";
   static const String editReviewButtonTitle = "Edit Your Review";
+  static const String deleteReviewButtonTitle = "Delete Your Review";
 
   // Post & edit book screen labels
   static const String postBookTitle = "Post your Book";
