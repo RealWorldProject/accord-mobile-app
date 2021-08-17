@@ -1,29 +1,3 @@
-// class Cart {
-//   Cart({
-//     this.id,
-//     this.cartItems,
-//   });
-
-//   final String id;
-//   final List<CartItem> cartItems;
-
-//   factory Cart.fromJson(Map<String, dynamic> json) {
-//     var rawCartItems = json['cartItems'] as List;
-//     List<CartItem> cartItems = rawCartItems
-//         .map((rawCartItem) => CartItem.fromJson(rawCartItem))
-//         .toList();
-
-//     return Cart(
-//       id: json['_id'],
-//       cartItems: cartItems,
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() => {
-//         'cartItems': cartItems,
-//       };
-// }
-
 class CartItem {
   CartItem({
     this.bookID,

@@ -1,4 +1,52 @@
 class TimeCalculator {
+  ///takes a [DateTime] and returns it in a [dd mon yyyy hh:mm] format.
+  static String dateFormatter({DateTime givenTime}) {
+    List<String> dateAndTime = givenTime.toString().split(" ");
+    List<String> date = dateAndTime.first.split("-");
+    List<String> time = dateAndTime.last.split(":");
+
+    switch (date[1]) {
+      case "01":
+        date[1] = "Jan";
+        break;
+      case "02":
+        date[1] = "Feb";
+        break;
+      case "03":
+        date[1] = "Mar";
+        break;
+      case "04":
+        date[1] = "Apr";
+        break;
+      case "05":
+        date[1] = "May";
+        break;
+      case "06":
+        date[1] = "Jun";
+        break;
+      case "07":
+        date[1] = "Jul";
+        break;
+      case "08":
+        date[1] = "Aug";
+        break;
+      case "09":
+        date[1] = "Sept";
+        break;
+      case "10":
+        date[1] = "Oct";
+        break;
+      case "11":
+        date[1] = "Nov";
+        break;
+      case "12":
+        date[1] = "Dec";
+        break;
+    }
+
+    return "${date.reversed.join(" ")} ${time.getRange(0, 2).join(":")}";
+  }
+
   /// takes a [DateTime] and returns it's difference from the current [DateTime].
   static String getTimeDifference(DateTime givenTime) {
     final int seconds = DateTime.now().difference(givenTime).inSeconds;

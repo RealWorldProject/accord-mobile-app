@@ -1,6 +1,9 @@
 import 'package:accord/constant/accord_colors.dart';
-import 'package:accord/screens/order/order_list_view.dart';
+import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/material.dart';
+
+import 'order_list_view.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({Key key}) : super(key: key);
@@ -17,9 +20,9 @@ class _OrderScreenState extends State<OrderScreen> {
         iconTheme: IconThemeData(color: Colors.blue),
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: Text(
-          "My Orders",
-          style: TextStyle(color: AccordColors.primary_blue_color),
+        title: CustomText(
+          textToShow: AccordLabels.myOrders,
+          textColor: AccordColors.primary_blue_color,
         ),
         bottom: PreferredSize(
           child: Container(

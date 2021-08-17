@@ -32,11 +32,15 @@ class Book {
       id: json['_id'],
       name: json['name'],
       author: json['author'],
-      category: Category.fromJson(json['category']),
-      price: double.parse(json['price'].toString()),
+      category:
+          json['category'] != null ? Category.fromJson(json['category']) : null,
+      price: json['category'] != null
+          ? double.parse(json['price'].toString())
+          : null,
       description: json['description'],
-      images: new List<String>.from(json['images']),
-      userId: User.fromJson(json['userId']),
+      images:
+          json['images'] != null ? new List<String>.from(json['images']) : null,
+      userId: json['userId'] != null ? User.fromJson(json['userId']) : null,
       isNewBook: json['isNewBook'],
       isAvailableForExchange: json['isAvailableForExchange'],
     );
