@@ -1,5 +1,6 @@
 class Order {
   Order({
+    this.orderID,
     this.fullName,
     this.phoneNumber,
     this.state,
@@ -8,8 +9,11 @@ class Order {
     this.address,
     this.coordinates,
     this.paymentGateway,
+    this.orderItems,
+    this.createAt,
   });
 
+  final String orderID;
   final String fullName;
   final String phoneNumber;
   final String state;
@@ -18,9 +22,12 @@ class Order {
   final String address;
   final String coordinates;
   final String paymentGateway;
+  final List<OrderItem> orderItems;
+  final DateTime createAt;
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
+      orderID: json['orderID'],
       fullName: json['fullName'],
       phoneNumber: json['phoneNumber'],
       state: json['state'],
@@ -29,6 +36,10 @@ class Order {
       address: json['address'],
       coordinates: json['coordinates'],
       paymentGateway: json['paymentGateway'],
+      orderItems: (json['orderItems'] as List)
+          .map((cartItem) => OrderItem.fromJson(cartItem))
+          .toList(),
+      createAt: DateTime.parse(json['createdAt']),
     );
   }
 
@@ -42,4 +53,32 @@ class Order {
         'coordinates': coordinates,
         'paymentGateway': paymentGateway,
       };
+}
+
+// partial book/cartItem item as orderitem.
+class OrderItem {
+  OrderItem({
+    this.bookName,
+    this.bookPrice,
+    this.bookAuthor,
+    this.bookImage,
+    this.quantity,
+    this.totalPrice,
+  });
+
+  final String bookName;
+  final String bookPrice;
+  final String bookAuthor;
+  final String bookImage;
+  final String quantity;
+  final String totalPrice;
+
+  factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
+        bookName: json['bookName'],
+        bookPrice: json['bookPrice'].toString(),
+        bookAuthor: json['bookAuthor'],
+        bookImage: json['bookImage'],
+        quantity: json['quantity'].toString(),
+        totalPrice: json['totalPrice'].toString(),
+      );
 }

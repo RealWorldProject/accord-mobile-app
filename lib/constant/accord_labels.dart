@@ -56,6 +56,7 @@ class AccordLabels {
   static const String coordinates = "Co-ordinates (Optional)";
   static const String paymentMethod = "Payment Method";
   static const String submitButton = "Submit";
+  static const String total = "Total";
 
   // // // Home Screen labels
   static const String addBookLabel = "Add Book";

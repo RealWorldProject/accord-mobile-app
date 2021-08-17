@@ -19,3 +19,24 @@ class OrderResponse {
     );
   }
 }
+
+class MultipleOrderResponse {
+  MultipleOrderResponse({
+    this.success,
+    this.message,
+    this.result,
+  });
+
+  final bool success;
+  final String message;
+  final List<Order> result;
+
+  factory MultipleOrderResponse.fromJson(Map<String, dynamic> json) =>
+      MultipleOrderResponse(
+        success: json['success'],
+        message: json['message'],
+        result: (json['result'] as List)
+            .map((order) => Order.fromJson(order))
+            .toList(),
+      );
+}
