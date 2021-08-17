@@ -8,10 +8,10 @@ import 'package:accord/utils/exposer.dart';
 import 'package:flutter/foundation.dart';
 
 class RequestViewModel extends ChangeNotifier {
-  List<Request> _incomingRequests = [];
+  List<Request> _incomingRequests;
   List<Request> get incomingRequests => _incomingRequests;
 
-  List<Request> _outgoingRequests = [];
+  List<Request> _outgoingRequests;
   List<Request> get outgoingRequests => _outgoingRequests;
 
   /// bookID of the requested book.
@@ -97,8 +97,6 @@ class RequestViewModel extends ChangeNotifier {
 
     try {
       var apiResponse = await RequestService().fetchOutgoingRequests();
-
-      print(apiResponse);
 
       // conversion: json to object.
       var responseObj =

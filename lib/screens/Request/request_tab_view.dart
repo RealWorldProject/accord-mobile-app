@@ -17,7 +17,6 @@ class RequestTabView extends StatefulWidget {
 class _RequestTabViewState extends State<RequestTabView>
     with SingleTickerProviderStateMixin {
   TabController _controller;
-  int _selectedIndex = 0;
 
   List<Widget> list = [
     Tab(
@@ -26,7 +25,6 @@ class _RequestTabViewState extends State<RequestTabView>
     Tab(
       text: AccordLabels.incomingRequestLabel,
     ),
-    // Tab(icon: Icon(Icons.add_shopping_cart)),
   ];
 
   @override
@@ -34,15 +32,6 @@ class _RequestTabViewState extends State<RequestTabView>
     super.initState();
     // Create TabController for getting the index of current tab
     _controller = TabController(length: list.length, vsync: this);
-
-    _controller.addListener(() {
-      setState(() {
-        _selectedIndex = _controller.index;
-      });
-      if (!_controller.indexIsChanging) {
-        print("Selected Index: " + _controller.index.toString());
-      }
-    });
   }
 
   @override
@@ -54,6 +43,16 @@ class _RequestTabViewState extends State<RequestTabView>
 
   @override
   Widget build(BuildContext context) {
+    RequestViewModel requestViewModel = context.read<RequestViewModel>();
+
+    // limits the api call to just 1 time during
+    //the lifecycle of running application
+    if (requestViewModel.incomingRequests == null &&
+        requestViewModel.outgoingRequests == null) {
+      requestViewModel.fetchOutgoingRequests();
+      requestViewModel.fetchIncomingRequests();
+    }
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.blue),
