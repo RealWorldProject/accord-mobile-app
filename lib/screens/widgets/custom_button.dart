@@ -22,6 +22,9 @@ class CustomButton extends StatelessWidget {
   /// button enabled by default
   final bool enable;
 
+  /// textSize 12 by default
+  final double textSize;
+
   /// action that is triggered on button click
   final VoidCallback triggerAction;
 
@@ -31,6 +34,7 @@ class CustomButton extends StatelessWidget {
     this.buttonType = ButtonType.ROUNDED_EDGE,
     this.buttonLabel,
     this.enable = true,
+    this.textSize = 12,
     @required this.triggerAction,
   });
 
@@ -47,7 +51,7 @@ class CustomButton extends StatelessWidget {
             style: TextStyle(
               color: enable ? AccordColors.primary_blue_color : Colors.black26,
               fontWeight: FontWeight.w600,
-              fontSize: 12,
+              fontSize: textSize,
             ),
           ),
           style: OutlinedButton.styleFrom(

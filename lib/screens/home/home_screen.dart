@@ -30,12 +30,12 @@ class _HomeScreenState extends State<HomeScreen>
 
     return Scaffold(
       extendBody: true,
-      body: Container(
-        margin: EdgeInsets.only(bottom: 80),
-        padding: EdgeInsets.zero,
-        child: SingleChildScrollView(
-          child: SafeArea(
-            bottom: false,
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: SafeArea(
+          bottom: false,
+          child: Container(
+          margin: EdgeInsets.only(bottom: 80),
             child: Column(
               children: [
                 SearchField(),

@@ -26,12 +26,14 @@ class MyApp extends StatelessWidget {
           fontFamily: "Poppins",
           bottomSheetTheme:
               BottomSheetThemeData(backgroundColor: Colors.transparent)),
-      debugShowCheckedModeBanner: false,
+
       initialRoute: firstRun ? "onboard" : "home",
       routes: {
         "home": (context) => Splash_Screen(),
         "onboard": (context) => GetStartedScreen()
       },
+      debugShowCheckedModeBanner: false,
+
     );
   }
 }

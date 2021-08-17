@@ -91,6 +91,10 @@ class AccordLabels {
   static const String deleteBook = "Delete Book";
   static const String noBookPostedLabel = "You have not posted any book yet.";
   static const String notAvailableForExchange = "Not available for exchange.";
+  //Review Book Screen Labels
+  static const String addReviewButtonTitle = "Write a Review";
+  static const String submitReviewButtonTitle = "Submit Review";
+  static const String editReviewButtonTitle = "Edit Your Review";
 
   // Post & edit book screen labels
   static const String postBookTitle = "Post your Book";

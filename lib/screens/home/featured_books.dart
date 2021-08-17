@@ -43,8 +43,9 @@ class FeaturedBooksSection extends StatelessWidget {
                     crossAxisSpacing: 0,
                     mainAxisSpacing: 0,
                     crossAxisCount: 2,
-                    childAspectRatio: MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height),
+                    childAspectRatio: 1/1.8,
+                    // childAspectRatio: MediaQuery.of(context).size.width /
+                    //     (MediaQuery.of(context).size.height)*1.15,
                     children: bookViewModel.data.status == Status.LOADING
                         ? List.generate(
                             4,
