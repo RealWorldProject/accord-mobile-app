@@ -9,6 +9,8 @@ class Request {
     this.user,
     this.requestedBook,
     this.requestedBookOwner,
+    this.createdAt,
+    this.updatedAt,
   });
 
   final String id;
@@ -17,6 +19,8 @@ class Request {
   final dynamic user;
   final dynamic requestedBook;
   final dynamic requestedBookOwner;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   factory Request.fromJson(Map<String, dynamic> json) {
     return Request(
@@ -26,6 +30,8 @@ class Request {
       user: User.fromJson(json['user']),
       requestedBook: Book.fromJson(json['requestedBook']),
       requestedBookOwner: User.fromJson(json['requestedBookOwner']),
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 

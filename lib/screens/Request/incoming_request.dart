@@ -2,8 +2,8 @@ import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/request.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/utils/exposer.dart';
+import 'package:accord/utils/time_calculator.dart';
 import 'package:accord/viewModel/request_view_model.dart';
-import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,7 @@ class IncomingRequest extends StatefulWidget {
 }
 
 class _IncomingRequestState extends State<IncomingRequest> {
-  _incomingRequestBuilder({String userImage, Request request}) {
+  _incomingRequestBuilder({Request request}) {
     return Container(
       color: Colors.white,
       margin: EdgeInsets.symmetric(vertical: 5),
@@ -61,7 +61,7 @@ class _IncomingRequestState extends State<IncomingRequest> {
                           ),
                         ),
                         TextSpan(
-                          text: " sent you request to exchange your book, ",
+                          text: " sent you a request to exchange your book, ",
                         ),
                         TextSpan(
                           text: request.requestedBook.name,
@@ -71,7 +71,7 @@ class _IncomingRequestState extends State<IncomingRequest> {
                           ),
                         ),
                         TextSpan(
-                          text: ", for his book,",
+                          text: ", for their book,",
                         ),
                         TextSpan(
                           text: request.proposedExchangeBook.name,
@@ -92,7 +92,7 @@ class _IncomingRequestState extends State<IncomingRequest> {
                     height: 1.8,
                   ),
                   Text(
-                    "12 hour ago",
+                    TimeCalculator.getTimeDifference(request.createdAt),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -189,82 +189,81 @@ class _IncomingRequestState extends State<IncomingRequest> {
 
   @override
   Widget build(BuildContext context) {
-    final UserViewModel userViewModel = context.read<UserViewModel>();
-
     final RequestViewModel requestViewModel = context.read<RequestViewModel>();
-    requestViewModel.fetchIncomingRequests();
 
     return Container(
-      child: Consumer<RequestViewModel>(
-        builder: (context, requestViewModel, _) {
-          final List<Request> incomingRequests =
-              requestViewModel.incomingRequests;
-          switch (requestViewModel.data.status) {
-            case Status.LOADING:
-              return Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                ),
-              );
-            case Status.COMPLETE:
-              return ListView.builder(
-                itemCount:
-                    incomingRequests.isEmpty ? 1 : incomingRequests.length,
-                itemBuilder: (context, index) {
-                  if (incomingRequests.isNotEmpty) {
-                    // each requests
-                    Request request = incomingRequests[index];
+      child: RefreshIndicator(
+        onRefresh: () => requestViewModel.fetchIncomingRequests(),
+        child: Consumer<RequestViewModel>(
+          builder: (context, requestViewModel, _) {
+            final List<Request> incomingRequests =
+                requestViewModel.incomingRequests;
+            switch (requestViewModel.data.status) {
+              case Status.LOADING:
+                return Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                  ),
+                );
+              case Status.COMPLETE:
+                return ListView.builder(
+                  itemCount:
+                      incomingRequests.isEmpty ? 1 : incomingRequests.length,
+                  itemBuilder: (context, index) {
+                    if (incomingRequests.isNotEmpty) {
+                      // each requests
+                      Request request = incomingRequests[index];
 
-                    // [Dismissible] iterative requests
-                    return Dismissible(
-                      key: UniqueKey(),
-                      child: _incomingRequestBuilder(
-                        userImage: userViewModel.user.image,
-                        request: request,
-                      ),
-                      onDismissed: (direction) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Removed request'),
-                            action: SnackBarAction(
-                              label: "UNDO",
-                              onPressed: () {},
-                            ),
-                          ),
-                        );
-                      },
-                      background: Container(color: Colors.red),
-                    );
-                  } else {
-                    return Container(
-                      padding: EdgeInsets.only(top: 20),
-                      width: MediaQuery.of(context).size.width,
-                      child: Text(
-                        AccordLabels.emptyRequestMessage(
-                          AccordLabels.incomingRequestLabel,
+                      // [Dismissible] iterative requests
+                      return Dismissible(
+                        key: UniqueKey(),
+                        child: _incomingRequestBuilder(
+                          request: request,
                         ),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 18,
-                            letterSpacing: -1,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black45),
-                      ),
-                    );
-                  }
-                },
-              );
-            case Status.ERROR:
-              return ErrorDisplayer(
-                error: requestViewModel.data.message,
-                retryOption: () {
-                  requestViewModel.resetIncomingRequests();
-                  requestViewModel.fetchIncomingRequests();
-                },
-              );
-          }
-          return Container();
-        },
+                        onDismissed: (direction) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Removed request'),
+                              action: SnackBarAction(
+                                label: "UNDO",
+                                onPressed: () {},
+                              ),
+                            ),
+                          );
+                        },
+                        background: Container(color: Colors.red),
+                      );
+                    } else {
+                      return Container(
+                        padding: EdgeInsets.only(top: 20),
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          AccordLabels.emptyRequestMessage(
+                            AccordLabels.incomingRequestLabel,
+                          ),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18,
+                              letterSpacing: -1,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black45),
+                        ),
+                      );
+                    }
+                  },
+                );
+              case Status.ERROR:
+                return ErrorDisplayer(
+                  error: requestViewModel.data.message,
+                  retryOption: () {
+                    requestViewModel.resetIncomingRequests();
+                    requestViewModel.fetchIncomingRequests();
+                  },
+                );
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }
