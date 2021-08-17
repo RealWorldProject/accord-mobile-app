@@ -1,16 +1,31 @@
+import 'package:accord/models/book.dart';
+import 'package:accord/models/user.dart';
+
 class Request {
   Request({
+    this.id,
+    this.status,
     this.proposedExchangeBook,
+    this.user,
     this.requestedBook,
+    this.requestedBookOwner,
   });
 
-  final String proposedExchangeBook;
-  final String requestedBook;
+  final String id;
+  final String status;
+  final dynamic proposedExchangeBook;
+  final dynamic user;
+  final dynamic requestedBook;
+  final dynamic requestedBookOwner;
 
   factory Request.fromJson(Map<String, dynamic> json) {
     return Request(
-      proposedExchangeBook: json['proposedExchangeBook'],
-      requestedBook: json['requestedBook'],
+      id: json['_id'],
+      status: json['status'],
+      proposedExchangeBook: Book.fromJson(json['proposedExchangeBook']),
+      user: User.fromJson(json['user']),
+      requestedBook: Book.fromJson(json['requestedBook']),
+      requestedBookOwner: User.fromJson(json['requestedBookOwner']),
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:accord/viewModel/category_view_model.dart';
 import 'package:accord/viewModel/image_helper.dart';
 import 'package:accord/viewModel/order_view_model.dart';
+import 'package:accord/viewModel/request_view_model.dart';
 import 'package:accord/viewModel/screen_view_model.dart';
 import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           ChangeNotifierProvider(create: (context) => CartviewModel()),
           ChangeNotifierProvider(create: (context) => OrderViewModel()),
           ChangeNotifierProvider(create: (context) => ImageHelper()),
+          ChangeNotifierProvider(create: (context) => RequestViewModel()),
         ],
         child: Builder(builder: (context) {
           return MaterialApp(

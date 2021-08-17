@@ -1,7 +1,11 @@
 import 'package:accord/constant/accord_colors.dart';
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/Request/incoming_request.dart';
 import 'package:accord/screens/Request/outgoing_requests.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/viewModel/request_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RequestTabView extends StatefulWidget {
   const RequestTabView({Key key}) : super(key: key);
@@ -17,14 +21,15 @@ class _RequestTabViewState extends State<RequestTabView>
 
   List<Widget> list = [
     Tab(
-      text: "Outgoing Request",
+      text: AccordLabels.outgoingRequestLabel,
     ),
     Tab(
-      text: "Incoming Request",
+      text: AccordLabels.incomingRequestLabel,
     ),
     // Tab(icon: Icon(Icons.add_shopping_cart)),
   ];
 
+  @override
   void initState() {
     super.initState();
     // Create TabController for getting the index of current tab
@@ -34,8 +39,17 @@ class _RequestTabViewState extends State<RequestTabView>
       setState(() {
         _selectedIndex = _controller.index;
       });
-      print("Selected Index: " + _controller.index.toString());
+      if (!_controller.indexIsChanging) {
+        print("Selected Index: " + _controller.index.toString());
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -55,9 +69,9 @@ class _RequestTabViewState extends State<RequestTabView>
           controller: _controller,
           tabs: list,
         ),
-        title: Text(
-          "My Orders",
-          style: TextStyle(color: AccordColors.primary_blue_color),
+        title: CustomText(
+          textToShow: AccordLabels.myRequests,
+          textColor: AccordColors.primary_blue_color,
         ),
       ),
       body: TabBarView(

@@ -13,6 +13,7 @@ class AccordLabels {
   static const String imagePrieviewLabel = "Image Preview";
   static const String save = "Save";
   static const String stayIn = "Stay In";
+  static const String confirm = "Confirm";
 
   // Login & register screen labels
   static const String greet = "Welcome Back!";
@@ -72,6 +73,8 @@ class AccordLabels {
   static const String featuredBooksLabel = "Featured Books";
   static const String availableForExchange = "Available for Exchange";
   static const String requestBook = "Request Book";
+  static const String requestedBookLabel = "Requested Book:";
+  static const String bookInOffer = "Book In Offer:";
   static const String ratingAndReviewTitle = "Rating & Reviews";
   static const String viewMore = "View More";
   static const String bookPriceLabel = "Book's Price";
@@ -110,6 +113,12 @@ class AccordLabels {
 
   static const String updateBookTitle = "Update your Book";
   static const String updateBook = "Update Book";
+
+  // Request screen labels
+  static const String outgoingRequestLabel = "Outgoing Requests";
+  static const String incomingRequestLabel = "Incoming Requests";
+  static String emptyRequestMessage(String requestTab) =>
+      "Your $requestTab is empty.";
 
   // Error labels
   static const String connectionErrorMessage =
