@@ -1,4 +1,11 @@
+import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/models/request.dart';
+import 'package:accord/screens/widgets/error_displayer.dart';
+import 'package:accord/utils/exposer.dart';
+import 'package:accord/viewModel/request_view_model.dart';
+import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class IncomingRequest extends StatefulWidget {
   const IncomingRequest({Key key}) : super(key: key);
@@ -8,7 +15,7 @@ class IncomingRequest extends StatefulWidget {
 }
 
 class _IncomingRequestState extends State<IncomingRequest> {
-  _incomingRequestBuilder() {
+  _incomingRequestBuilder({String userImage, Request request}) {
     return Container(
       color: Colors.white,
       margin: EdgeInsets.symmetric(vertical: 5),
@@ -22,9 +29,12 @@ class _IncomingRequestState extends State<IncomingRequest> {
             child: Column(
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage(
-                    "assets/images/user2.png",
-                  ),
+                  backgroundImage: request.user.image != null
+                      ? Uri.parse(request.user.image).isAbsolute
+                          ? NetworkImage(request.user.image)
+                          : AssetImage("assets/images/user2.png")
+                      : AssetImage("assets/images/user2.png"),
+                  backgroundColor: Colors.black12,
                   radius: 30,
                 )
               ],
@@ -44,27 +54,27 @@ class _IncomingRequestState extends State<IncomingRequest> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "Keanu Reeves",
+                          text: request.user.email,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff13293d),
                           ),
                         ),
                         TextSpan(
-                          text: " sent you request to exchange book ",
+                          text: " sent you request to exchange your book, ",
                         ),
                         TextSpan(
-                          text: "Harry Potter",
+                          text: request.requestedBook.name,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff13293d),
                           ),
                         ),
                         TextSpan(
-                          text: " for ",
+                          text: ", for his book,",
                         ),
                         TextSpan(
-                          text: "50 Shades of Grey.",
+                          text: request.proposedExchangeBook.name,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff13293d),
@@ -179,29 +189,83 @@ class _IncomingRequestState extends State<IncomingRequest> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-          itemCount: 8,
-          itemBuilder: (context, index) {
-            return Dismissible(
-              key: UniqueKey(),
-              child: _incomingRequestBuilder(),
-              onDismissed: (direction) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Removed Item'),
-                    action: SnackBarAction(
-                      label: "UNDO",
-                      onPressed: (){
+    final UserViewModel userViewModel = context.read<UserViewModel>();
 
+    final RequestViewModel requestViewModel = context.read<RequestViewModel>();
+    requestViewModel.fetchIncomingRequests();
+
+    return Container(
+      child: Consumer<RequestViewModel>(
+        builder: (context, requestViewModel, _) {
+          final List<Request> incomingRequests =
+              requestViewModel.incomingRequests;
+          switch (requestViewModel.data.status) {
+            case Status.LOADING:
+              return Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                ),
+              );
+            case Status.COMPLETE:
+              return ListView.builder(
+                itemCount:
+                    incomingRequests.isEmpty ? 1 : incomingRequests.length,
+                itemBuilder: (context, index) {
+                  if (incomingRequests.isNotEmpty) {
+                    // each requests
+                    Request request = incomingRequests[index];
+
+                    // [Dismissible] iterative requests
+                    return Dismissible(
+                      key: UniqueKey(),
+                      child: _incomingRequestBuilder(
+                        userImage: userViewModel.user.image,
+                        request: request,
+                      ),
+                      onDismissed: (direction) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Removed request'),
+                            action: SnackBarAction(
+                              label: "UNDO",
+                              onPressed: () {},
+                            ),
+                          ),
+                        );
                       },
-                    ),
-                  ),
-                );
-              },
-              background: Container(color:Colors.red),
-            );
-          }),
+                      background: Container(color: Colors.red),
+                    );
+                  } else {
+                    return Container(
+                      padding: EdgeInsets.only(top: 20),
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        AccordLabels.emptyRequestMessage(
+                          AccordLabels.incomingRequestLabel,
+                        ),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 18,
+                            letterSpacing: -1,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black45),
+                      ),
+                    );
+                  }
+                },
+              );
+            case Status.ERROR:
+              return ErrorDisplayer(
+                error: requestViewModel.data.message,
+                retryOption: () {
+                  requestViewModel.resetIncomingRequests();
+                  requestViewModel.fetchIncomingRequests();
+                },
+              );
+          }
+          return Container();
+        },
+      ),
     );
   }
 }

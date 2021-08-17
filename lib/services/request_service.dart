@@ -31,5 +31,43 @@ class RequestService {
     }
   }
 
-  // Future<String> fetchIncomingRequests() async {}
+  Future<String> fetchIncomingRequests() async {
+    userToken = await Storage().fetchToken();
+    try {
+      var res = await dio.get(
+        "$baseUrl/request/incoming",
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
+    } on DioError catch (e) {
+      return ResponseBase().apiResponse(e.response);
+    }
+  }
+
+  Future<String> fetchOutgoingRequests() async {
+    userToken = await Storage().fetchToken();
+    try {
+      var res = await dio.get(
+        "$baseUrl/request/my",
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
+    } on DioError catch (e) {
+      return ResponseBase().apiResponse(e.response);
+    }
+  }
 }
