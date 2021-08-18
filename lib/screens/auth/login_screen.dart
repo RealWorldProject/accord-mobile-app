@@ -123,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Column(
                                   children: <Widget>[
                                     Container(
+                                      key: Key("email"),
                                       child: CustomTextField(
                                         fieldController: _emailController,
                                         obscureText: _obscurePassword,
@@ -134,6 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       alignment: Alignment.centerRight,
                                       children: <Widget>[
                                         CustomTextField(
+                                          key: Key("password"),
                                           fieldController: _passwordcontroller,
                                           obscureText: _obscurePassword,
                                           hintText: "Password",

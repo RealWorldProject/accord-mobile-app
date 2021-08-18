@@ -13,6 +13,7 @@ class CustomTextField<T> extends StatelessWidget {
   final String hintText;
   final FieldValidator fieldValidator;
   final String initialValue;
+  final Key key;
 
   CustomTextField({
     this.formType,
@@ -21,11 +22,13 @@ class CustomTextField<T> extends StatelessWidget {
     this.hintText,
     this.fieldValidator,
     this.initialValue,
+    this.key
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+       key:key,
       controller: fieldController,
       // hiding texts if the text field is any type of password
       obscureText: (hintText.split(" ").contains("Password") ||
