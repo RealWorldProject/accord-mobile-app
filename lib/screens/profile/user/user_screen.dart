@@ -1,11 +1,13 @@
-import 'package:accord/screens/profile/user/book/post_book_screen.dart';
-import 'package:accord/screens/profile/user/edit/user_edit_detail.dart';
-import 'package:accord/screens/profile/user/user_owned_books_section.dart';
-import 'package:accord/screens/profile/user/user_detail_section.dart';
-import 'package:accord/screens/shimmer/view_profile_shimmer.dart';
+import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+
+import 'book/post_book_screen.dart';
+import 'edit/user_edit_detail.dart';
+import 'user_detail_section.dart';
+import 'user_owned_books_section.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key key}) : super(key: key);
@@ -26,10 +28,7 @@ class _UserScreenState extends State<UserScreen> {
             UserDetailSection(),
             Container(
               padding: EdgeInsets.all(8),
-
               width: double.infinity,
-              // decoration: BoxDecoration(
-              //     color: Colors.blue, borderRadius: BorderRadius.circular(5)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -42,8 +41,10 @@ class _UserScreenState extends State<UserScreen> {
                       color: Colors.transparent,
                       child: InkWell(
                         onTap: () {
-                          print("Edit Profile");
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => UserEditDetail()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserEditDetail()));
                         },
                         child: Container(
                           padding:
@@ -56,17 +57,14 @@ class _UserScreenState extends State<UserScreen> {
                                 size: 22,
                                 color: Colors.white,
                               ),
-                              // Icon(Icons.user,size: 22,color: Colors.white,),
                               SizedBox(
                                 width: 10,
                               ),
-                              Text(
-                                "Edit Details",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400),
-                              ),
+                              CustomText(
+                                  textToShow: AccordLabels.editDetails,
+                                  fontSize: 16,
+                                  textColor: Colors.white,
+                                  fontWeight: FontWeight.w400),
                             ],
                           ),
                         ),
@@ -101,12 +99,11 @@ class _UserScreenState extends State<UserScreen> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text(
-                                "Add Book",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400),
+                              CustomText(
+                                textToShow: AccordLabels.addBookLabel,
+                                fontSize: 16,
+                                textColor: Colors.white,
+                                fontWeight: FontWeight.w400,
                               ),
                             ],
                           ),
@@ -117,7 +114,6 @@ class _UserScreenState extends State<UserScreen> {
                 ],
               ),
             ),
-            // ViewProfileShimmer(),
             UserOwnedBooksSection(),
           ],
         ),

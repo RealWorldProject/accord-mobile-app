@@ -1,12 +1,7 @@
-import 'package:accord/constant/constant.dart';
-import 'package:accord/screens/cart/order_details.dart';
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/screens/widgets/CustomButton.dart';
-import 'package:accord/screens/widgets/CustomOutlineButton.dart';
-import 'package:accord/screens/widgets/conceal_password.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
-import 'package:accord/screens/widgets/custom_text_field.dart';
 import 'package:accord/screens/widgets/empty_text_field.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 
 class UserEditDetail extends StatefulWidget {
@@ -116,12 +111,12 @@ class _UserEditDetailState extends State<UserEditDetail> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 15,),
+                              SizedBox(
+                                height: 15,
+                              ),
                               Container(
                                 width: MediaQuery.of(context).size.width,
-                                child: CustomButton(
-                                  text:"Change Name"
-                                ),
+                                child: CustomButton(text: "Change Name"),
                               ),
                             ],
                           ),
@@ -144,7 +139,7 @@ class _UserEditDetailState extends State<UserEditDetail> {
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: Constant.full_dark_blue_color),
+                              color: AccordColors.full_dark_blue_color),
                         ),
                       ),
                       Container(
@@ -228,9 +223,7 @@ class _UserEditDetailState extends State<UserEditDetail> {
 
                                 Container(
                                   width: MediaQuery.of(context).size.width,
-                                  child: CustomButton(
-                                    text:"Change Number"
-                                  ),
+                                  child: CustomButton(text: "Change Number"),
                                 ),
                                 // SizedBox(
                                 //   height: 30,
@@ -257,7 +250,7 @@ class _UserEditDetailState extends State<UserEditDetail> {
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: Constant.full_dark_blue_color),
+                              color: AccordColors.full_dark_blue_color),
                         ),
                       ),
                       Container(

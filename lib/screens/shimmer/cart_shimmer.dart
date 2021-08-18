@@ -1,4 +1,4 @@
-import 'package:accord/constant/constant.dart';
+import 'package:accord/constant/accord_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -23,8 +23,8 @@ class CartShimmer extends StatelessWidget {
             child: Row(
               children: [
                 Shimmer.fromColors(
-                  baseColor: Constant.shimmer_base_color,
-                  highlightColor: Constant.shimmer_highlight_color,
+                  baseColor: AccordColors.shimmer_base_color,
+                  highlightColor: AccordColors.shimmer_highlight_color,
                   child: Container(
                     height: imageHeight,
                     width: imageWidth,
@@ -38,47 +38,17 @@ class CartShimmer extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-
                     margin: EdgeInsets.only(left: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Shimmer.fromColors(
-                          baseColor: Constant.shimmer_base_color,
-                          highlightColor: Constant.shimmer_highlight_color,
+                          baseColor: AccordColors.shimmer_base_color,
+                          highlightColor: AccordColors.shimmer_highlight_color,
                           child: Container(
-                            width: MediaQuery.of(context).size.width/1.6,
+                            width: MediaQuery.of(context).size.width / 1.6,
                             height: 12,
-
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 8,),
-                        Shimmer.fromColors(
-                          baseColor: Constant.shimmer_base_color,
-                          highlightColor: Constant.shimmer_highlight_color,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width/1.6-30,
-                            height: 12,
-
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 8,),
-                        Shimmer.fromColors(
-                          baseColor: Constant.shimmer_base_color,
-                          highlightColor: Constant.shimmer_highlight_color,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width/1.6-80,
-                            height: 12,
-
                             decoration: BoxDecoration(
                               color: Colors.grey[300],
                               borderRadius: BorderRadius.circular(16),
@@ -89,12 +59,41 @@ class CartShimmer extends StatelessWidget {
                           height: 8,
                         ),
                         Shimmer.fromColors(
-                          baseColor: Constant.shimmer_base_color,
-                          highlightColor: Constant.shimmer_highlight_color,
+                          baseColor: AccordColors.shimmer_base_color,
+                          highlightColor: AccordColors.shimmer_highlight_color,
                           child: Container(
-                            width: MediaQuery.of(context).size.width/1.6,
+                            width: MediaQuery.of(context).size.width / 1.6 - 30,
                             height: 12,
-
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: AccordColors.shimmer_base_color,
+                          highlightColor: AccordColors.shimmer_highlight_color,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 1.6 - 80,
+                            height: 12,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: AccordColors.shimmer_base_color,
+                          highlightColor: AccordColors.shimmer_highlight_color,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 1.6,
+                            height: 12,
                             decoration: BoxDecoration(
                               color: Colors.grey[300],
                               borderRadius: BorderRadius.circular(16),
@@ -105,14 +104,11 @@ class CartShimmer extends StatelessWidget {
                     ),
                   ),
                 ),
-
-
               ],
             ),
           ),
         ],
       ),
-
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/user.dart';
 import 'package:accord/responses/register_response.dart';
 import 'package:accord/screens/widgets/conceal_password.dart';
@@ -26,21 +27,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
 
   // input field validations
-  final _validateFirstName =
-      MultiValidator([RequiredValidator(errorText: "First name is required!")]);
+  final _validateFirstName = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.firstName))
+  ]);
 
-  final _validateLastName =
-      MultiValidator([RequiredValidator(errorText: "Last name is required!")]);
+  final _validateLastName = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.lastName))
+  ]);
 
   final _validateEmail = MultiValidator([
-    RequiredValidator(errorText: "Email is required!"),
-    EmailValidator(
-        errorText: "Invalid email, please update it and check again!")
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.email)),
+    EmailValidator(errorText: AccordLabels.invalidMessage(AccordLabels.email))
   ]);
 
   final _validatePassword = MultiValidator([
-    RequiredValidator(errorText: "Password is required!"),
-    MinLengthValidator(6, errorText: "Password must be atleast 6 character!")
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.password)),
+    MinLengthValidator(6, errorText: AccordLabels.passwordLengthMessage)
   ]);
 
   // Toggles the password show status
@@ -49,6 +55,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    super.dispose();
   }
 
   Future<void> _registerUser() async {
@@ -73,14 +89,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // checking resoponse and displaing customized error or success message
       if (_registerResponse.success) {
         // snackbar for successful user registration response
-        ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(_registerResponse.message, "Okay", this.context));
+        ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
+          content: _registerResponse.message,
+          context: context,
+          actionLabel: AccordLabels.okay,
+        ));
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => LoginScreen()));
       } else {
         // snackbar for failed user registration response
-        ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(_registerResponse.message, "Try Again", this.context));
+        ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
+          content: _registerResponse.message,
+          context: context,
+          actionLabel: AccordLabels.tryAgain,
+        ));
       }
     }
   }
@@ -117,9 +139,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   FadeAnimation(
                     1,
                     CustomText(
-                      holderKey: "ttlRegister",
-                      textToShow: "Register",
+                      textToShow: AccordLabels.register,
                       textColor: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   SizedBox(
@@ -128,9 +151,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   FadeAnimation(
                     1.2,
                     CustomText(
-                      holderKey: "tagRegister",
-                      textToShow: "Get yourself a new Account.",
+                      textToShow: AccordLabels.registerTag,
                       textColor: Colors.grey.shade50,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ],
@@ -158,27 +181,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   children: <Widget>[
                                     Container(
                                       child: CustomTextField(
+                                        designType: DesignType.UNDERLINE,
                                         fieldController: _firstNameController,
-                                        obscureText: _obscureText,
-                                        hintText: "First Name",
+                                        hintText: AccordLabels.firstName,
                                         fieldValidator: _validateFirstName,
                                       ),
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: CustomTextField(
+                                        designType: DesignType.UNDERLINE,
                                         fieldController: _lastNameController,
-                                        obscureText: _obscureText,
-                                        hintText: "Last Name",
+                                        hintText: AccordLabels.lastName,
                                         fieldValidator: _validateLastName,
                                       ),
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: CustomTextField(
+                                        designType: DesignType.UNDERLINE,
                                         fieldController: _emailController,
-                                        obscureText: _obscureText,
-                                        hintText: "Email",
+                                        hintText: AccordLabels.email,
                                         fieldValidator: _validateEmail,
                                       ),
                                     ),
@@ -186,9 +209,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       alignment: Alignment.centerRight,
                                       children: <Widget>[
                                         CustomTextField(
-                                          fieldController: _passwordController,
+                                          designType: DesignType.UNDERLINE,
                                           obscureText: _obscureText,
-                                          hintText: "Password",
+                                          fieldController: _passwordController,
+                                          hintText: AccordLabels.password,
                                           fieldValidator: _validatePassword,
                                         ),
                                         Positioned(
@@ -211,8 +235,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         FadeAnimation(
                           1.6,
                           CustomButton(
-                            buttonKey: "btnRegister",
-                            buttonText: "Register",
+                            buttonType: ButtonType.OVAL,
+                            buttonLabel: AccordLabels.register,
                             triggerAction: _registerUser,
                           ),
                         ),
@@ -225,25 +249,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             FadeAnimation(
                               1.7,
                               CustomText(
-                                holderKey: "askLogin",
-                                textToShow: "Already have an account? ",
+                                textToShow: AccordLabels.askLogin,
                                 textColor: Colors.grey.shade700,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             FadeAnimation(
                               1.8,
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => LoginScreen(),
-                                      ));
+                                  Navigator.of(context).pop();
                                 },
                                 child: CustomText(
-                                  holderKey: "lnkLogin",
-                                  textToShow: "Login",
+                                  textToShow: AccordLabels.login,
                                   textColor: Colors.blue,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             )

@@ -1,29 +1,33 @@
 import 'dart:convert';
 
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/order.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_radio_button.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/screens/widgets/custom_text_field.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/screens/widgets/loading_indicator.dart';
-import 'package:accord/services/handlers/exposer.dart';
+import 'package:accord/utils/exposer.dart';
+import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:accord/viewModel/order_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:provider/provider.dart';
 
-class AddLocationDetail extends StatefulWidget {
-  const AddLocationDetail({Key key}) : super(key: key);
+class OrderDetails extends StatefulWidget {
+  const OrderDetails({Key key}) : super(key: key);
 
   @override
-  _AddLocationDetailState createState() => _AddLocationDetailState();
+  _OrderDetailsState createState() => _OrderDetailsState();
 }
 
-class _AddLocationDetailState extends State<AddLocationDetail> {
+class _OrderDetailsState extends State<OrderDetails> {
   final _formKey = GlobalKey<FormState>();
 
-  final String _onlinePaymentOption = "Online Payment";
-  final String _cashOnDeliveryOption = "Cash on Delivery";
+  final String _onlinePaymentOption = AccordLabels.onlinePaymentText;
+  final String _cashOnDeliveryOption = AccordLabels.cashOnDeliveryText;
 
   final _fullNameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
@@ -48,22 +52,31 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
 
   // field validators
   final _acquireFullname = MultiValidator(
-      [RequiredValidator(errorText: "Please state your full name!")]);
+      [RequiredValidator(errorText: AccordLabels.requireFullNameMessage)]);
 
   final _acquirePhoneNumber = MultiValidator(
-      [RequiredValidator(errorText: "Please insert your phone number!")]);
+      [RequiredValidator(errorText: AccordLabels.requirePhoneNumberMessage)]);
 
-  final _acquireState = MultiValidator(
-      [RequiredValidator(errorText: "Your state/province is essential!")]);
+  final _acquireState = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.fieldEssentialMessage(AccordLabels.province))
+  ]);
 
-  final _acquireCity = MultiValidator(
-      [RequiredValidator(errorText: "Your city info is essential!")]);
+  final _acquireCity = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.fieldEssentialMessage(AccordLabels.city))
+  ]);
 
-  final _acquireArea = MultiValidator(
-      [RequiredValidator(errorText: "Your area info is essential!")]);
+  final _acquireArea = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.fieldEssentialMessage(AccordLabels.area))
+  ]);
 
-  final _acquireAddress = MultiValidator(
-      [RequiredValidator(errorText: "Your physical address is essential!")]);
+  final _acquireAddress = MultiValidator([
+    RequiredValidator(
+        errorText:
+            AccordLabels.fieldEssentialMessage(AccordLabels.physicalAddress))
+  ]);
 
   // active radio button change handlers.
   ValueChanged<String> _paymentGatewayValueChangeHandler() {
@@ -74,7 +87,7 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
     // removes focus from textfeilds
     FocusScope.of(context).unfocus();
 
-    OrderViewModel _orderViewModel = new OrderViewModel();
+    OrderViewModel orderViewModel = context.read<OrderViewModel>();
 
     if (_formKey.currentState.validate()) {
       // displays loading screen
@@ -95,19 +108,40 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
       // converting order object into json file
       String _orderJson = jsonEncode(order);
 
-      await _orderViewModel.checkoutOrder(_orderJson);
+      await orderViewModel.checkoutOrder(_orderJson);
 
       // action in reference to the response status
-      if (_orderViewModel.data.status == Status.COMPLETE) {
-        ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-            .popSnackbar(_orderViewModel.data.message, "Okay", this.context));
-      } else if (_orderViewModel.data.status == Status.ERROR) {
-        ScaffoldMessenger.of(context).showSnackBar(MessageHolder().popSnackbar(
-            _orderViewModel.data.message, "Try Again", this.context));
-      }
+      if (orderViewModel.data.status == Status.COMPLETE) {
+        context.read<CartviewModel>().resetCartItems();
 
-      // closes loading screen when the api request to post book is over.
-      Navigator.of(context).pop();
+        // closes loading screen when the api request to post order is over.
+        // enabling rootNavigator makes this pop the dialog screen,
+        // else the screen itself is popped from the navigation tree.
+        Navigator.of(context, rootNavigator: true).pop();
+
+        Navigator.pop(context);
+
+        showDialog(
+            context: context,
+            builder: (context) => InformationDialogBox(
+                  contentType: ContentType.INFORMATION,
+                  content: orderViewModel.data.message,
+                  actionText: AccordLabels.okay,
+                ));
+        // ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
+        //     .popSnackbar(orderViewModel.data.message, "Okay", this.context));
+      } else if (orderViewModel.data.status == Status.ERROR) {
+        // closes loading screen when the api request to post order is over.
+        // enabling rootNavigator makes this pop the dialog screen,
+        // else the screen itself is popped from the navigation tree.
+        Navigator.of(context, rootNavigator: true).pop();
+
+        ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
+          content: orderViewModel.data.message,
+          context: context,
+          actionLabel: AccordLabels.tryAgain,
+        ));
+      }
     }
   }
 
@@ -115,13 +149,23 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Shipping Address",
-          style: TextStyle(color: Color(0xff13293d)),
+        leading: new IconButton(
+          icon: new Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          splashRadius: 20,
+        ),
+        title: CustomText(
+          textToShow: AccordLabels.orderScreenTitle,
+          textColor: Colors.blue,
         ),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Colors.grey[800], //change your color here
+          color: Colors.blue, //change your color here
         ),
         centerTitle: true,
         elevation: 0,
@@ -146,7 +190,8 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomTextField(
-                        hintText: "Full Name",
+                        designType: DesignType.UNDERLINE,
+                        hintText: AccordLabels.fullName,
                         fieldController: _fullNameController,
                         fieldValidator: _acquireFullname,
                       ),
@@ -154,7 +199,8 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
                         height: 10,
                       ),
                       CustomTextField(
-                        hintText: "Phone Number",
+                        designType: DesignType.UNDERLINE,
+                        hintText: AccordLabels.phoneNumber,
                         fieldController: _phoneNumberController,
                         fieldValidator: _acquirePhoneNumber,
                       ),
@@ -162,7 +208,8 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
                         height: 10,
                       ),
                       CustomTextField(
-                        hintText: "State",
+                        designType: DesignType.UNDERLINE,
+                        hintText: AccordLabels.province,
                         fieldController: _statecontroller,
                         fieldValidator: _acquireState,
                       ),
@@ -170,7 +217,8 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
                         height: 10,
                       ),
                       CustomTextField(
-                        hintText: "City",
+                        designType: DesignType.UNDERLINE,
+                        hintText: AccordLabels.city,
                         fieldController: _cityController,
                         fieldValidator: _acquireCity,
                       ),
@@ -178,7 +226,8 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
                         height: 10,
                       ),
                       CustomTextField(
-                        hintText: "Area",
+                        designType: DesignType.UNDERLINE,
+                        hintText: AccordLabels.area,
                         fieldController: _areaController,
                         fieldValidator: _acquireArea,
                       ),
@@ -186,7 +235,8 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
                         height: 10,
                       ),
                       CustomTextField(
-                        hintText: "Address",
+                        designType: DesignType.UNDERLINE,
+                        hintText: AccordLabels.physicalAddress,
                         fieldController: _addressController,
                         fieldValidator: _acquireAddress,
                       ),
@@ -194,7 +244,8 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
                         height: 10,
                       ),
                       CustomTextField(
-                        hintText: "Co-ordinates (optional)",
+                        designType: DesignType.UNDERLINE,
+                        hintText: AccordLabels.coordinates,
                         fieldController: _coordinatesController,
                         fieldValidator: null,
                       ),
@@ -204,23 +255,23 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 0.0),
                         child: CustomText(
-                          textToShow: "Payment Method",
+                          textToShow: AccordLabels.paymentMethod,
                         ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           CustomRadioButton<String>(
-                            value: "Online Payment",
+                            value: AccordLabels.onlinePaymentText,
                             groupValue: _paymentGatewayValue,
                             onChanged: _paymentGatewayValueChangeHandler(),
-                            text: "Online Payment",
+                            text: AccordLabels.onlinePaymentText,
                           ),
                           CustomRadioButton<String>(
-                            value: "Cash on Delivery",
+                            value: AccordLabels.cashOnDeliveryText,
                             groupValue: _paymentGatewayValue,
                             onChanged: _paymentGatewayValueChangeHandler(),
-                            text: "Cash on Delivery",
+                            text: AccordLabels.cashOnDeliveryText,
                           ),
                         ],
                       ),
@@ -228,8 +279,8 @@ class _AddLocationDetailState extends State<AddLocationDetail> {
                         height: 10,
                       ),
                       CustomButton(
-                        buttonKey: "btnAddAddress",
-                        buttonText: "Submit",
+                        buttonType: ButtonType.ROUNDED_EDGE,
+                        buttonLabel: AccordLabels.submitButton,
                         triggerAction: _validateOrderCheckout,
                       ),
                     ],

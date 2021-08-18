@@ -1,24 +1,27 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:accord/constant/accord_colors.dart';
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
-import 'package:accord/responses/fetch_category_response.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_radio_button.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/screens/widgets/custom_text_field.dart';
 import 'package:accord/screens/widgets/image_uploader.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/screens/widgets/loading_indicator.dart';
 import 'package:accord/services/cloud_media_service.dart';
+import 'package:accord/utils/exposer.dart';
+import 'package:accord/utils/image_exposer.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/category_view_model.dart';
+import 'package:accord/viewModel/image_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 class EditBookScreen extends StatefulWidget {
   const EditBookScreen({Key key, this.book}) : super(key: key);
@@ -31,11 +34,8 @@ class EditBookScreen extends StatefulWidget {
 
 class _EditBookScreenState extends State<EditBookScreen> {
   final _formKey = GlobalKey<FormState>();
-  XFile _image;
-  bool _imageChosen;
   String _chosenValue;
-  String _initialImageHolder;
-  List<Category> _category = [];
+  List<Category> _categories = [];
   String _conditionValue;
   String _exchangableValue;
   final _bookNameController = TextEditingController();
@@ -46,68 +46,57 @@ class _EditBookScreenState extends State<EditBookScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<ImageHelper>().resetAllValues();
     bookDetailsAssigner(widget.book);
-    _getCategories().then((categories) => setState(
-          () {
-            _category = categories;
-          },
-        ));
+    _categories = context.read<CategoryViewModel>().categories;
+  }
+
+  @override
+  void dispose() {
+    _bookNameController.dispose();
+    _authorNameController.dispose();
+    _priceController.dispose();
+    _descriptionController.dispose();
+
+    super.dispose();
   }
 
   // value initializations for the selected book.
   void bookDetailsAssigner(Book book) {
-    setState(() {
-      urlToFile(imageName: book.images[0].split("/").last, ext: ".jpg")
-          .then((value) => setState(
-                () {
-                  _initialImageHolder = value.path;
-                  _image = XFile(_initialImageHolder);
-                },
-              ));
-      _bookNameController.text = book.name;
-      _authorNameController.text = book.author;
-      _priceController.text = book.price.toString();
-      _descriptionController.text = book.description;
-      _chosenValue = book.category;
-      _conditionValue = book.isNewBook ? "New" : "Old";
-      _exchangableValue = book.isAvailableForExchange ? "Yes" : "No";
-    });
-  }
-
-  // converting network image into file.
-  Future<File> urlToFile({String imageName, String ext}) async {
-    await deleteCache();
-
-    var bytes =
-        await NetworkAssetBundle(Uri.parse(widget.book.images[0])).load("");
-    String tempPath = (await getTemporaryDirectory()).path;
-    File file = File('$tempPath/$imageName.png');
-    await file.writeAsBytes(
-        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
-    return file;
-  }
-
-  // deletes cache stored through downloaded images.
-  Future<void> deleteCache() async {
-    final cacheDir = await getTemporaryDirectory();
-
-    if (cacheDir.existsSync()) {
-      cacheDir.deleteSync(recursive: true);
-    }
+    context.read<ImageHelper>().urlToXFile(imageUrl: widget.book.images[0]);
+    _bookNameController.text = book.name;
+    _authorNameController.text = book.author;
+    _priceController.text = book.price.toString();
+    _descriptionController.text = book.description;
+    _chosenValue = book.category.id;
+    _conditionValue = book.isNewBook
+        ? AccordLabels.positiveBookConditionValue
+        : AccordLabels.negativeBookConditionValue;
+    _exchangableValue = book.isAvailableForExchange
+        ? AccordLabels.positiveBookExchangebleValue
+        : AccordLabels.negativeBookExchangableValue;
   }
 
   // field validations
-  final _acquireBookName =
-      MultiValidator([RequiredValidator(errorText: "Book Name is required!")]);
+  final _acquireBookName = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.bookName))
+  ]);
 
-  final _acquireAuthorName = MultiValidator(
-      [RequiredValidator(errorText: "Author Name is required!")]);
+  final _acquireAuthorName = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.authorName))
+  ]);
 
-  final _acquirePrice =
-      MultiValidator([RequiredValidator(errorText: "Price is required!")]);
+  final _acquirePrice = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.price))
+  ]);
 
-  final _acquireDescription = MultiValidator(
-      [RequiredValidator(errorText: "Description is required!")]);
+  final _acquireDescription = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.description))
+  ]);
 
   // active radio button change handlers.
   ValueChanged<String> _conditionValueChangedHandler() {
@@ -118,61 +107,33 @@ class _EditBookScreenState extends State<EditBookScreen> {
     return (value) => setState(() => _exchangableValue = value);
   }
 
-  // image upload options.
-
-  Future<void> _getImagefromGallery() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image != null ? image : _image;
-      _imageChosen = _image != null ? true : false;
-    });
-  }
-
-  Future<void> _getImagefromcamera() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
-    setState(() {
-      _image = image != null ? image : _image;
-      _imageChosen = _image != null ? true : false;
-    });
-  }
-
-  Future<List<Category>> _getCategories() async {
-    CategoryViewModel categoryViewModel = new CategoryViewModel();
-    FetchCategoryResponse fetchCategoryResponse =
-        await categoryViewModel.fetchCategories();
-    if (fetchCategoryResponse.success) {
-      return fetchCategoryResponse.result;
-    }
-    return fetchCategoryResponse.result;
-  }
-
   Future<void> _validateEditBook() async {
     // removes focus from textfeilds
     FocusScope.of(context).unfocus();
 
-    BookViewModel bookViewModel = new BookViewModel();
+    BookViewModel bookViewModel = context.read<BookViewModel>();
+    ImageHelper imageHelper = context.read<ImageHelper>();
     CloudMediaService cloudMediaService = new CloudMediaService();
 
     // checks if image is chosen or not in the time of form submission.
-    setState(() {
-      _imageChosen = _image == null ? false : true;
-    });
+    imageHelper.setImageChosen();
 
     if (_formKey.currentState.validate()) {
       // checking if the image is chosen and
-      if (_imageChosen) {
+      if (imageHelper.imageChosen) {
         // shows loading screen while async image upload takes place
         loadingIndicator(context);
-        // uploading image to Cloud through a function in CloudMediaService
-        // which returns the url of the uploaded image.
+
         List<String> imageUrls = [];
         // uploading image only if the image has been altered.
-        if (isImageAltered()) {
-          imageUrls.add(await cloudMediaService.uploadImage(_image.path));
+        if (imageHelper.isImageAltered()) {
+          imageUrls
+              .add(await cloudMediaService.uploadImage(imageHelper.image.path));
         } else {
           imageUrls.add(widget.book.images[0]);
         }
 
+        // book object
         Book book = Book(
           name: _bookNameController.text,
           author: _authorNameController.text,
@@ -180,56 +141,62 @@ class _EditBookScreenState extends State<EditBookScreen> {
           price: double.parse(_priceController.text),
           description: _descriptionController.text,
           images: imageUrls,
-          isNewBook: (_conditionValue == "New") ? true : false,
-          isAvailableForExchange: (_exchangableValue == "Yes") ? true : false,
+          isNewBook: _conditionValue == AccordLabels.positiveBookConditionValue
+              ? true
+              : false,
+          isAvailableForExchange:
+              _exchangableValue == AccordLabels.positiveBookExchangebleValue
+                  ? true
+                  : false,
         );
 
         // converting book object into json file
         String updatedBookJSON = jsonEncode(book);
 
-        // connecting and waiting for response from api through bookViewModel.
-        // response will be object of BookResponse.
-        bool updateResult = await bookViewModel
-            .updateBook(updatedBookJSON, widget.book.id)
-            .then(
-          (updateResponse) {
-            if (updateResponse.success) {
-              // deleting the previous image if user has altered the book image
-              if (isImageAltered()) {
-                cloudMediaService.deleteImage(widget.book.images[0]);
-              }
-              ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-                  .popSnackbar(updateResponse.message, "", this.context));
-            } else {
-              // in case of error, deleting the current image if user has altered the book image
-              if (isImageAltered()) {
-                cloudMediaService.deleteImage(imageUrls[0]);
-              }
-              ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
-                  .popSnackbar(
-                      updateResponse.message, "Try Again", this.context));
-            }
-            return updateResponse.success;
-          },
-        ).whenComplete(
-          () =>
-              // closes loading screen when the api request to book update is over.
-              Navigator.of(context).pop(),
-        );
+        // waiting for api call through bookViewModel to be completed.
+        await bookViewModel.updateBook(updatedBookJSON, widget.book.id);
 
-        // navigates to previous page if update is successful.
-        if (updateResult) {
-          Navigator.pop(context);
+        if (bookViewModel.data.status == Status.COMPLETE) {
+          // deleting the previous image if user has altered the book image
+          if (imageHelper.isImageAltered()) {
+            cloudMediaService.deleteImage(widget.book.images[0]);
+          }
+          // closes loading screen when the api request to book update is over.
+          // enabling rootNavigator makes this pop the dialog screen,
+          // else the screen itself is popped from the navigation tree.
+          Navigator.of(context, rootNavigator: true).pop();
+
+          // closing the edit book screen.
+          Navigator.of(context).pop();
+
+          // then, showing information dialog.
+          showDialog(
+            context: context,
+            builder: (context) => InformationDialogBox(
+              contentType: ContentType.DONE,
+              content: bookViewModel.data.message,
+              actionText: AccordLabels.okay,
+            ),
+          );
+        } else if (bookViewModel.data.status == Status.ERROR) {
+          // in case of error, deleting the current image if user has altered the book image
+          if (imageHelper.isImageAltered()) {
+            cloudMediaService.deleteImage(imageUrls[0]);
+          }
+
+          // closes loading screen when the api request to book update is over.
+          // enabling rootNavigator makes this pop the dialog screen,
+          // else the screen itself is popped from the navigation tree.
+          Navigator.of(context, rootNavigator: true).pop();
+
+          // showing error message
+          ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
+            content: bookViewModel.data.message,
+            context: context,
+            actionLabel: AccordLabels.tryAgain,
+          ));
         }
       }
-    }
-  }
-
-  bool isImageAltered() {
-    if (_initialImageHolder != _image.path) {
-      return true;
-    } else {
-      return false;
     }
   }
 
@@ -240,9 +207,20 @@ class _EditBookScreenState extends State<EditBookScreen> {
         iconTheme: IconThemeData(color: Colors.blue),
         centerTitle: true,
         backgroundColor: Colors.white,
+        leading: new IconButton(
+          icon: new Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          splashRadius: 20,
+        ),
         title: CustomText(
-          textToShow: "Update your Book",
+          textToShow: AccordLabels.updateBookTitle,
           textColor: Colors.blue,
+          fontWeight: FontWeight.w600,
         ),
       ),
       body: SingleChildScrollView(
@@ -252,115 +230,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // image selection area
-              Padding(
-                padding: EdgeInsets.only(left: 6.0),
-                child: Container(
-                  margin: EdgeInsets.only(top: 20.0),
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  height: 200.0,
-                  child: ListView(
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Container(
-                          height: 200,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[400],
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8.0),
-                            ),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) => ImageUploader(
-                                  galleryOption: _getImagefromGallery,
-                                  cameraOption: _getImagefromcamera,
-                                ),
-                              );
-                            },
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.add_circle,
-                                    color: Colors.grey[800],
-                                    size: 50,
-                                  ),
-                                  Text("Add Image"),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: _image == null
-                            ? Container()
-                            : Stack(
-                                children: <Widget>[
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.file(
-                                      File(_image.path),
-                                      height: 200,
-                                      width: 150,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 1,
-                                    right: 1,
-                                    child: Container(
-                                      height: 25,
-                                      width: 25,
-                                      child: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            _image = null;
-                                            _imageChosen = false;
-                                          });
-                                        },
-                                        child: Icon(
-                                          Icons.close,
-                                          color: Colors.grey[800],
-                                          size: 15,
-                                        ),
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(25),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Visibility(
-                  visible: _imageChosen == null ? false : !_imageChosen,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Text(
-                      "Image is required!",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.red.shade800,
-                      ),
-                    ),
-                  )),
+              EditBookImageSelection(),
 
               // form area
               Padding(
@@ -374,16 +244,16 @@ class _EditBookScreenState extends State<EditBookScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
-                          textToShow: "Book Name",
+                          textToShow: AccordLabels.bookName,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       CustomTextField(
-                        formType: "PostBook",
                         fieldController: _bookNameController,
-                        hintText: "Book Name",
+                        hintText: AccordLabels.bookName,
                         fieldValidator: _acquireBookName,
                       ),
                       SizedBox(
@@ -392,16 +262,16 @@ class _EditBookScreenState extends State<EditBookScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
-                          textToShow: "Author`s Name",
+                          textToShow: AccordLabels.authorName,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       CustomTextField(
-                        formType: "PostBook",
                         fieldController: _authorNameController,
-                        hintText: "Author's Name",
+                        hintText: AccordLabels.authorName,
                         fieldValidator: _acquireAuthorName,
                       ),
                       SizedBox(
@@ -410,7 +280,8 @@ class _EditBookScreenState extends State<EditBookScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
-                          textToShow: "Category",
+                          textToShow: AccordLabels.category,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       SizedBox(
@@ -427,14 +298,13 @@ class _EditBookScreenState extends State<EditBookScreen> {
                               vertical: 0,
                             ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                           hint: Text(
-                            _category.isEmpty
-                                ? "No categories available!"
-                                : "Select Category",
+                            _categories.isEmpty
+                                ? AccordLabels.ifNoCategory
+                                : AccordLabels.ifCategory,
                           ),
                           icon: Icon(Icons.arrow_drop_down),
                           iconSize: 30,
@@ -443,9 +313,11 @@ class _EditBookScreenState extends State<EditBookScreen> {
                           onChanged: (newvalue) => setState(() {
                             _chosenValue = newvalue;
                           }),
-                          validator: (value) =>
-                              (value == null) ? "Category is required!" : null,
-                          items: _category.map((valueItem) {
+                          validator: (value) => (value == null)
+                              ? AccordLabels.requireMessage(
+                                  AccordLabels.category)
+                              : null,
+                          items: _categories.map((valueItem) {
                             return DropdownMenuItem(
                               value: valueItem.id,
                               child: Text(valueItem.category),
@@ -459,17 +331,18 @@ class _EditBookScreenState extends State<EditBookScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
-                          textToShow: "Price",
+                          textToShow: AccordLabels.price,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       CustomTextField(
-                        formType: "PostBook",
                         fieldController: _priceController,
-                        hintText: "Price",
+                        hintText: AccordLabels.price,
                         fieldValidator: _acquirePrice,
+                        fieldType: FieldType.NUMBER,
                       ),
                       SizedBox(
                         height: 10,
@@ -477,17 +350,18 @@ class _EditBookScreenState extends State<EditBookScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
-                          textToShow: "Description",
+                          textToShow: AccordLabels.description,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       CustomTextField(
-                        formType: "PostBook",
                         fieldController: _descriptionController,
-                        hintText: "Description",
+                        hintText: AccordLabels.description,
                         fieldValidator: _acquireDescription,
+                        noOfLines: 7,
                       ),
                       SizedBox(
                         height: 10,
@@ -495,46 +369,48 @@ class _EditBookScreenState extends State<EditBookScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
-                          textToShow: "Condition",
+                          textToShow: AccordLabels.condition,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           CustomRadioButton<String>(
-                            value: "New",
+                            value: AccordLabels.positiveBookConditionValue,
                             groupValue: _conditionValue,
                             onChanged: _conditionValueChangedHandler(),
-                            text: "New",
+                            text: AccordLabels.positiveBookConditionValue,
                           ),
                           CustomRadioButton<String>(
-                            value: "Old",
+                            value: AccordLabels.negativeBookConditionValue,
                             groupValue: _conditionValue,
                             onChanged: _conditionValueChangedHandler(),
-                            text: "Old",
+                            text: AccordLabels.negativeBookConditionValue,
                           ),
                         ],
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
-                          textToShow: "Exchangable",
+                          textToShow: AccordLabels.exhangable,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           CustomRadioButton<String>(
-                            value: "Yes",
+                            value: AccordLabels.positiveBookExchangebleValue,
                             groupValue: _exchangableValue,
                             onChanged: _exchangableValueChangedHandler(),
-                            text: "Yes",
+                            text: AccordLabels.positiveBookExchangebleValue,
                           ),
                           CustomRadioButton<String>(
-                            value: "No",
+                            value: AccordLabels.negativeBookExchangableValue,
                             groupValue: _exchangableValue,
                             onChanged: _exchangableValueChangedHandler(),
-                            text: "No",
+                            text: AccordLabels.negativeBookExchangableValue,
                           ),
                         ],
                       ),
@@ -542,8 +418,8 @@ class _EditBookScreenState extends State<EditBookScreen> {
                         height: 10,
                       ),
                       CustomButton(
-                        buttonKey: "btnPostBook",
-                        buttonText: "Update Book",
+                        buttonType: ButtonType.ROUNDED_EDGE,
+                        buttonLabel: AccordLabels.updateBook,
                         triggerAction: _validateEditBook,
                       ),
                     ],
@@ -554,6 +430,169 @@ class _EditBookScreenState extends State<EditBookScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class EditBookImageSelection extends StatelessWidget {
+  const EditBookImageSelection({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 6.0),
+          child: Container(
+            margin: EdgeInsets.only(top: 20.0),
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            height: 200.0,
+            child: ListView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Container(
+                    height: 200,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[400],
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8.0),
+                      ),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => ImageUploader(
+                            galleryOption:
+                                context.read<ImageHelper>().getImageFromGallery,
+                            cameraOption:
+                                context.read<ImageHelper>().getImageFromCamera,
+                          ),
+                        );
+                      },
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add_circle,
+                              color: Colors.grey[800],
+                              size: 50,
+                            ),
+                            Text(AccordLabels.addImage),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Container(
+                    height: 200,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: AccordColors.loading_background,
+                    ),
+                    child: Consumer<ImageHelper>(
+                      builder: (context, imageHelper, child) {
+                        if (imageHelper.imageData != null) {
+                          if (imageHelper.imageData.status ==
+                              ImageStatus.LOADING) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: AccordColors.loading_foreground,
+                                strokeWidth: 3.0,
+                              ),
+                            );
+                          } else if (imageHelper.image != null) {
+                            if (imageHelper.imageData.status ==
+                                ImageStatus.COMPLETE) {
+                              return Stack(
+                                children: <Widget>[
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Image.file(
+                                      File(imageHelper.image.path),
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 1,
+                                    right: 1,
+                                    child: Container(
+                                      height: 25,
+                                      width: 25,
+                                      child: InkWell(
+                                        onTap: () {
+                                          context
+                                              .read<ImageHelper>()
+                                              .removeImage();
+                                        },
+                                        child: Icon(
+                                          Icons.close,
+                                          color: Colors.grey[800],
+                                          size: 15,
+                                        ),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(25),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                          } else if (imageHelper.imageData.status ==
+                              ImageStatus.ERROR) {
+                            return Center(
+                              child: Text("Error"),
+                            );
+                          } else if (imageHelper.imageData.status ==
+                              ImageStatus.NOIMAGE) {
+                            return Container(
+                              color: Colors.grey[50],
+                            );
+                          }
+                        }
+                        return Center(child: Text("No image"));
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Visibility(
+          visible: context.watch<ImageHelper>().imageChosen == null
+              ? false
+              : !context.watch<ImageHelper>().imageChosen,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Text(
+              AccordLabels.requireMessage(AccordLabels.image),
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontSize: 13,
+                color: AccordColors.error_text_color,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

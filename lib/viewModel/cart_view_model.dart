@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/responses/cart_response.dart';
 import 'package:accord/services/cart_service.dart';
-import 'package:accord/services/handlers/exposer.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:flutter/foundation.dart';
 
 class CartviewModel with ChangeNotifier {

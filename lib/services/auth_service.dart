@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/constant/constant.dart';
 import 'package:accord/services/storage.dart';
 import 'package:dio/dio.dart';
@@ -18,7 +19,7 @@ class AuthService {
       );
       return res.data.toString().replaceAll("\n", "");
     } on SocketException {
-      throw Exception(Constant.connectionErrorMessage);
+      throw Exception(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       return e.response.data.toString().replaceAll("\n", "");
     }
@@ -33,7 +34,7 @@ class AuthService {
       );
       return res.data;
     } on SocketException {
-      throw Exception(Constant.connectionErrorMessage);
+      throw Exception(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       return e.response.data;
     }
@@ -49,7 +50,7 @@ class AuthService {
               headers: {HttpHeaders.authorizationHeader: userToken}));
       return res.data;
     } on SocketException {
-      throw Exception(Constant.connectionErrorMessage);
+      throw Exception(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       throw Exception(e.response.data.message);
     }

@@ -23,6 +23,17 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _requireCmfPassword = MultiValidator(
       [RequiredValidator(errorText: "Please confirm your new Password!")]);
 
+  @override
+  void dispose() {
+    _oldPasswordController.dispose();
+    _newPasswordController.dispose();
+    _cmfPasswordController.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> changePassword() async {}
+
   bool _oldPassword = true;
   bool _newPassword = true;
   bool _cmfPassword = true;
@@ -89,7 +100,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                 color: Color(0xff13293d)),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 25,
                           ),
                           Container(
                             child: Form(
@@ -100,6 +111,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
                                       CustomTextField(
+                                        designType: DesignType.UNDERLINE,
+
                                         fieldController: _oldPasswordController,
                                         obscureText: _oldPassword,
                                         hintText: "Old Password",
@@ -115,10 +128,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                                       ),
                                     ],
                                   ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   Stack(
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
                                       CustomTextField(
+                                        designType: DesignType.UNDERLINE,
                                         fieldController: _newPasswordController,
                                         obscureText: _newPassword,
                                         hintText: "New Password",
@@ -134,10 +151,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                                       ),
                                     ],
                                   ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   Stack(
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
                                       CustomTextField(
+                                        designType: DesignType.UNDERLINE,
                                         fieldController: _cmfPasswordController,
                                         obscureText: _cmfPassword,
                                         hintText: "Confirm Password",
@@ -160,9 +181,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       CustomText(
-                                        holderKey: "ask",
                                         textToShow: "Forgot Password?",
                                         textColor: Colors.grey.shade700,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
                                       ),
                                     ],
                                   ),
@@ -170,9 +192,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     height: 20,
                                   ),
                                   CustomButton(
-                                    buttonKey: "btnCngPassword",
-                                    buttonText: "Change Password",
-                                    // triggerAction: _validateLogin,
+                                    buttonType: ButtonType.OVAL,
+                                    buttonLabel: "Change Password",
+                                    triggerAction: changePassword,
                                   ),
                                 ],
                               ),

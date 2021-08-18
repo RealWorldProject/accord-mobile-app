@@ -1,16 +1,15 @@
-import 'package:accord/screens/home/search/search_screen.dart';
+import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/utils/exposer.dart';
+import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:provider/provider.dart';
 
-class SearchField extends StatefulWidget {
+import 'search/search_screen.dart';
+
+class SearchField extends StatelessWidget {
   const SearchField({Key key}) : super(key: key);
 
-  @override
-  _SearchFieldState createState() => _SearchFieldState();
-}
-
-class _SearchFieldState extends State<SearchField> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,10 +18,7 @@ class _SearchFieldState extends State<SearchField> {
       child: TextField(
         onTap: () => Navigator.push(
           context,
-          PageRouteBuilder(
-            pageBuilder: (context, _, __) => SearchPage(),
-            transitionDuration: Duration(seconds: 0),
-          ),
+          MaterialPageRoute(builder: (context) => SearchPage()),
         ),
         readOnly: true,
         decoration: InputDecoration(
@@ -31,12 +27,40 @@ class _SearchFieldState extends State<SearchField> {
             borderRadius: BorderRadius.circular(10),
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          hintText: "Search for Books",
+          isDense: true,
+          hintText: AccordLabels.searchForBooksLabel,
           prefixIcon: Icon(Icons.search_rounded),
-          suffixIcon: Icon(
-            Icons.account_circle,
-            size: 40,
-            color: Colors.black54,
+          suffixIcon: Container(
+            padding: const EdgeInsets.all(8),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: Colors.blue,
+                  width: 1,
+                ),
+              ),
+              child: Consumer<UserViewModel>(
+                builder: (context, userViewModel, child) {
+                  if (userViewModel.data.status == Status.LOADING) {
+                    return CircleAvatar(
+                      maxRadius: 10,
+                      backgroundColor: Colors.black12,
+                    );
+                  } else {
+                    return CircleAvatar(
+                      maxRadius: 10,
+                      backgroundImage:
+                          // checks if the given image url is valid.
+                          Uri.parse(userViewModel.user.image).isAbsolute
+                              ? NetworkImage(userViewModel.user.image)
+                              : AssetImage("assets/images/user2.png"),
+                      backgroundColor: Colors.black12,
+                    );
+                  }
+                },
+              ),
+            ),
           ),
           border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue),
