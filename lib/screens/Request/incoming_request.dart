@@ -1,8 +1,10 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/request.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/time_calculator.dart';
+import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/request_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -107,15 +109,39 @@ class _IncomingRequestState extends State<IncomingRequest> {
                     children: [
                       Container(
                         width: 120,
-
-                        // width: MediaQuery.of(context).size.width/2.2,
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(5)),
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () async {
+                              RequestViewModel requestViewModel =
+                                  context.read<RequestViewModel>();
+                              await requestViewModel
+                                  .acceptExchangeRequest(request.id);
+
+                              if (requestViewModel.data.status ==
+                                  Status.COMPLETE) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => InformationDialogBox(
+                                    contentType: ContentType.DONE,
+                                    content: requestViewModel.data.message,
+                                    actionText: AccordLabels.okay,
+                                  ),
+                                );
+                              } else if (requestViewModel.data.status ==
+                                  Status.ERROR) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => InformationDialogBox(
+                                      contentType: ContentType.ERROR,
+                                      content: requestViewModel.data.message,
+                                      actionText: AccordLabels.tryAgain),
+                                );
+                              }
+                            },
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 10),
