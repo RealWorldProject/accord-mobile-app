@@ -101,14 +101,14 @@ class ImageHelper extends ChangeNotifier {
   }
 
 // gallery option
-  void getImageFromGallery() async {
+  Future<void> getImageFromGallery() async {
     XFile imageFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     setImage(imageFile);
   }
 
 // camera option
-  void getImageFromCamera() async {
+  Future<void> getImageFromCamera() async {
     XFile imageFile = await ImagePicker().pickImage(source: ImageSource.camera);
     setImage(imageFile);
   }

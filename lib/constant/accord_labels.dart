@@ -14,6 +14,8 @@ class AccordLabels {
   static const String save = "Save";
   static const String stayIn = "Stay In";
   static const String confirm = "Confirm";
+  static const String galleryOptionLabel = "Choose from Gallery";
+  static const String cameraOptionLabel = "Open Camera";
 
   // Login & register screen labels
   static const String greet = "Welcome Back!";

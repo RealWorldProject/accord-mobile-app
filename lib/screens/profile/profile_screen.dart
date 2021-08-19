@@ -166,8 +166,8 @@ class _ProfileScreenState extends State<ProfileScreen>
     await Storage().deleteToken();
 
     // navigates to login screen
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+        new MaterialPageRoute(builder: (context) => LoginScreen()));
 
     // sets active bottom navigation tab to home screen.
     context.read<ScreenViewModel>().restoreInitialTab(HOME_SCREEN);

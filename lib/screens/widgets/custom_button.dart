@@ -30,6 +30,9 @@ class CustomButton extends StatelessWidget {
   /// background color of button while loading
   final Color buttonColorWhileLoading;
 
+  /// color for the child in button
+  final Color childColor;
+
   /// action that is triggered on button click
   final VoidCallback triggerAction;
 
@@ -39,9 +42,10 @@ class CustomButton extends StatelessWidget {
     this.buttonType = ButtonType.ROUNDED_EDGE,
     @required this.buttonLabel,
     this.enable = true,
-    this.textSize = 12,
+    this.textSize = 20,
     this.buttonColor,
     this.buttonColorWhileLoading,
+    this.childColor,
     @required this.triggerAction,
   });
 
@@ -175,28 +179,31 @@ class CustomButton extends StatelessWidget {
       );
     }
 
-    return Container(
-      key: key,
+    return SizedBox(
       height: height,
       width: width ?? MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        borderRadius: buttonType == ButtonType.ROUNDED_EDGE
-            ? BorderRadius.circular(5)
-            : BorderRadius.circular(40),
-        color: Colors.blue,
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => triggerAction(),
-          child: Center(
-            child: CustomText(
-              textToShow: buttonLabel,
-              textColor: Colors.white,
-              fontSize: 20,
+      child: TextButton(
+        key: key,
+        child: CustomText(
+          textToShow: buttonLabel,
+          textColor: Colors.white,
+          fontSize: textSize,
+        ),
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all<EdgeInsets>(
+            EdgeInsets.all(5),
+          ),
+          backgroundColor: MaterialStateProperty.all<Color>(
+              buttonColor ?? AccordColors.default_button_color),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                buttonType == ButtonType.ROUNDED_EDGE ? 5 : 40,
+              ),
             ),
           ),
         ),
+        onPressed: () => triggerAction(),
       ),
     );
   }

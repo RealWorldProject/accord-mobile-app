@@ -1,10 +1,22 @@
+import 'dart:convert';
+
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/models/user.dart';
+import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/image_uploader.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
+import 'package:accord/services/cloud_media_service.dart';
+import 'package:accord/utils/exposer.dart';
+import 'package:accord/viewModel/image_helper.dart';
+import 'package:accord/viewModel/provider/button_loading_provider.dart';
+import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 
 import '../user_avatar_displayer.dart';
@@ -18,12 +30,14 @@ class UserDetailSection extends StatefulWidget {
 }
 
 class _UserDetailSectionState extends State<UserDetailSection> {
-  XFile _image;
+  // pops a bottom sheet to confirm the profile picture.
+  _previewImage(XFile image) {
+    final double _buttonWidth = MediaQuery.of(context).size.width / 2.5;
+    const double _buttonHeight = 40;
 
-  // profile image confirmation function
-  _previewImage(image) {
     showModalBottomSheet(
       context: context,
+      isDismissible: false,
       builder: (context) {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -44,8 +58,9 @@ class _UserDetailSectionState extends State<UserDetailSection> {
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
                   radius: 120.0,
-                  backgroundImage: FileImage(File(image.path)),
-                  backgroundColor: Colors.transparent,
+                  backgroundImage:
+                      image != null ? FileImage(File(image.path)) : null,
+                  backgroundColor: AccordColors.loading_background,
                 ),
               ),
               Expanded(
@@ -53,48 +68,26 @@ class _UserDetailSectionState extends State<UserDetailSection> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      width: 150,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          // image=null;
-                          Navigator.pop(context);
-                        },
-                        child: CustomText(
-                          textToShow: AccordLabels.cancel,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          textColor: Colors.white,
-                        ),
-                      ),
+                    CustomButton(
+                      width: _buttonWidth,
+                      height: _buttonHeight,
+                      buttonType: ButtonType.ROUNDED_EDGE,
+                      buttonLabel: AccordLabels.cancel,
+                      buttonColor: Colors.red,
+                      triggerAction: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
-                    Container(
-                      width: 150,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _image = image;
-                          });
-                          Navigator.pop(context);
-                        },
-                        child: CustomText(
-                          textToShow: AccordLabels.save,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          textColor: Colors.white,
-                        ),
+                    SizedBox(
+                      width: _buttonWidth,
+                      height: _buttonHeight,
+                      child: CustomButton(
+                        buttonType: ButtonType.LOADING_BUTTON,
+                        buttonColor: AccordColors.default_button_color,
+                        buttonColorWhileLoading:
+                            AccordColors.loading_button_color,
+                        buttonLabel: AccordLabels.save,
+                        triggerAction: () => updateProfile(image: image),
                       ),
                     )
                   ],
@@ -107,18 +100,68 @@ class _UserDetailSectionState extends State<UserDetailSection> {
     );
   }
 
-  Future<void> _getImagefromcamera() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
-    _previewImage(image);
+  void updateProfile({XFile image}) async {
+    // [ButtonLoadingProvider] instance
+    var buttonLoadingProvider = context.read<ButtonLoadingProvider>();
+
+    // sets [isLoading] to true
+    buttonLoadingProvider.setIsLoading();
+
+    // [UserViewModel] instance
+    var userViewModel = context.read<UserViewModel>();
+
+    // uploads new image to cloud.
+    String profileImageUrl =
+        await CloudMediaService().uploadProfileImage(image.path);
+
+    // stores link of old profile image
+    String oldProfileImage = userViewModel.user.image;
+
+    // [User] object with updated profile image
+    User partialUserData = new User(image: profileImageUrl);
+
+    // json conversion of [User] object
+    String partialUserDataJson = jsonEncode(partialUserData);
+
+    // api call to update profile image.
+    await userViewModel.updateUserDetails(updatedUser: partialUserDataJson);
+
+    // checks the response status of api and performs task accordingly
+    if (userViewModel.data.status == Status.COMPLETE) {
+      // after successful update of profile, deletes old profile image.
+      await CloudMediaService().deleteImage(oldProfileImage);
+
+      // sets [isLoading] to false
+      buttonLoadingProvider.removeIsLoading();
+
+      // closes bottomsheet.
+      Navigator.of(context).pop();
+    } else if (userViewModel.data.status == Status.ERROR) {
+      // sets [isLoading] to false
+      buttonLoadingProvider.removeIsLoading();
+
+      // error message
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.ERROR,
+          content: userViewModel.data.message,
+          actionText: AccordLabels.tryAgain,
+        ),
+      );
+    }
   }
 
-  Future<void> _getImagefromGallery() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    _previewImage(image);
+  // if image is null, preview section won't be opened.
+  void openPreviewSection(XFile image) {
+    image != null ? _previewImage(image) : null;
   }
 
   @override
   Widget build(BuildContext context) {
+    // [ImageHelper] instance
+    final ImageHelper imageHelper = context.read<ImageHelper>();
+
     return Column(
       children: [
         Stack(
@@ -185,10 +228,23 @@ class _UserDetailSectionState extends State<UserDetailSection> {
                                 onPressed: () {
                                   showModalBottomSheet(
                                     context: context,
-                                    builder: (context) => ImageUploader(
-                                      galleryOption: _getImagefromGallery,
-                                      cameraOption: _getImagefromcamera,
-                                    ),
+                                    builder: (context) =>
+                                        ImageUploader(galleryOption: () {
+                                      imageHelper.resetAllValues();
+                                      imageHelper
+                                          .getImageFromGallery()
+                                          .whenComplete(() =>
+                                              openPreviewSection(
+                                                  imageHelper.image));
+                                    }, cameraOption: () {
+                                      imageHelper.resetAllValues();
+                                      imageHelper
+                                          .getImageFromCamera()
+                                          .whenComplete(
+                                            () => openPreviewSection(
+                                                imageHelper.image),
+                                          );
+                                    }),
                                   );
                                 },
                               ),
