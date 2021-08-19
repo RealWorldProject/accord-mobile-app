@@ -29,7 +29,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // input field validations
   final _validateFirstName = MultiValidator([
     RequiredValidator(
-        errorText: AccordLabels.requireMessage(AccordLabels.firstName))
+        errorText: AccordLabels.requireMessage(AccordLabels.firstName)),
+
   ]);
 
   final _validateLastName = MultiValidator([
@@ -46,7 +47,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _validatePassword = MultiValidator([
     RequiredValidator(
         errorText: AccordLabels.requireMessage(AccordLabels.password)),
-    MinLengthValidator(6, errorText: AccordLabels.passwordLengthMessage)
+    MinLengthValidator(6, errorText: AccordLabels.passwordLengthMessage),
+
   ]);
 
   // Toggles the password show status
@@ -202,6 +204,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         designType: DesignType.UNDERLINE,
                                         fieldController: _emailController,
                                         hintText: AccordLabels.email,
+                                        fieldType: FieldType.ALL,
+
                                         fieldValidator: _validateEmail,
                                       ),
                                     ),
@@ -213,6 +217,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           obscureText: _obscureText,
                                           fieldController: _passwordController,
                                           hintText: AccordLabels.password,
+                                          fieldType: FieldType.ALL,
                                           fieldValidator: _validatePassword,
                                         ),
                                         Positioned(

@@ -5,6 +5,7 @@ import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
+import 'package:accord/screens/widgets/custom_app_bar.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_radio_button.dart';
@@ -165,23 +166,11 @@ class _PostBookScreenState extends State<PostBookScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.blue),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        leading: new IconButton(
-          icon: new Icon(
-            Icons.arrow_back_ios_new,
-            size: 20,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          splashRadius: 20,
-        ),
-        title: CustomText(
-          textToShow: AccordLabels.postBookTitle,
-          textColor: Colors.blue,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: CustomAppBar(
+          backButton: true,
+          title: AccordLabels.postBookTitle,
         ),
       ),
       body: SingleChildScrollView(
@@ -215,6 +204,8 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         fieldController: _bookNameController,
                         hintText: AccordLabels.bookName,
                         fieldValidator: _acquireBookName,
+                        fieldType: FieldType.ALL,
+
                       ),
                       SizedBox(
                         height: 10,
@@ -232,6 +223,7 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         fieldController: _authorNameController,
                         hintText: AccordLabels.authorName,
                         fieldValidator: _acquireAuthorName,
+                        fieldType: FieldType.TEXT,
                       ),
                       SizedBox(
                         height: 10,
@@ -308,6 +300,7 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
                           textToShow: AccordLabels.description,
+
                         ),
                       ),
                       SizedBox(
@@ -318,6 +311,8 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         hintText: AccordLabels.description,
                         fieldValidator: _acquireDescription,
                         noOfLines: 7,
+                        fieldType: FieldType.ALL,
+
                       ),
                       SizedBox(
                         height: 10,

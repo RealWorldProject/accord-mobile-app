@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/order.dart';
+import 'package:accord/screens/widgets/custom_app_bar.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_radio_button.dart';
@@ -148,33 +149,11 @@ class _OrderDetailsState extends State<OrderDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: new IconButton(
-          icon: new Icon(
-            Icons.arrow_back_ios_new,
-            size: 20,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          splashRadius: 20,
-        ),
-        title: CustomText(
-          textToShow: AccordLabels.orderScreenTitle,
-          textColor: Colors.blue,
-        ),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.blue, //change your color here
-        ),
-        centerTitle: true,
-        elevation: 0,
-        bottom: PreferredSize(
-          child: Container(
-            color: Colors.blue,
-            height: 1.0,
-          ),
-          preferredSize: Size.fromHeight(0.0),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: CustomAppBar(
+          title: AccordLabels.orderScreenTitle,
+          backButton: false,
         ),
       ),
       body: Container(
@@ -194,6 +173,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.fullName,
                         fieldController: _fullNameController,
                         fieldValidator: _acquireFullname,
+                        fieldType: FieldType.TEXT,
                       ),
                       SizedBox(
                         height: 10,
@@ -203,6 +183,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.phoneNumber,
                         fieldController: _phoneNumberController,
                         fieldValidator: _acquirePhoneNumber,
+                        fieldType: FieldType.NUMBER,
                       ),
                       SizedBox(
                         height: 10,
@@ -212,6 +193,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.province,
                         fieldController: _statecontroller,
                         fieldValidator: _acquireState,
+                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,
@@ -221,6 +203,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.city,
                         fieldController: _cityController,
                         fieldValidator: _acquireCity,
+                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,
@@ -230,6 +213,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.area,
                         fieldController: _areaController,
                         fieldValidator: _acquireArea,
+                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,
@@ -239,6 +223,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.physicalAddress,
                         fieldController: _addressController,
                         fieldValidator: _acquireAddress,
+                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,
@@ -247,6 +232,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         designType: DesignType.UNDERLINE,
                         hintText: AccordLabels.coordinates,
                         fieldController: _coordinatesController,
+                        fieldType: FieldType.NUMBER,
                         fieldValidator: null,
                       ),
                       SizedBox(

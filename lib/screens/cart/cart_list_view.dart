@@ -119,6 +119,7 @@ class CartItemDesign extends StatelessWidget {
                               color: Colors.grey[900]),
                           overflow: TextOverflow.ellipsis,
                         ),
+
                         Text(
                           cartItem.price.toString(),
                           style: TextStyle(
@@ -156,23 +157,23 @@ class CartItemDesign extends StatelessWidget {
                                     color: cartItem.quantity <= 1
                                         ? Colors.grey.shade500
                                         : Colors.blueAccent,
-                                    size: 18,
+                                    size: 24,
                                   ),
                                 ),
                               ),
                             ),
                             SizedBox(
-                              width: 8,
+                              width: 10,
                             ),
                             Text(
                               cartItem.quantity.toString(),
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   color: Colors.blueAccent,
                                   fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
-                              width: 8,
+                              width: 10,
                             ),
                             Material(
                               color: Colors.transparent,
@@ -191,7 +192,7 @@ class CartItemDesign extends StatelessWidget {
                                   child: Icon(
                                     Icons.add_rounded,
                                     color: Colors.blueAccent,
-                                    size: 18,
+                                    size: 24,
                                   ),
                                 ),
                               ),

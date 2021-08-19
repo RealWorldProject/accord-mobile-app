@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String title;
+  final bool backButton;
 
-  const CustomAppBar({Key key, this.title}) : super(key: key);
+  const CustomAppBar({Key key, this.title, this.backButton = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,18 @@ class CustomAppBar extends StatelessWidget {
         title,
         style: TextStyle(color: AccordColors.primary_blue_color),
       ),
+      leading: backButton
+          ? IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                size: 20,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              splashRadius: 20,
+            )
+          : null,
       bottom: PreferredSize(
         child: Container(
           color: Colors.blue,

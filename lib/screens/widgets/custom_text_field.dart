@@ -61,9 +61,12 @@ class CustomTextField extends StatelessWidget {
       keyboardType: fieldType == FieldType.NUMBER
           ? TextInputType.numberWithOptions(decimal: true)
           : null,
+      // inputFormatters: fieldType == FieldType.NUMBER
+      //     ? [FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*"))]
+      //     : [],
       inputFormatters: fieldType == FieldType.NUMBER
-          ? [FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*"))]
-          : [],
+      ? [FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*"))]
+          : fieldType == FieldType.TEXT ? [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))] : [],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: fieldValidator,
       decoration: designType == DesignType.BORDER
@@ -147,4 +150,5 @@ enum DesignType {
 enum FieldType {
   TEXT,
   NUMBER,
+  ALL
 }

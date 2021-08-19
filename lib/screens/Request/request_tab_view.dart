@@ -58,6 +58,16 @@ class _RequestTabViewState extends State<RequestTabView>
         iconTheme: IconThemeData(color: Colors.blue),
         centerTitle: true,
         backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          splashRadius: 20,
+        ),
         bottom: TabBar(
           indicatorColor: AccordColors.primary_blue_color,
           labelColor: AccordColors.primary_blue_color,

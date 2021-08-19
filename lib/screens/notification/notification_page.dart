@@ -1,6 +1,8 @@
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/notification/notification_tile.dart';
 import 'package:accord/screens/notification/request_notification.dart';
 import 'package:accord/screens/shimmer/notification_shimmer.dart';
+import 'package:accord/screens/widgets/custom_app_bar.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,28 +21,11 @@ class _NotificationScreenState extends State<NotificationScreen>
     super.build(context);
     return Scaffold(
         extendBody: true,
-        appBar: AppBar(
-          title: Badge(
-            badgeColor: Colors.blue,
-            position: BadgePosition.topEnd(top: -12, end: -20),
-            badgeContent: Text(
-              '3',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: Text(
-              "Notifications",
-              style: TextStyle(color: Color(0xff13293d)),
-            ),
-          ),
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          elevation: 0,
-          bottom: PreferredSize(
-            child: Container(
-              color: Colors.blue,
-              height: 1.0,
-            ),
-            preferredSize: Size.fromHeight(0.0),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: CustomAppBar(
+            title: AccordLabels.notificationScreenTitle,
+            backButton: false,
           ),
         ),
         backgroundColor: Colors.grey[200],
