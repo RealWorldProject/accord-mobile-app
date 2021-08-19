@@ -123,7 +123,7 @@ class _FieldUpdateBottomSheetState extends State<FieldUpdateBottomSheet> {
                   child: CustomTextField(
                     designType: DesignType.UNDERLINE,
                     fieldType: widget.updateField == UpdateField.PHONENUMBER
-                        ? FieldType.INT_NUMBER
+                        ? FieldType.NUMBER_ONLY
                         : FieldType.TEXT,
                     fieldController: _updateFieldController,
                     fieldValidator: RequiredValidator(

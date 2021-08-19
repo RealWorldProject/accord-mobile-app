@@ -18,7 +18,8 @@ class _OrderScreenState extends State<OrderScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: CustomAppBar(
-          title: AccordLabels.myOrders,
+          title: AccordLabels.myorderScreenTitle,
+          backButton: false,
         ),
       ),
       body: Container(

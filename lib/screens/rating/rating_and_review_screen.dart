@@ -23,6 +23,7 @@ class _RatingAndReveiwScreenState extends State<RatingAndReveiwScreen> {
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: CustomAppBar(
           title: "Rating & Reviews",
+          backButton: true,
         ),
       ),
       body: SingleChildScrollView(

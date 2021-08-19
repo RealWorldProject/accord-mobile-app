@@ -21,6 +21,7 @@ class _AddRatingAndReviewState extends State<AddRatingAndReview> {
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: CustomAppBar(
           title: "Add Rating & Reviews",
+          backButton: true,
         ),
       ),
       body: SingleChildScrollView(

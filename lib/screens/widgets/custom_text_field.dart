@@ -58,16 +58,17 @@ class CustomTextField extends StatelessWidget {
       controller: fieldController,
       obscureText: obscureText,
       maxLines: noOfLines,
-      keyboardType: fieldType == FieldType.NUMBER
-          ? TextInputType.numberWithOptions(decimal: true)
-          : fieldType == FieldType.INT_NUMBER
-              ? TextInputType.number
+      keyboardType:
+          fieldType == FieldType.NUMBER || fieldType == FieldType.NUMBER_ONLY
+              ? TextInputType.numberWithOptions(decimal: true)
               : null,
       inputFormatters: fieldType == FieldType.NUMBER
           ? [FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*"))]
-          : fieldType == FieldType.INT_NUMBER
-              ? [FilteringTextInputFormatter.digitsOnly]
-              : [],
+          : fieldType == FieldType.TEXT
+              ? [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))]
+              : fieldType == FieldType.NUMBER_ONLY
+                  ? [FilteringTextInputFormatter.digitsOnly]
+                  : [],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: fieldValidator,
       decoration: designType == DesignType.BORDER
@@ -107,9 +108,12 @@ enum FieldType {
   /// accept all values
   TEXT,
 
+  /// accept all values
+  ALL,
+
   /// accept numbers along with one dot. i.e, [234125.34]
   NUMBER,
 
   /// accept numbers only
-  INT_NUMBER,
+  NUMBER_ONLY,
 }

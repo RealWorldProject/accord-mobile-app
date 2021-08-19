@@ -203,6 +203,7 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         fieldController: _bookNameController,
                         hintText: AccordLabels.bookName,
                         fieldValidator: _acquireBookName,
+                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,
@@ -220,6 +221,7 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         fieldController: _authorNameController,
                         hintText: AccordLabels.authorName,
                         fieldValidator: _acquireAuthorName,
+                        fieldType: FieldType.TEXT,
                       ),
                       SizedBox(
                         height: 10,
@@ -306,6 +308,7 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         hintText: AccordLabels.description,
                         fieldValidator: _acquireDescription,
                         noOfLines: 7,
+                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,

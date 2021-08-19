@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String title;
+  final bool backButton;
 
-  const CustomAppBar({Key key, this.title}) : super(key: key);
+  const CustomAppBar({
+    Key key,
+    this.title,
+    this.backButton = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
