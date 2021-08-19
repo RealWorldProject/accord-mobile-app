@@ -65,13 +65,15 @@ class EditUserDetails extends StatelessWidget {
                       Container(
                         child: Row(
                           children: [
-                            Text(
-                              userViewModel.user.fullName,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey[800]),
-                            ),
+                            userViewModel.user.fullName != null
+                                ? Text(
+                                    userViewModel.user.fullName,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey[800]),
+                                  )
+                                : Container(),
                             SizedBox(
                               width: 6,
                             ),
@@ -125,13 +127,15 @@ class EditUserDetails extends StatelessWidget {
                       Container(
                         child: Row(
                           children: [
-                            Text(
-                              userViewModel.user.phoneNumber,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey[800]),
-                            ),
+                            userViewModel.user.phoneNumber != null
+                                ? Text(
+                                    userViewModel.user.phoneNumber,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey[800]),
+                                  )
+                                : Container(),
                             SizedBox(
                               width: 6,
                             ),
