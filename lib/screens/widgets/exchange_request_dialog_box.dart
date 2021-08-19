@@ -41,131 +41,204 @@ class ExchangeRequestDialogBox extends StatelessWidget {
     context.read<ButtonLoadingProvider>().initializer();
 
     return AlertDialog(
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            AccordLabels.requestedBookLabel,
-            style: TextStyle(fontSize: 13),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          CustomText(
-            textToShow: requestedBookName,
-            fontWeight: FontWeight.w600,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            AccordLabels.bookInOffer,
-            style: TextStyle(fontSize: 13),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Consumer<BookViewModel>(
-            builder: (context, bookViewModel, child) {
-              if (bookViewModel.data.status == Status.COMPLETE) {
-                // get user owned books data if the data status in
-                //[BookViewModel] is [COMPLETE]
-                userOwnedBooks = bookViewModel.userOwnedBooks;
+      content: context.watch<BookViewModel>().userOwnedBooks == null
+          ? Container(
+              height: 130,
+              padding: EdgeInsets.all(10),
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              child: Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                ),
+              ),
+            )
+          : context.watch<BookViewModel>().userOwnedBooks.length > 0
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      AccordLabels.requestedBookLabel,
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    CustomText(
+                      textToShow: requestedBookName,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      AccordLabels.bookInOffer,
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Consumer<BookViewModel>(
+                      builder: (context, bookViewModel, child) {
+                        if (bookViewModel.data.status == Status.COMPLETE) {
+                          // get user owned books data if the data status in
+                          //[BookViewModel] is [COMPLETE]
+                          userOwnedBooks = bookViewModel.userOwnedBooks;
 
-                return Consumer<RequestViewModel>(
-                  builder: (context, requestViewModel, child) {
-                    // list of books imposed to [DirectSelect] format styles
-                    final selectMenuItems = context
-                        .read<BookViewModel>()
-                        .userOwnedBooks
-                        .map((book) => MySelectionItem(
-                              title: book.name,
-                            ))
-                        .toList();
+                          return Consumer<RequestViewModel>(
+                            builder: (context, requestViewModel, child) {
+                              // list of books imposed to [DirectSelect] format styles
+                              final selectMenuItems = context
+                                  .read<BookViewModel>()
+                                  .userOwnedBooks
+                                  .map((book) => MySelectionItem(
+                                        title: book.name,
+                                      ))
+                                  .toList();
 
-                    // current selected index in the [List<Book>]
-                    final currenBookIndex = requestViewModel.currentBookIndex;
+                              // current selected index in the [List<Book>]
+                              final currenBookIndex =
+                                  requestViewModel.currentBookIndex;
 
-                    return DirectSelect(
-                      itemExtent: 35.0,
-                      backgroundColor: Colors.white,
-                      selectedIndex: currenBookIndex,
-                      child: Container(
-                        child: MySelectionItem(
-                          isForList: false,
-                          title: userOwnedBooks[currenBookIndex].name,
+                              return DirectSelect(
+                                itemExtent: 35.0,
+                                backgroundColor: Colors.white,
+                                selectedIndex: currenBookIndex,
+                                child: Container(
+                                  child: MySelectionItem(
+                                    isForList: false,
+                                    title: userOwnedBooks[currenBookIndex].name,
+                                  ),
+                                ),
+                                onSelectedItemChanged: (selectedIndex) {
+                                  requestViewModel.setIndex(selectedIndex);
+                                },
+                                items: selectMenuItems,
+                              );
+                            },
+                          );
+                        } else {
+                          return Container(
+                            height: 45,
+                            padding: EdgeInsets.all(10),
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.grey[100],
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    )
+                  ],
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomText(
+                      textToShow:
+                          "Sorry! you don't have any book for exchange.",
+                      noOfLines: 2,
+                      fontWeight: FontWeight.w500,
+                      textColor: Colors.grey[800],
+                    ),
+                  ],
+                ),
+      actions: context.watch<BookViewModel>().userOwnedBooks == null
+          ? []
+          : context.watch<BookViewModel>().userOwnedBooks.length > 0
+              ? [
+                  SizedBox(
+                    height: 30,
+                    width: 80,
+                    child: TextButton(
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                          EdgeInsets.all(0),
                         ),
                       ),
-                      onSelectedItemChanged: (selectedIndex) {
-                        requestViewModel.setIndex(selectedIndex);
+                      child: CustomText(
+                        textToShow: AccordLabels.cancel,
+                        textColor: Colors.red,
+                        fontSize: 16,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
-                      items: selectMenuItems,
-                    );
-                  },
-                );
-              } else {
-                return Container(
-                  height: 45,
-                  padding: EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.grey[100],
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
                     ),
                   ),
-                );
-              }
-            },
-          )
-        ],
-      ),
-      actions: [
-        SizedBox(
-          height: 30,
-          width: 80,
-          child: TextButton(
-            style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsets>(
-                EdgeInsets.all(0),
-              ),
-            ),
-            child: CustomText(
-              textToShow: AccordLabels.cancel,
-              textColor: Colors.red,
-              fontSize: 16,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        SizedBox(
-          height: 30,
-          width: 80,
-          child: CustomButton(
-              buttonType: ButtonType.LOADING_BUTTON,
-              buttonLabel: AccordLabels.confirm,
-              buttonColor: AccordColors.default_button_color,
-              buttonColorWhileLoading: AccordColors.loading_button_color,
-              triggerAction: () {
-                // gets selected book's id.
-                final String offeredBookID = bookViewModel
-                    .userOwnedBooks[
-                        context.read<RequestViewModel>().currentBookIndex]
-                    .id;
+                  SizedBox(
+                    height: 30,
+                    width: 80,
+                    child: CustomButton(
+                        buttonType: ButtonType.LOADING_BUTTON,
+                        buttonLabel: AccordLabels.confirm,
+                        buttonColor: AccordColors.default_button_color,
+                        buttonColorWhileLoading:
+                            AccordColors.loading_button_color,
+                        triggerAction: () {
+                          // gets selected book's id.
+                          final String offeredBookID = bookViewModel
+                              .userOwnedBooks[context
+                                  .read<RequestViewModel>()
+                                  .currentBookIndex]
+                              .id;
 
-                // function to request book.
-                sendExchangeRequest(
-                  context,
-                  requestedBookID,
-                  offeredBookID,
-                );
-              }),
-        )
-      ],
+                          // function to request book.
+                          sendExchangeRequest(
+                            context,
+                            requestedBookID,
+                            offeredBookID,
+                          );
+                        }),
+                  )
+                ]
+              : [
+                  SizedBox(
+                    height: 30,
+                    width: 80,
+                    child: CustomButton(
+                        buttonLabel: AccordLabels.close,
+                        buttonColor: Colors.grey[600],
+                        textSize: 16,
+                        triggerAction: () {
+                          Navigator.pop(context);
+                        }),
+                  ),
+                ],
     );
+
+    // else {
+    //   return AlertDialog(
+    //     content: Column(
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: [
+    //         CustomText(
+    //           textToShow: "Sorry! you don't have any book for exchange.",
+    //           noOfLines: 2,
+    //           fontWeight: FontWeight.w500,
+    //           textColor: Colors.grey[800],
+    //         ),
+    //       ],
+    //     ),
+    //     actions: [
+    //       SizedBox(
+    //         height: 30,
+    //         width: 80,
+    //         child: CustomButton(
+    //             buttonLabel: AccordLabels.close,
+    //             buttonColor: Colors.grey[600],
+    //             textSize: 16,
+    //             triggerAction: () {
+    //               Navigator.pop(context);
+    //             }),
+    //       ),
+    //     ],
+    //   );
+    // }
   }
 
   Future<void> sendExchangeRequest(

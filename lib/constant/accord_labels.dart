@@ -7,6 +7,7 @@ class AccordLabels {
   // All possible dialogbox/snackbar labels
   static const String okay = "Okay";
   static const String cancel = "Cancel";
+  static const String close = "Close";
   static const String delete = "Delete";
   static const String logout = "Log Out";
   static const String tryAgain = "Try Again";
