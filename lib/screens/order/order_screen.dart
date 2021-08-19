@@ -1,7 +1,5 @@
-import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/widgets/custom_app_bar.dart';
-import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/material.dart';
 
 import 'order_list_view.dart';

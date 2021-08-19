@@ -121,19 +121,19 @@ class RequestViewModel extends ChangeNotifier {
     _data = ResponseExposer.loading();
 
     try {
-      print("done");
       var apiResponse = await RequestService().acceptExchangeRequest(requestID);
 
       // conversion: json to object.
       var responseObj = RequestResponse.fromJson(jsonDecode(apiResponse));
 
-      // assinging result sent by api to [outgoingRequests]
-      // _requestedBook = responseObj.result;
+      int currentRequestIndex =
+          _incomingRequests.indexWhere((request) => request.id == requestID);
+
+      _incomingRequests.removeAt(currentRequestIndex);
 
       // sets [data] to [COMPLETE] with success message send by api
       _data = ResponseExposer.complete(responseObj.message);
     } catch (e) {
-      print("error");
       // sets [data] to [ERROR] with error message send by api
       _data = ResponseExposer.error(e.toString());
     }

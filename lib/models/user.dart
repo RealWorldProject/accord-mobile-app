@@ -32,5 +32,7 @@ class User {
         'fullName': fullName,
         'email': email,
         'password': password,
+        'phoneNumber': phoneNumber,
+        'image': image,
       };
 }

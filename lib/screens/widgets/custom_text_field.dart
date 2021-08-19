@@ -3,35 +3,34 @@ import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 class CustomTextField extends StatelessWidget {
-  // takes four parameter and return a workable TextFormField object
-  // these parameter consists of a controller, obscureText,
-  // hint text and validator.
-  // formType, distinctly, is used to unify the design for post book form
-
-  // define either the field should be underlined or bordered.
-  // default set for BORDER field.
+  /// define either the field should be underlined or bordered.
+  /// default set for BORDER field.
   final DesignType designType;
 
-  // define the content the field is for i.e, text, password, number
-  // default set for TEXT type.
+  /// define the content the field is for i.e, text, number, decimal_number
+  /// default set for TEXT type.
   final FieldType fieldType;
 
-  // controller for the field
+  /// controller for the field
   final TextEditingController fieldController;
 
-  // if the content needs to be hide.
-  // default value set to false.
-  // set to true to hide the field contents.
+  /// defines if the content needs to be hide.
+  /// default value set to false.
+  /// set value true to hide the field contents.
   final bool obscureText;
 
-  // placeholder for the given field
+  /// placeholder for the given field
   final String hintText;
 
-  // maximum number of lines. default set to 1.
+  /// maximum number of lines. default set to 1.
   final int noOfLines;
 
-  // validation, if required, for the field.
+  /// validation, if required, for the field.
   final FieldValidator fieldValidator;
+
+  final FocusNode fieldFocusNode;
+
+  /// starting value to be displayed in the field
   final String initialValue;
 
   final double designTypeBorderRadius;
@@ -46,10 +45,11 @@ class CustomTextField extends StatelessWidget {
     this.hintText = "",
     this.noOfLines = 1,
     this.fieldValidator,
+    this.fieldFocusNode,
     this.initialValue,
-    this.designTypeBorderRadius=8,
-    this.contentHorizontalPadding=10,
-    this.contentVerticalPadding=0,
+    this.designTypeBorderRadius = 8,
+    this.contentHorizontalPadding = 10,
+    this.contentVerticalPadding = 0,
   });
 
   @override
@@ -58,20 +58,24 @@ class CustomTextField extends StatelessWidget {
       controller: fieldController,
       obscureText: obscureText,
       maxLines: noOfLines,
-      keyboardType: fieldType == FieldType.NUMBER
-          ? TextInputType.numberWithOptions(decimal: true)
-          : null,
-      // inputFormatters: fieldType == FieldType.NUMBER
-      //     ? [FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*"))]
-      //     : [],
+      keyboardType:
+          fieldType == FieldType.NUMBER || fieldType == FieldType.NUMBER_ONLY
+              ? TextInputType.numberWithOptions(decimal: true)
+              : null,
       inputFormatters: fieldType == FieldType.NUMBER
-      ? [FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*"))]
-          : fieldType == FieldType.TEXT ? [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))] : [],
+          ? [FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*"))]
+          : fieldType == FieldType.TEXT
+              ? [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))]
+              : fieldType == FieldType.NUMBER_ONLY
+                  ? [FilteringTextInputFormatter.digitsOnly]
+                  : [],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: fieldValidator,
       decoration: designType == DesignType.BORDER
           ? InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: contentHorizontalPadding,vertical: contentVerticalPadding),
+              contentPadding: EdgeInsets.symmetric(
+                  horizontal: contentHorizontalPadding,
+                  vertical: contentVerticalPadding),
               hintText: hintText,
               hintStyle: TextStyle(color: Colors.grey),
               border: OutlineInputBorder(
@@ -88,57 +92,10 @@ class CustomTextField extends StatelessWidget {
                 ),
               ),
             ),
+      focusNode: fieldFocusNode,
       textInputAction: TextInputAction.next,
       initialValue: initialValue,
-
-
     );
-
-    // return TextFormField(
-    //   controller: fieldController,
-    //   // hiding texts if the text field is any type of password
-    //   obscureText: (hintText.split(" ").contains("Password") ||
-    //           hintText.split(" ").contains("password"))
-    //       ? obscureText
-    //       : false,
-    //   // separately defining number of lines for description
-    //   maxLines: (hintText == "Description") ? 7 : 1,
-    //   // separately defining keyboard type for price
-    //   keyboardType: (hintText == "Price")
-    //       ? TextInputType.numberWithOptions(decimal: true)
-    //       : null,
-    //   // allowing only one dot in price field.
-    //   inputFormatters: (hintText == "Price")
-    //       ? [FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*"))]
-    //       : [],
-    //   autovalidateMode: AutovalidateMode.onUserInteraction,
-    //   validator: fieldValidator,
-    //   decoration: (() {
-    //     // defining separate styles for fields in post book form
-    //     if (formType == "PostBook") {
-    //       return InputDecoration(
-    //         contentPadding: EdgeInsets.symmetric(horizontal: 10),
-    //         hintText: hintText,
-    //         hintStyle: TextStyle(color: Colors.grey),
-    //         border: OutlineInputBorder(
-    //           borderSide: BorderSide(color: Colors.grey),
-    //           borderRadius: BorderRadius.circular(8),
-    //         ),
-    //       );
-    //     } else {
-    //       return InputDecoration(
-    //         hintText: hintText,
-    //         hintStyle: TextStyle(color: Colors.grey),
-    //         border: UnderlineInputBorder(
-    //           borderSide: BorderSide(
-    //             color: Colors.grey,
-    //           ),
-    //         ),
-    //       );
-    //     }
-    //   }()),
-    //   textInputAction: TextInputAction.next,
-    // );
   }
 }
 
@@ -148,7 +105,15 @@ enum DesignType {
 }
 
 enum FieldType {
+  /// accept all values
   TEXT,
+
+  /// accept all values
+  ALL,
+
+  /// accept numbers along with one dot. i.e, [234125.34]
   NUMBER,
-  ALL
+
+  /// accept numbers only
+  NUMBER_ONLY,
 }

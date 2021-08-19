@@ -169,7 +169,6 @@ class _PostBookScreenState extends State<PostBookScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: CustomAppBar(
-          backButton: true,
           title: AccordLabels.postBookTitle,
         ),
       ),
@@ -205,7 +204,6 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         hintText: AccordLabels.bookName,
                         fieldValidator: _acquireBookName,
                         fieldType: FieldType.ALL,
-
                       ),
                       SizedBox(
                         height: 10,
@@ -300,7 +298,6 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
                           textToShow: AccordLabels.description,
-
                         ),
                       ),
                       SizedBox(
@@ -312,7 +309,6 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         fieldValidator: _acquireDescription,
                         noOfLines: 7,
                         fieldType: FieldType.ALL,
-
                       ),
                       SizedBox(
                         height: 10,

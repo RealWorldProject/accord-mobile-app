@@ -4,9 +4,11 @@ import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/request.dart';
+import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/book_view_model.dart';
+import 'package:accord/viewModel/provider/button_loading_provider.dart';
 import 'package:accord/viewModel/request_view_model.dart';
 import 'package:direct_select/direct_select.dart';
 import "package:flutter/material.dart";
@@ -30,9 +32,13 @@ class ExchangeRequestDialogBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BookViewModel bookViewModel = context.read<BookViewModel>();
-    bookViewModel.fetchUserPostedBooks();
+
+    bookViewModel.userOwnedBooks ?? bookViewModel.fetchUserPostedBooks();
 
     List<Book> userOwnedBooks;
+
+    // sets [isLoading] value to default
+    context.read<ButtonLoadingProvider>().initializer();
 
     return AlertDialog(
       content: Column(
@@ -128,6 +134,7 @@ class ExchangeRequestDialogBox extends StatelessWidget {
             child: CustomText(
               textToShow: AccordLabels.cancel,
               textColor: Colors.red,
+              fontSize: 16,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -137,53 +144,64 @@ class ExchangeRequestDialogBox extends StatelessWidget {
         SizedBox(
           height: 30,
           width: 80,
-          child: TextButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                AccordColors.primary_blue_color,
-              ),
-              padding: MaterialStateProperty.all<EdgeInsets>(
-                EdgeInsets.all(0),
-              ),
-            ),
-            child: CustomText(
-              textToShow: AccordLabels.confirm,
-              textColor: Colors.white,
-            ),
-            onPressed: () {
-              // gets selected book's id.
-              final String offeredBookID = bookViewModel
-                  .userOwnedBooks[
-                      context.read<RequestViewModel>().currentBookIndex]
-                  .id;
+          child: CustomButton(
+              buttonType: ButtonType.LOADING_BUTTON,
+              buttonLabel: AccordLabels.confirm,
+              buttonColor: AccordColors.default_button_color,
+              buttonColorWhileLoading: AccordColors.loading_button_color,
+              triggerAction: () {
+                // gets selected book's id.
+                final String offeredBookID = bookViewModel
+                    .userOwnedBooks[
+                        context.read<RequestViewModel>().currentBookIndex]
+                    .id;
 
-              // function to request book.
-              requestBook(
-                context,
-                requestedBookID,
-                offeredBookID,
-              );
-            },
-          ),
+                // function to request book.
+                sendExchangeRequest(
+                  context,
+                  requestedBookID,
+                  offeredBookID,
+                );
+              }),
         )
       ],
     );
   }
 
-  Future<void> requestBook(
-      BuildContext context, String requestBookID, String offeredBookID) async {
+  Future<void> sendExchangeRequest(
+    BuildContext context,
+    String requestBookID,
+    String offeredBookID,
+  ) async {
+    // instance of [ButtonLoadingProvider]
+    ButtonLoadingProvider buttonLoadingProvider =
+        context.read<ButtonLoadingProvider>();
+
+    // sets [isLoading] to true;
+    buttonLoadingProvider.setIsLoading();
+
+    // instance of [RequestViewModel]
     RequestViewModel requestViewModel = context.read<RequestViewModel>();
+
+    // [Request] object
     final Request request = new Request(
       requestedBook: requestedBookID,
       proposedExchangeBook: offeredBookID,
     );
 
+    // json conversion to [Request] object
     final String requestJson = jsonEncode(request);
 
+    // api call to request exchange book.
     await requestViewModel.requestBook(requestJson);
 
+    // if success, displays success dialog
+    // else displays error dialog
     if (requestViewModel.data.status == Status.COMPLETE) {
-      Navigator.of(context, rootNavigator: true).pop();
+      // sets [isLoading] to false
+      buttonLoadingProvider.removeIsLoading();
+
+      // success dialog
       showDialog(
         context: context,
         builder: (context) => InformationDialogBox(
@@ -193,7 +211,10 @@ class ExchangeRequestDialogBox extends StatelessWidget {
         ),
       );
     } else {
-      Navigator.of(context, rootNavigator: true).pop();
+      // sets [isLoading] to false
+      buttonLoadingProvider.removeIsLoading();
+
+      // error dialog
       showDialog(
         context: context,
         builder: (context) => InformationDialogBox(

@@ -165,20 +165,18 @@ class _ProfileScreenState extends State<ProfileScreen>
   Future<void> logout() async {
     await Storage().deleteToken();
 
-    // sets active bottom navigation tab to home screen.
-    context.read<ScreenViewModel>().restoreInitialTab(HOME_SCREEN);
-
     // navigates to login screen
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
 
-    // removes dialog box after navigation
-    Navigator.of(context, rootNavigator: true).pop();
+    // sets active bottom navigation tab to home screen.
+    context.read<ScreenViewModel>().restoreInitialTab(HOME_SCREEN);
   }
 
   Future<dynamic> showLogoutDialog() {
     return showDialog(
       context: context,
+      useRootNavigator: false,
       builder: (BuildContext context) {
         return CustomDialogBox(
           content: "Are you sure you want to logout?",

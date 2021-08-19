@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'book/post_book_screen.dart';
-import 'edit/user_edit_detail.dart';
+import 'edit/edit_user_details.dart';
 import 'user_detail_section.dart';
 import 'user_owned_books_section.dart';
 
@@ -44,7 +44,7 @@ class _UserScreenState extends State<UserScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => UserEditDetail()));
+                                  builder: (context) => EditUserDetails()));
                         },
                         child: Container(
                           padding:
