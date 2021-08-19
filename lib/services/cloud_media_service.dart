@@ -17,13 +17,24 @@ class CloudMediaService {
         resourceType: CloudinaryResourceType.image,
         folder: Constant.bookImageFolder,
       ));
-      if (response.isSuccessful) {
-        return response.secureUrl;
-      }
+      return response.secureUrl;
     } catch (e) {
       return e.toString();
     }
-    return null;
+  }
+
+  Future<String> uploadProfileImage(String imagePath) async {
+    try {
+      CloudinaryResponse response =
+          await cloudinary.uploadResource(CloudinaryUploadResource(
+        filePath: imagePath,
+        resourceType: CloudinaryResourceType.image,
+        folder: Constant.profileImageFolder,
+      ));
+      return response.secureUrl;
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   Future<Image> loadImage(String cloudImageUrl) async {

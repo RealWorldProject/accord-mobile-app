@@ -1,3 +1,4 @@
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class ImageUploader extends StatelessWidget {
                   Icons.photo_library,
                 ),
                 title: CustomText(
-                  textToShow: "Choose from Gallery",
+                  textToShow: AccordLabels.galleryOptionLabel,
                   textColor: Colors.grey.shade700,
                 ),
                 onTap: () {
@@ -49,7 +50,7 @@ class ImageUploader extends StatelessWidget {
                   Icons.photo_camera,
                 ),
                 title: CustomText(
-                  textToShow: "Open Camera",
+                  textToShow: AccordLabels.cameraOptionLabel,
                   textColor: Colors.grey.shade700,
                 ),
                 onTap: () {

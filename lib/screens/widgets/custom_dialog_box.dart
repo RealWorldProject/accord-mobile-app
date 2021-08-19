@@ -62,7 +62,7 @@ class CustomDialogBox extends StatelessWidget {
             child: neglectLabel == null ? null : Text(neglectLabel),
             onPressed: () {
               neglectAction == null
-                  ? Navigator.of(context, rootNavigator: true).pop()
+                  ? Navigator.of(context).pop()
                   : neglectAction();
             },
           ),

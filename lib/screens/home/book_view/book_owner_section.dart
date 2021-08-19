@@ -59,6 +59,7 @@ class BookOwnerSection extends StatelessWidget {
             height: 35,
             width: 165,
             buttonLabel: AccordLabels.requestExchangeBook,
+            textSize: 12,
             buttonType: ButtonType.OUTLINED,
             enable: exchangable,
             triggerAction: exchangable == false
