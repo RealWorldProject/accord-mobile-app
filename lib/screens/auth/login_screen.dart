@@ -145,7 +145,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fieldController: _emailController,
                                         hintText: AccordLabels.email,
                                         fieldValidator: _requireEmail,
-                                        fieldType: FieldType.ALL,
                                       ),
                                     ),
                                     Stack(
@@ -157,7 +156,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           fieldController: _passwordcontroller,
                                           hintText: AccordLabels.password,
                                           fieldValidator: _requirePassword,
-                                          fieldType: FieldType.ALL,
                                         ),
                                         Positioned(
                                           top: 0,

@@ -1,6 +1,5 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/widgets/custom_app_bar.dart';
-import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
@@ -18,14 +17,10 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen>
     with AutomaticKeepAliveClientMixin<CartScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
     List<CartItem> cartItems = context.watch<CartviewModel>().cartItems;
-
-
 
     return Scaffold(
       extendBody: true,
@@ -41,7 +36,7 @@ class _CartScreenState extends State<CartScreen>
         margin: EdgeInsets.only(bottom: 185),
         child: CartListView(),
       ),
-      bottomSheet: cartItems.isNotEmpty?ConfirmCartSection():null,
+      bottomSheet: cartItems.isNotEmpty ? ConfirmCartSection() : null,
     );
   }
 

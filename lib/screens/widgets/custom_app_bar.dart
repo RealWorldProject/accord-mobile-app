@@ -18,16 +18,18 @@ class CustomAppBar extends StatelessWidget {
       iconTheme: IconThemeData(color: AccordColors.default_appbar_color),
       centerTitle: true,
       backgroundColor: Colors.white,
-      leading: new IconButton(
-        icon: new Icon(
-          Icons.arrow_back_ios_new,
-          size: 20,
-        ),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        splashRadius: 20,
-      ),
+      leading: backButton
+          ? IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                size: 20,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              splashRadius: 20,
+            )
+          : null,
       title: CustomText(
         textToShow: title,
         textColor: AccordColors.default_appbar_color,
