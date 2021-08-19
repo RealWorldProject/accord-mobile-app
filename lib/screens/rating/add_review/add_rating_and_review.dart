@@ -1,5 +1,4 @@
 import 'package:accord/constant/accord_labels.dart';
-import 'package:accord/screens/rating/add_review/add_and_edit_book_detail.dart';
 import 'package:accord/screens/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +27,6 @@ class _AddRatingAndReviewState extends State<AddRatingAndReview> {
         physics: NeverScrollableScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
             // AddAndEditBookDetail(),
             AddAndEditRating(),

@@ -4,7 +4,6 @@ import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/time_calculator.dart';
-import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/request_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

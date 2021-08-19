@@ -73,7 +73,7 @@ class AccordLabels {
   // Book view screen labels
   static const String featuredBooksLabel = "Featured Books";
   static const String availableForExchange = "Available for Exchange";
-  static const String requestBook = "Request Book";
+  static const String requestExchangeBook = "Send Exchange Request";
   static const String requestedBookLabel = "Requested Book:";
   static const String bookInOffer = "Book In Offer:";
   static const String ratingAndReviewTitle = "Rating & Reviews";
@@ -92,6 +92,13 @@ class AccordLabels {
   static const String deleteBook = "Delete Book";
   static const String noBookPostedLabel = "You have not posted any book yet.";
   static const String notAvailableForExchange = "Not available for exchange.";
+
+  // Update profile screen labels.
+  static const String changeFullNameButtonLabel = "Change Full Name";
+  static const String changePhoneNumberButtonLabel = "Change Phone Number";
+  static String updateSuccessMessage(String updateField) =>
+      "Your ${updateField.toLowerCase()} has been updated.";
+
   //Review Book Screen Labels
   static const String addReviewButtonTitle = "Write a Review";
   static const String submitReviewButtonTitle = "Submit Review";

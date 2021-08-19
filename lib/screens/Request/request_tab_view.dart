@@ -58,9 +58,19 @@ class _RequestTabViewState extends State<RequestTabView>
         iconTheme: IconThemeData(color: Colors.blue),
         centerTitle: true,
         backgroundColor: Colors.white,
+        leading: new IconButton(
+          icon: new Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          splashRadius: 20,
+        ),
         bottom: TabBar(
-          indicatorColor: AccordColors.primary_blue_color,
-          labelColor: AccordColors.primary_blue_color,
+          indicatorColor: AccordColors.default_appbar_color,
+          labelColor: AccordColors.default_appbar_color,
           onTap: (index) {
             // Should not used it as it only called when tab options are clicked,
             // not when user swapped
@@ -70,7 +80,7 @@ class _RequestTabViewState extends State<RequestTabView>
         ),
         title: CustomText(
           textToShow: AccordLabels.myRequests,
-          textColor: AccordColors.primary_blue_color,
+          textColor: AccordColors.default_appbar_color,
         ),
       ),
       body: TabBarView(

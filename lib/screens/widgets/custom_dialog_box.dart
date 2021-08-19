@@ -1,3 +1,4 @@
+import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,24 +70,11 @@ class CustomDialogBox extends StatelessWidget {
         SizedBox(
           height: 30,
           width: 80,
-          child: TextButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                Colors.red,
-              ),
-              padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
-            ),
-            child: performLabel == null
-                ? null
-                : CustomText(
-                    textToShow: performLabel,
-                    textColor: Colors.white,
-                  ),
-            onPressed: () {
-              performAction == null
-                  ? Navigator.of(context, rootNavigator: true).pop()
-                  : performAction();
-            },
+          child: CustomButton(
+            buttonType: ButtonType.LOADING_BUTTON,
+            buttonLabel: performLabel,
+            triggerAction: performAction ??
+                () => Navigator.of(context, rootNavigator: true).pop(),
           ),
         ),
       ],

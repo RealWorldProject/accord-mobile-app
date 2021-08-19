@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/order.dart';
+import 'package:accord/screens/widgets/custom_app_bar.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_radio_button.dart';
@@ -148,33 +149,10 @@ class _OrderDetailsState extends State<OrderDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: new IconButton(
-          icon: new Icon(
-            Icons.arrow_back_ios_new,
-            size: 20,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          splashRadius: 20,
-        ),
-        title: CustomText(
-          textToShow: AccordLabels.orderScreenTitle,
-          textColor: Colors.blue,
-        ),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.blue, //change your color here
-        ),
-        centerTitle: true,
-        elevation: 0,
-        bottom: PreferredSize(
-          child: Container(
-            color: Colors.blue,
-            height: 1.0,
-          ),
-          preferredSize: Size.fromHeight(0.0),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: CustomAppBar(
+          title: AccordLabels.orderScreenTitle,
         ),
       ),
       body: Container(

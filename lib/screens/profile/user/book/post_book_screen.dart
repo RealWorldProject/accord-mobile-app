@@ -5,6 +5,7 @@ import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
+import 'package:accord/screens/widgets/custom_app_bar.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_radio_button.dart';
@@ -165,23 +166,10 @@ class _PostBookScreenState extends State<PostBookScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.blue),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        leading: new IconButton(
-          icon: new Icon(
-            Icons.arrow_back_ios_new,
-            size: 20,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          splashRadius: 20,
-        ),
-        title: CustomText(
-          textToShow: AccordLabels.postBookTitle,
-          textColor: Colors.blue,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: CustomAppBar(
+          title: AccordLabels.postBookTitle,
         ),
       ),
       body: SingleChildScrollView(

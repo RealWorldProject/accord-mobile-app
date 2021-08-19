@@ -1,4 +1,5 @@
 import 'package:accord/constant/accord_colors.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -9,12 +10,22 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: IconThemeData(color: Colors.blue),
+      iconTheme: IconThemeData(color: AccordColors.default_appbar_color),
       centerTitle: true,
       backgroundColor: Colors.white,
-      title: Text(
-        title,
-        style: TextStyle(color: AccordColors.primary_blue_color),
+      leading: new IconButton(
+        icon: new Icon(
+          Icons.arrow_back_ios_new,
+          size: 20,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        splashRadius: 20,
+      ),
+      title: CustomText(
+        textToShow: title,
+        textColor: AccordColors.default_appbar_color,
       ),
       bottom: PreferredSize(
         child: Container(
