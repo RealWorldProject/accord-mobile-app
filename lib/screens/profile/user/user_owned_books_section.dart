@@ -9,6 +9,7 @@ import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/text_utils.dart';
 import 'package:accord/viewModel/book_view_model.dart';
+import 'package:accord/viewModel/provider/button_loading_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,10 @@ class UserOwnedBooksSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<BookViewModel>().fetchUserPostedBooks();
+    // fetch books from api only if the [userOwnedBooks] is null.
+    context.read<BookViewModel>().userOwnedBooks ??
+        context.read<BookViewModel>().fetchUserPostedBooks();
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -45,7 +49,6 @@ class UserOwnedBooksSection extends StatelessWidget {
 }
 
 class BookFeedformat extends StatelessWidget {
-  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   const BookFeedformat({
     Key key,
     @required this.books,
@@ -54,8 +57,6 @@ class BookFeedformat extends StatelessWidget {
   final List<Book> books;
 
   bookOptions(BuildContext context, Book book) {
-    final bookViewModel = context.read<BookViewModel>();
-
     return showModalBottomSheet(
       context: context,
       builder: (context) => CustomBottomSheet(
@@ -77,33 +78,56 @@ class BookFeedformat extends StatelessWidget {
         action2: () => {
           showDialog(
             context: context,
+            useRootNavigator: false,
             builder: (context) {
-              return ChangeNotifierProvider.value(
-                value: bookViewModel,
-                builder: (context, child) => CustomDialogBox(
-                  title: "Action: Book Deletion!!!",
-                  content: "Are you sure you want to delete, '${book.name}'?",
-                  neglectLabel: "Keep!",
-                  performLabel: AccordLabels.delete,
-                  performAction: () async {
-                    BookViewModel bookViewModel = context.read<BookViewModel>();
-                    await bookViewModel.deleteBook(book.id);
+              return CustomDialogBox(
+                title: "Action: Book Deletion!!!",
+                content: "Are you sure you want to delete, '${book.name}'?",
+                neglectLabel: "Keep!",
+                performLabel: AccordLabels.delete,
+                performAction: () async {
+                  // [ButtonLoadingProvider] instance.
+                  var buttonLoadingProvider =
+                      context.read<ButtonLoadingProvider>();
 
-                    if (bookViewModel.data.status == Status.COMPLETE) {
-                      Navigator.of(context, rootNavigator: true).pop();
-                    } else {
-                      Navigator.of(context, rootNavigator: true).pop();
-                      showDialog(
-                        context: context,
-                        builder: (context) => InformationDialogBox(
-                          contentType: ContentType.ERROR,
-                          content: bookViewModel.data.message,
-                          actionText: AccordLabels.tryAgain,
-                        ),
-                      );
-                    }
-                  },
-                ),
+                  // sets [isLoading] to true.
+                  buttonLoadingProvider.setIsLoading();
+
+                  // [BookViewModel] instance.
+                  BookViewModel bookViewModel = context.read<BookViewModel>();
+
+                  // api call to delete book.
+                  await bookViewModel.deleteBook(book.id);
+
+                  // dialog box depending on the api result.
+                  if (bookViewModel.data.status == Status.COMPLETE) {
+                    // sets [isLoading] to false
+                    buttonLoadingProvider.removeIsLoading();
+
+                    // closes in-effect dialog box.
+                    Navigator.of(context).pop();
+
+                    showDialog(
+                      context: context,
+                      builder: (context) => InformationDialogBox(
+                        contentType: ContentType.DONE,
+                        content: bookViewModel.data.message,
+                        actionText: AccordLabels.okay,
+                      ),
+                    );
+                  } else {
+                    // sets [isLoading] to false
+                    buttonLoadingProvider.removeIsLoading();
+                    showDialog(
+                      context: context,
+                      builder: (context) => InformationDialogBox(
+                        contentType: ContentType.ERROR,
+                        content: bookViewModel.data.message,
+                        actionText: AccordLabels.tryAgain,
+                      ),
+                    );
+                  }
+                },
               );
             },
           )

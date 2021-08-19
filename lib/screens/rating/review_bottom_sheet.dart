@@ -1,19 +1,15 @@
-import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/screens/rating/add_review/add_rating_and_review.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-
-import 'edit_rating_and_review.dart';
 
 class ReviewBottomSheet extends StatelessWidget {
   final String buttonText;
   final ButtonType buttonType;
 
   const ReviewBottomSheet({
-
     this.buttonText,
     this.buttonType = ButtonType.ROUNDED_EDGE,
-  }) ;
+  });
 
   @override
   Widget build(BuildContext context) {
