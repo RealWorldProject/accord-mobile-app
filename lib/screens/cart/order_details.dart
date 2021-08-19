@@ -153,7 +153,6 @@ class _OrderDetailsState extends State<OrderDetails> {
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: CustomAppBar(
           title: AccordLabels.orderScreenTitle,
-          backButton: false,
         ),
       ),
       body: Container(
@@ -173,18 +172,17 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.fullName,
                         fieldController: _fullNameController,
                         fieldValidator: _acquireFullname,
-                        fieldType: FieldType.TEXT,
+                        fieldType: FieldType.TEXT_SPACE,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       CustomTextField(
-                        designType: DesignType.UNDERLINE,
-                        hintText: AccordLabels.phoneNumber,
-                        fieldController: _phoneNumberController,
-                        fieldValidator: _acquirePhoneNumber,
-                        fieldType: FieldType.NUMBER,
-                      ),
+                          designType: DesignType.UNDERLINE,
+                          hintText: AccordLabels.phoneNumber,
+                          fieldController: _phoneNumberController,
+                          fieldValidator: _acquirePhoneNumber,
+                          fieldType: FieldType.NUMBER_ONLY),
                       SizedBox(
                         height: 10,
                       ),
@@ -193,7 +191,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.province,
                         fieldController: _statecontroller,
                         fieldValidator: _acquireState,
-                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,
@@ -203,7 +200,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.city,
                         fieldController: _cityController,
                         fieldValidator: _acquireCity,
-                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,
@@ -213,7 +209,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.area,
                         fieldController: _areaController,
                         fieldValidator: _acquireArea,
-                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,
@@ -223,7 +218,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                         hintText: AccordLabels.physicalAddress,
                         fieldController: _addressController,
                         fieldValidator: _acquireAddress,
-                        fieldType: FieldType.ALL,
                       ),
                       SizedBox(
                         height: 10,

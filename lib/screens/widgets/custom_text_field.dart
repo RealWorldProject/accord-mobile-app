@@ -39,7 +39,7 @@ class CustomTextField extends StatelessWidget {
 
   CustomTextField({
     this.designType = DesignType.BORDER,
-    this.fieldType = FieldType.TEXT,
+    this.fieldType = FieldType.ALL,
     @required this.fieldController,
     this.obscureText = false,
     this.hintText = "",
@@ -68,7 +68,9 @@ class CustomTextField extends StatelessWidget {
               ? [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))]
               : fieldType == FieldType.NUMBER_ONLY
                   ? [FilteringTextInputFormatter.digitsOnly]
-                  : [],
+                  : fieldType == FieldType.TEXT_SPACE
+                      ? [FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]"))]
+                      : [],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: fieldValidator,
       decoration: designType == DesignType.BORDER
@@ -107,6 +109,9 @@ enum DesignType {
 enum FieldType {
   /// accept all values
   TEXT,
+
+  /// accepts text and space
+  TEXT_SPACE,
 
   /// accept all values
   ALL,

@@ -30,7 +30,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _validateFirstName = MultiValidator([
     RequiredValidator(
         errorText: AccordLabels.requireMessage(AccordLabels.firstName)),
-
   ]);
 
   final _validateLastName = MultiValidator([
@@ -48,7 +47,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     RequiredValidator(
         errorText: AccordLabels.requireMessage(AccordLabels.password)),
     MinLengthValidator(6, errorText: AccordLabels.passwordLengthMessage),
-
   ]);
 
   // Toggles the password show status
@@ -184,6 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     Container(
                                       child: CustomTextField(
                                         designType: DesignType.UNDERLINE,
+                                        fieldType: FieldType.TEXT,
                                         fieldController: _firstNameController,
                                         hintText: AccordLabels.firstName,
                                         fieldValidator: _validateFirstName,
@@ -193,6 +192,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       padding: EdgeInsets.only(top: 5),
                                       child: CustomTextField(
                                         designType: DesignType.UNDERLINE,
+                                        fieldType: FieldType.TEXT,
                                         fieldController: _lastNameController,
                                         hintText: AccordLabels.lastName,
                                         fieldValidator: _validateLastName,
@@ -204,8 +204,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         designType: DesignType.UNDERLINE,
                                         fieldController: _emailController,
                                         hintText: AccordLabels.email,
-                                        fieldType: FieldType.ALL,
-
                                         fieldValidator: _validateEmail,
                                       ),
                                     ),
@@ -217,7 +215,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           obscureText: _obscureText,
                                           fieldController: _passwordController,
                                           hintText: AccordLabels.password,
-                                          fieldType: FieldType.ALL,
                                           fieldValidator: _validatePassword,
                                         ),
                                         Positioned(

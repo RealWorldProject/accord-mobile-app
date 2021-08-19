@@ -257,6 +257,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
                         height: 4,
                       ),
                       CustomTextField(
+                        fieldType: FieldType.TEXT_SPACE,
                         fieldController: _authorNameController,
                         hintText: AccordLabels.authorName,
                         fieldValidator: _acquireAuthorName,

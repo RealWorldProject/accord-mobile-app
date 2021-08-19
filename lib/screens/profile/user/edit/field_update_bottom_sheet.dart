@@ -124,7 +124,7 @@ class _FieldUpdateBottomSheetState extends State<FieldUpdateBottomSheet> {
                     designType: DesignType.UNDERLINE,
                     fieldType: widget.updateField == UpdateField.PHONENUMBER
                         ? FieldType.NUMBER_ONLY
-                        : FieldType.TEXT,
+                        : FieldType.TEXT_SPACE,
                     fieldController: _updateFieldController,
                     fieldValidator: RequiredValidator(
                         errorText:
