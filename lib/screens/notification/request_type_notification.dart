@@ -1,13 +1,22 @@
+import 'package:accord/models/notification.dart' as accord;
+import 'package:accord/screens/widgets/avatar_displayer.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/utils/time_calculator.dart';
 import 'package:flutter/material.dart';
 
-import 'notification_action.dart';
+import 'notification_options.dart';
 
-class RequestNotification extends StatefulWidget {
+class RequestTypeNotification extends StatefulWidget {
+  const RequestTypeNotification({Key key, this.notification}) : super(key: key);
+
+  final accord.Notification notification;
+
   @override
-  _RequestNotificationState createState() => _RequestNotificationState();
+  _RequestTypeNotificationState createState() =>
+      _RequestTypeNotificationState();
 }
 
-class _RequestNotificationState extends State<RequestNotification> {
+class _RequestTypeNotificationState extends State<RequestTypeNotification> {
   bool isSeen = false;
 
   Future<void> _toggleBookIsSeen() async {
@@ -29,12 +38,10 @@ class _RequestNotificationState extends State<RequestNotification> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage(
-                    "assets/images/user2.png",
-                  ),
+                AvatarDisplayer(
+                  avatarUrl: widget.notification.requesterPhoto,
                   radius: 30,
-                )
+                ),
               ],
             ),
           ),
@@ -46,51 +53,45 @@ class _RequestNotificationState extends State<RequestNotification> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  RichText(
+                  // RichText(
+                  //   overflow: TextOverflow.ellipsis,
+                  //   maxLines: 5,
+                  //   text: TextSpan(
+                  //     children: [
+                  //       TextSpan(
+                  //         text: "Keanu Reeves",
+                  //         style: TextStyle(
+                  //           fontWeight: FontWeight.bold,
+                  //           color: Color(0xff13293d),
+                  //         ),
+                  //       ),
+                  //       TextSpan(
+                  //         text: " sent you a request to view your information.",
+                  //       ),
+                  //     ],
+                  //     style: const TextStyle(
+                  //       fontSize: 13.0,
+                  //       fontWeight: FontWeight.w600,
+                  //       color: Color(0xff606060),
+                  //     ),
+                  //   ),
+                  // ),
+                  CustomText(
+                    textToShow: widget.notification.notificationBody,
+                    noOfLines: 3,
+                    fontSize: 16,
+                    letterSpacing: -1,
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 5,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Keanu Reeves",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff13293d),
-                          ),
-                        ),
-                        // TextSpan(
-                        //   text: " sent you a request to exchange a book ",
-                        //
-                        // ),
-                        TextSpan(
-                          text: " sent you a request to view your information.",
-                        ),
-
-                        // TextSpan(
-                        //   text: "Harry Potter.",
-                        //   style: TextStyle(
-                        //     fontWeight: FontWeight.bold,
-                        //     color: Color(0xff13293d),
-                        //   ),
-                        // ),
-                      ],
-                      style: const TextStyle(
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff606060),
-                      ),
-                    ),
                   ),
                   SizedBox(
                     height: 1.8,
                   ),
-                  Text(
-                    "2 July 2021",
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff1b98e0),
-                    ),
+                  CustomText(
+                    textToShow: TimeCalculator.dateFormatter(
+                        givenTime: widget.notification.createdAt),
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    textColor: Color(0xff1b98e0),
                   ),
                   SizedBox(
                     height: 3,
@@ -110,8 +111,8 @@ class _RequestNotificationState extends State<RequestNotification> {
                           child: InkWell(
                             onTap: () {},
                             child: Container(
-                              padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
                               child: Center(
                                 child: Text(
                                   "Accept",
@@ -137,8 +138,8 @@ class _RequestNotificationState extends State<RequestNotification> {
                           child: InkWell(
                             onTap: () {},
                             child: Container(
-                              padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
                               child: Center(
                                 child: Text(
                                   "Decline",
@@ -165,7 +166,7 @@ class _RequestNotificationState extends State<RequestNotification> {
                 onTap: () {
                   showModalBottomSheet(
                       context: context,
-                      builder: (context) => NotificationAction(
+                      builder: (context) => NotificationOptions(
                             markasreadOption: _toggleBookIsSeen,
                             value: isSeen,
                           ));
@@ -181,22 +182,6 @@ class _RequestNotificationState extends State<RequestNotification> {
               ),
             ),
           ),
-          // IconButton(
-          //   padding: EdgeInsets.zero,
-          //   alignment: Alignment.centerRight,
-          //   icon: Icon(
-          //     Icons.more_vert,
-          //     color: Colors.grey[600],
-          //   ),
-          //   onPressed: () {
-          //     showModalBottomSheet(
-          //         context: context,
-          //         builder: (context) => NotificationAction(
-          //               markasreadOption: _toggleBookIsSeen,
-          //               value: isSeen,
-          //             ));
-          //   },
-          // ),
         ],
       ),
     );
