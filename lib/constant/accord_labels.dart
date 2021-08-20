@@ -145,6 +145,10 @@ class AccordLabels {
   //my request
   static const String myrequestScreenTitle = "My Requests";
 
+  // add to cart snackbar
+  static const String viewcart = "View Cart";
+  static const String cartSuccessMessage = "Successfully added to cart";
+
 
   // Error labels
   static const String connectionErrorMessage =
