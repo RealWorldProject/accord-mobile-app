@@ -44,7 +44,7 @@ class TimeCalculator {
         break;
     }
 
-    return "${date.reversed.join(" ")} ${time.getRange(0, 2).join(":")}";
+    return "${date.reversed.join(" ")} at ${time.getRange(0, 2).join(":")}";
   }
 
   /// takes a [DateTime] and returns it's difference from the current [DateTime].
@@ -112,16 +112,16 @@ class TimeCalculator {
             weeks = days ~/ 7;
             if (weeks < 4 && days < 31) {
               timeDifference =
-                  "$weeks ${weeks > 1 ? "weeks" : "week"} ${remainingDays() > 0 ? remainingDays() : null} ${remainingDays() > 0 ? remainingDays() > 1 ? "days" : "day" : null} ago";
+                  "$weeks ${weeks > 1 ? "weeks" : "week"} ${remainingDays() > 0 ? "${remainingDays()} " : ""}${remainingDays() > 0 ? remainingDays() > 1 ? "days " : "day " : ""}ago";
             } else {
-              months = days % 31;
+              months = days ~/ 31;
               if (months < 12 && days < 365) {
                 timeDifference =
-                    "$months ${months > 1 ? "months" : "month"} ${remainingWeeks() > 0 ? remainingWeeks() : null} ${remainingWeeks() > 0 ? remainingWeeks() > 1 ? "weeks" : "week" : null} ago";
+                    "$months ${months > 1 ? "months" : "month"} ${remainingWeeks() > 0 ? "${remainingWeeks()} " : ""}${remainingWeeks() > 0 ? remainingWeeks() > 1 ? "weeks " : "week " : ""}ago";
               } else {
-                years = days % 365;
+                years = days ~/ 365;
                 timeDifference =
-                    "$years ${years > 1 ? "years" : "year"} ${remainingMonths() > 0 ? remainingMonths() : null} ${remainingMonths() > 0 ? remainingMonths() > 1 ? "months" : "month" : null} ago}";
+                    "$years ${years > 1 ? "years" : "year"} ${remainingMonths() > 0 ? "${remainingMonths()} " : ""}${remainingMonths() > 0 ? remainingMonths() > 1 ? "months " : "month " : ""}ago";
               }
             }
           }

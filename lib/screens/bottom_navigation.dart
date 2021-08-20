@@ -2,6 +2,7 @@ import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:accord/viewModel/category_view_model.dart';
 import 'package:accord/viewModel/image_helper.dart';
+import 'package:accord/viewModel/notification_view_model.dart';
 import 'package:accord/viewModel/provider/button_loading_provider.dart';
 import 'package:accord/viewModel/order_view_model.dart';
 import 'package:accord/viewModel/provider/text_field_value_change_provider.dart';
@@ -36,6 +37,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           ChangeNotifierProvider(create: (context) => ButtonLoadingProvider()),
           ChangeNotifierProvider(
               create: (context) => TextFieldValueChangeProvider()),
+          ChangeNotifierProvider(create: (context) => NotificationViewModel()),
         ],
         child: Builder(builder: (context) {
           return MaterialApp(

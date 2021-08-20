@@ -1,20 +1,17 @@
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/material.dart';
-class NotificationAction extends StatefulWidget {
+
+class NotificationOptions extends StatelessWidget {
+  const NotificationOptions({
+    Key key,
+    this.markasreadOption,
+    this.removeOption,
+    this.value,
+  }) : super(key: key);
+
   final VoidCallback markasreadOption;
   final VoidCallback removeOption;
   final bool value;
-
-  const NotificationAction({Key key, this.markasreadOption, this.removeOption,this.value})
-      : super(key: key);
-
-  @override
-  _NotificationActionState createState() => _NotificationActionState();
-}
-
-class _NotificationActionState extends State<NotificationAction> {
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +33,22 @@ class _NotificationActionState extends State<NotificationAction> {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.library_add_check_rounded,size: 22, color: Colors.blue,
+                  Icons.library_add_check_rounded,
+                  size: 22,
+                  color: Colors.blue,
                 ),
-                title: widget.value==false? CustomText(
-                  textToShow: "Mark as read",
-                  textColor: Colors.blue,
-                ):CustomText(
-                  textToShow: "Mark as unread",
-                  textColor: Colors.blue,
-                ),
-
+                title: value == false
+                    ? CustomText(
+                        textToShow: "Mark as read",
+                        textColor: Colors.blue,
+                      )
+                    : CustomText(
+                        textToShow: "Mark as unread",
+                        textColor: Colors.blue,
+                      ),
                 onTap: () {
-                  print(widget.value);
-                  widget.markasreadOption();
+                  print(value);
+                  markasreadOption();
 
                   Navigator.of(context).pop();
                 },
@@ -61,7 +61,9 @@ class _NotificationActionState extends State<NotificationAction> {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.delete_forever_rounded,size: 24, color: Colors.red,
+                  Icons.delete_forever_rounded,
+                  size: 24,
+                  color: Colors.red,
                 ),
                 title: CustomText(
                   textToShow: "Remove this notification",
@@ -71,7 +73,6 @@ class _NotificationActionState extends State<NotificationAction> {
                   Navigator.of(context).pop();
                 },
               ),
-
             ],
           ),
         ),
