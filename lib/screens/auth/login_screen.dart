@@ -1,5 +1,4 @@
 import 'package:accord/constant/accord_labels.dart';
-import 'package:accord/responses/login_response.dart';
 import 'package:accord/screens/auth/register_screen.dart';
 import 'package:accord/screens/widgets/conceal_password.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
@@ -7,13 +6,15 @@ import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_text_field.dart';
 import 'package:accord/screens/bottom_navigation.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
+import 'package:accord/screens/widgets/loading_indicator.dart';
 import 'package:accord/services/storage.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -53,27 +54,39 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _validateLogin() async {
-    String _email = _emailController.text;
-    String _password = _passwordcontroller.text;
-    UserViewModel _userViewModel = new UserViewModel();
-    LoginResponse _loginResponse;
     if (_formKey.currentState.validate()) {
-      // viewModel makes api request and returns response
-      _loginResponse = await _userViewModel.loginUser(_email, _password);
+      // pops loading screen.
+      loadingIndicator(context);
 
-      if (_loginResponse.success) {
-        // storing token
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', _loginResponse.token);
-        Storage().storeToken("Bearer ${_loginResponse.token}");
+      String email = _emailController.text;
+      String password = _passwordcontroller.text;
+
+      // [UserViewModel] provider instance
+      UserViewModel userViewModel = context.read<UserViewModel>();
+
+      // viewModel makes api request and returns response
+      await userViewModel.loginUser(email, password);
+
+      // closes loading screen
+      Navigator.of(context).pop();
+
+      // checks response status and perform action accordingly.
+      if (userViewModel.data.status == Status.COMPLETE) {
+        // storing token to local storage
+        Storage().storeToken("Bearer ${userViewModel.userToken}");
+
         // navigating to dashboard
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => BottomNavigation()));
+
+        // clearing token from viewModel
+        userViewModel.clearToken();
+        print(await Storage().fetchToken());
       } else {
         //else displaying error messages.
         ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
-          content: _loginResponse.message,
           context: context,
+          content: userViewModel.data.message.split("\n").last,
           actionLabel: AccordLabels.tryAgain,
         ));
       }

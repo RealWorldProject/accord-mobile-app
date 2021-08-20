@@ -28,7 +28,11 @@ class CustomTextField extends StatelessWidget {
   /// validation, if required, for the field.
   final FieldValidator fieldValidator;
 
+  /// custon focus node for field
   final FocusNode fieldFocusNode;
+
+  /// action on edit completion.
+  final VoidCallback onEditComplete;
 
   /// starting value to be displayed in the field
   final String initialValue;
@@ -46,6 +50,7 @@ class CustomTextField extends StatelessWidget {
     this.noOfLines = 1,
     this.fieldValidator,
     this.fieldFocusNode,
+    this.onEditComplete,
     this.initialValue,
     this.designTypeBorderRadius = 8,
     this.contentHorizontalPadding = 10,
@@ -95,6 +100,7 @@ class CustomTextField extends StatelessWidget {
               ),
             ),
       focusNode: fieldFocusNode,
+      onEditingComplete: onEditComplete,
       textInputAction: TextInputAction.next,
       initialValue: initialValue,
     );

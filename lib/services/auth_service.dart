@@ -18,11 +18,11 @@ class AuthService {
         data: user,
         options: Options(responseType: ResponseType.plain),
       );
-      return res.data.toString().replaceAll("\n", "");
+      return res.data;
     } on SocketException {
       throw Exception(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
-      return e.response.data.toString().replaceAll("\n", "");
+      return ResponseBase().apiResponse(e.response);
     }
   }
 
@@ -37,7 +37,7 @@ class AuthService {
     } on SocketException {
       throw Exception(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
-      return e.response.data;
+      return ResponseBase().apiResponse(e.response);
     }
   }
 
@@ -68,6 +68,28 @@ class AuthService {
       final res = await dio.patch(
         '$baseURL/user/profile',
         data: updatedUser,
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on SocketException {
+      throw Exception(AccordLabels.connectionErrorMessage);
+    } on DioError catch (e) {
+      return ResponseBase().apiResponse(e.response);
+    }
+  }
+
+  Future<String> updateUserPassword(
+      String currentPassword, String newPassword) async {
+    final userToken = await Storage().fetchToken();
+    try {
+      final res = await dio.patch(
+        '$baseURL/user/password',
+        data: {'oldPassword': currentPassword, 'newPassword': newPassword},
         options: Options(
           responseType: ResponseType.plain,
           headers: {

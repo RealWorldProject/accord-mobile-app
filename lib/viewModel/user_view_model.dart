@@ -10,24 +10,51 @@ class UserViewModel extends ChangeNotifier {
   User _user;
   User get user => _user;
 
+  String _userToken;
+  String get userToken => _userToken;
+
   ResponseExposer _data;
   ResponseExposer get data => _data;
 
-  Future<RegisterResponse> registerUser(String user) async {
-    final registerResponseAPI = await AuthService().registerUser(user);
-    // sending json response to register_response to convert into map
-    return RegisterResponse.fromJson(jsonDecode(registerResponseAPI));
+  Future<void> registerUser(String user) async {
+    // status set to [LOADING].
+    _data = ResponseExposer.loading();
+    try {
+      final registerResponseAPI = await AuthService().registerUser(user);
+      // sending json response to register_response to convert into object.
+      var responseObj =
+          RegisterResponse.fromJson(jsonDecode(registerResponseAPI));
+
+      // status set to [COMPLETE] with success message
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      print("object");
+      // status set to [ERROR] with error message
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
   }
 
-  Future<LoginResponse> loginUser(String email, String password) async {
-    final loginResponseAPI = await AuthService().loginUser(email, password);
-    // sending json response to login_response to convert into map
-    return LoginResponse.fromJson(jsonDecode(loginResponseAPI));
-  }
+  Future<void> loginUser(String email, String password) async {
+    // status set to [LOADING]
+    _data = ResponseExposer.loading();
+    try {
+      final loginResponseAPI = await AuthService().loginUser(email, password);
+      // sending json response to login_response to convert into object
+      var responseObj = LoginResponse.fromJson(jsonDecode(loginResponseAPI));
 
-  Future<RegisterResponse> fetchUserDetails() async {
-    final apiResponse = await AuthService().fetchUserDetails();
-    return RegisterResponse.fromJson(jsonDecode(apiResponse));
+      // token from the login response.
+      _userToken = responseObj.token;
+
+      // status set to [COMPLETE] with success message
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      // status set to [ERROR] with error message
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
   }
 
   Future<dynamic> fetchUserDetail([String userId = null]) async {
@@ -58,16 +85,47 @@ class UserViewModel extends ChangeNotifier {
       // api connection to fecth user data
       final apiResponse = await AuthService().updateUser(updatedUser);
 
+      // conversion: json response to response object
+      var responseObj = RegisterResponse.fromJson(jsonDecode(apiResponse));
+
       // gets user data from the response and assign it to [_user].
-      _user = RegisterResponse.fromJson(jsonDecode(apiResponse)).result;
-      print(_user);
+      _user = responseObj.result;
 
       // setting status to [COMPLETE]
-      _data = ResponseExposer.complete();
+      _data = ResponseExposer.complete(responseObj.message);
     } catch (e) {
       // setting status to [ERROR]
       _data = ResponseExposer.error(e.toString());
     }
     notifyListeners();
+  }
+
+  Future<dynamic> updateUserPassword(
+      {String currentPassword, String newPassword}) async {
+    // setting status to [LOADING]
+    _data = ResponseExposer.loading();
+
+    try {
+      // api connection to fecth user data
+      final apiResponse =
+          await AuthService().updateUserPassword(currentPassword, newPassword);
+
+      // conversion: json response to response object
+      var responseObj = RegisterResponse.fromJson(jsonDecode(apiResponse));
+
+      // gets user data from the response and assign it to [_user].
+      _user = responseObj.result;
+
+      // setting status to [COMPLETE]
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      // setting status to [ERROR]
+      _data = ResponseExposer.error(e.toString());
+    }
+    notifyListeners();
+  }
+
+  void clearToken() {
+    _userToken = null;
   }
 }

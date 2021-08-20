@@ -47,11 +47,10 @@ class _RequestTabViewState extends State<RequestTabView>
 
     // limits the api call to just 1 time during
     //the lifecycle of running application
-    if (requestViewModel.incomingRequests == null &&
-        requestViewModel.outgoingRequests == null) {
-      requestViewModel.fetchOutgoingRequests();
-      requestViewModel.fetchIncomingRequests();
-    }
+    requestViewModel.outgoingRequests ??
+        requestViewModel.fetchOutgoingRequests();
+    requestViewModel.incomingRequests ??
+        requestViewModel.fetchIncomingRequests();
 
     return Scaffold(
       appBar: AppBar(

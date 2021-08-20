@@ -100,6 +100,12 @@ class _UserDetailSectionState extends State<UserDetailSection> {
     );
   }
 
+  // if image is null, preview section won't be opened.
+  void openPreviewSection(XFile image) {
+    image != null ? _previewImage(image) : null;
+    context.read<ButtonLoadingProvider>().removeIsLoading();
+  }
+
   void updateProfile({XFile image}) async {
     // [ButtonLoadingProvider] instance
     var buttonLoadingProvider = context.read<ButtonLoadingProvider>();
@@ -129,7 +135,9 @@ class _UserDetailSectionState extends State<UserDetailSection> {
     // checks the response status of api and performs task accordingly
     if (userViewModel.data.status == Status.COMPLETE) {
       // after successful update of profile, deletes old profile image.
-      await CloudMediaService().deleteImage(oldProfileImage);
+      Uri.parse(oldProfileImage).isAbsolute
+          ? await CloudMediaService().deleteImage(oldProfileImage)
+          : null;
 
       // sets [isLoading] to false
       buttonLoadingProvider.removeIsLoading();
@@ -150,11 +158,6 @@ class _UserDetailSectionState extends State<UserDetailSection> {
         ),
       );
     }
-  }
-
-  // if image is null, preview section won't be opened.
-  void openPreviewSection(XFile image) {
-    image != null ? _previewImage(image) : null;
   }
 
   @override

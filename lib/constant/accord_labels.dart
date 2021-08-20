@@ -135,6 +135,11 @@ class AccordLabels {
   static String emptyRequestMessage(String requestTab) =>
       "Your $requestTab is empty.";
 
+  // change password screen labels
+  static const String oldPassword = "Old Password";
+  static const String newPassword = "New Password";
+  static const String confirmNewPassword = "Confirm New Password";
+
   //notificaton
   static const String notificationScreenTitle = "Notifications";
 
@@ -143,7 +148,6 @@ class AccordLabels {
 
   //my request
   static const String myrequestScreenTitle = "My Requests";
-
 
   // Error labels
   static const String connectionErrorMessage =

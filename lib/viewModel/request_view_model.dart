@@ -30,6 +30,9 @@ class RequestViewModel extends ChangeNotifier {
   ResponseExposer _data;
   ResponseExposer get data => _data;
 
+  ResponseExposer _incomingRequestData;
+  ResponseExposer get incomingRequestData => _incomingRequestData;
+
   /// sets books index when changed.
   void setIndex(int selectedIndex) {
     if (_currentBookIndex != selectedIndex) {
@@ -68,7 +71,7 @@ class RequestViewModel extends ChangeNotifier {
   /// calls api to fetch incoming requests.
   Future<void> fetchIncomingRequests() async {
     // just sets [data] to [LOADING]
-    _data = ResponseExposer.loading();
+    _incomingRequestData = ResponseExposer.loading();
 
     try {
       var apiResponse = await RequestService().fetchIncomingRequests();
@@ -81,10 +84,10 @@ class RequestViewModel extends ChangeNotifier {
       _incomingRequests = responseObj.result;
 
       // sets [data] to [COMPLETE] with success message send by api
-      _data = ResponseExposer.complete(responseObj.message);
+      _incomingRequestData = ResponseExposer.complete(responseObj.message);
     } catch (e) {
       // sets [data] to [ERROR] with error message send by api
-      _data = ResponseExposer.error(e.toString());
+      _incomingRequestData = ResponseExposer.error(e.toString());
     }
 
     notifyListeners();

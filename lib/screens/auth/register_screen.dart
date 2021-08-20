@@ -2,17 +2,19 @@ import 'dart:convert';
 
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/user.dart';
-import 'package:accord/responses/register_response.dart';
 import 'package:accord/screens/widgets/conceal_password.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/screens/widgets/custom_text_field.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
+import 'package:accord/screens/widgets/loading_indicator.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:accord/Animation/FadeAnimation.dart';
-import 'package:accord/screens/auth/login_screen.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -68,10 +70,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _registerUser() async {
-    UserViewModel _userViewModel = new UserViewModel();
-    RegisterResponse _registerResponse;
-
     if (_formKey.currentState.validate()) {
+      // pops loading screen.
+      loadingIndicator(context);
+
       // user object
       User user = User(
         fullName: "${_firstNameController.text} ${_lastNameController.text}",
@@ -82,25 +84,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // user object to json file conversion
       String userJSON = jsonEncode(user);
 
-      // connecting and waitng for response from api through viewModel,
-      //also returns response of type `RegisterResponse`
-      _registerResponse = await _userViewModel.registerUser(userJSON);
+      // [UserViewModel] instance
+      UserViewModel userViewModel = context.read<UserViewModel>();
+
+      // calls api to register user.
+      await userViewModel.registerUser(userJSON);
+
+      // closes loading screen.
+      Navigator.of(context).pop();
 
       // checking resoponse and displaing customized error or success message
-      if (_registerResponse.success) {
+      if (userViewModel.data.status == Status.COMPLETE) {
+        // returns to login screen
+        Navigator.of(context).pop();
+
         // snackbar for successful user registration response
-        ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
-          content: _registerResponse.message,
+        showDialog(
           context: context,
-          actionLabel: AccordLabels.okay,
-        ));
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()));
-      } else {
+          builder: (context) => InformationDialogBox(
+            contentType: ContentType.DONE,
+            content: userViewModel.data.message,
+            actionText: AccordLabels.okay,
+          ),
+        );
+      } else if (userViewModel.data.status == Status.ERROR) {
         // snackbar for failed user registration response
         ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
-          content: _registerResponse.message,
           context: context,
+          content: userViewModel.data.message.split("\n").last,
           actionLabel: AccordLabels.tryAgain,
         ));
       }

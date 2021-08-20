@@ -1,9 +1,17 @@
+import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/screens/auth/login_screen.dart';
 import 'package:accord/screens/widgets/conceal_password.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_text_field.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
+import 'package:accord/screens/widgets/loading_indicator.dart';
+import 'package:accord/utils/exposer.dart';
+import 'package:accord/viewModel/screen_view_model.dart';
+import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:provider/provider.dart';
 
 class ChangePassword extends StatefulWidget {
   @override
@@ -16,12 +24,19 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _newPasswordController = TextEditingController();
   final _cmfPasswordController = TextEditingController();
 
-  final _requireOldPassword = MultiValidator(
-      [RequiredValidator(errorText: "Old Password is required!")]);
-  final _requireNewPassword = MultiValidator(
-      [RequiredValidator(errorText: "Please insert your new Password!")]);
-  final _requireCmfPassword = MultiValidator(
-      [RequiredValidator(errorText: "Please confirm your new Password!")]);
+  final FocusNode _oldPasswordFocusNode = FocusNode();
+  final FocusNode _newPasswordFocusNode = FocusNode();
+  final FocusNode _confirmNewPasswordFocusNode = FocusNode();
+
+  final _requireOldPassword = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.oldPassword))
+  ]);
+  final _requireNewPassword = MultiValidator([
+    RequiredValidator(
+        errorText: AccordLabels.requireMessage(AccordLabels.newPassword)),
+    MinLengthValidator(6, errorText: "Password must be atleast 6 character!")
+  ]);
 
   @override
   void dispose() {
@@ -31,8 +46,6 @@ class _ChangePasswordState extends State<ChangePassword> {
 
     super.dispose();
   }
-
-  Future<void> changePassword() async {}
 
   bool _oldPassword = true;
   bool _newPassword = true;
@@ -93,7 +106,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Change Password",
+                            AccordLabels.changePassword,
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 28,
@@ -112,11 +125,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     children: <Widget>[
                                       CustomTextField(
                                         designType: DesignType.UNDERLINE,
-
                                         fieldController: _oldPasswordController,
                                         obscureText: _oldPassword,
-                                        hintText: "Old Password",
+                                        hintText: AccordLabels.oldPassword,
                                         fieldValidator: _requireOldPassword,
+                                        fieldFocusNode: _oldPasswordFocusNode,
+                                        onEditComplete: () =>
+                                            FocusScope.of(context).requestFocus(
+                                                _newPasswordFocusNode),
                                       ),
                                       Positioned(
                                         top: 0,
@@ -138,8 +154,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                                         designType: DesignType.UNDERLINE,
                                         fieldController: _newPasswordController,
                                         obscureText: _newPassword,
-                                        hintText: "New Password",
+                                        hintText: AccordLabels.newPassword,
                                         fieldValidator: _requireNewPassword,
+                                        fieldFocusNode: _newPasswordFocusNode,
+                                        onEditComplete: () =>
+                                            FocusScope.of(context).requestFocus(
+                                                _confirmNewPasswordFocusNode),
                                       ),
                                       Positioned(
                                         top: 0,
@@ -157,12 +177,29 @@ class _ChangePasswordState extends State<ChangePassword> {
                                   Stack(
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
-                                      CustomTextField(
-                                        designType: DesignType.UNDERLINE,
-                                        fieldController: _cmfPasswordController,
+                                      TextFormField(
+                                        controller: _cmfPasswordController,
                                         obscureText: _cmfPassword,
-                                        hintText: "Confirm Password",
-                                        fieldValidator: _requireCmfPassword,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        validator: (val) => MatchValidator(
+                                                errorText:
+                                                    "Does not match with above password!")
+                                            .validateMatch(val,
+                                                _newPasswordController.text),
+                                        decoration: InputDecoration(
+                                          hintText:
+                                              AccordLabels.confirmNewPassword,
+                                          hintStyle:
+                                              TextStyle(color: Colors.grey),
+                                          border: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                        focusNode: _confirmNewPasswordFocusNode,
+                                        textInputAction: TextInputAction.next,
                                       ),
                                       Positioned(
                                         top: 0,
@@ -181,7 +218,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       CustomText(
-                                        textToShow: "Forgot Password?",
+                                        textToShow: AccordLabels.forgotPassword,
                                         textColor: Colors.grey.shade700,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
@@ -193,7 +230,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                   ),
                                   CustomButton(
                                     buttonType: ButtonType.OVAL,
-                                    buttonLabel: "Change Password",
+                                    buttonLabel: AccordLabels.changePassword,
                                     triggerAction: changePassword,
                                   ),
                                 ],
@@ -234,5 +271,69 @@ class _ChangePasswordState extends State<ChangePassword> {
         ),
       ]),
     );
+  }
+
+  Future<void> changePassword() async {
+    FocusScope.of(context).unfocus();
+    final String currentPassword = _oldPasswordController.text;
+    final String newPassword = _newPasswordController.text;
+
+    if (_formKey.currentState.validate()) {
+      if (currentPassword != newPassword) {
+        // pops loading screen.
+        loadingIndicator(context);
+
+        // [UserViewModel] provider instance
+        UserViewModel userViewModel = context.read<UserViewModel>();
+
+        // api call to update user password
+        await userViewModel.updateUserPassword(
+            currentPassword: currentPassword, newPassword: newPassword);
+
+        // closes loading screen.
+        Navigator.of(context, rootNavigator: true).pop();
+
+        // check response status and perform action accordingly
+        if (userViewModel.data.status == Status.COMPLETE) {
+          // pops information dialog encouraging user to login again.
+          showDialog(
+            context: context,
+            builder: (context) => InformationDialogBox(
+              contentType: ContentType.DONE,
+              content: "${userViewModel.data.message} \nPlease login again!!!",
+              actionText: AccordLabels.login,
+            ),
+          ).whenComplete(() {
+            // logs out user when dialog is closed.
+            Navigator.of(context, rootNavigator: true).pushReplacement(
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+
+            // sets tab to HOME_SCREEN after logout.
+            context.read<ScreenViewModel>().restoreInitialTab(HOME_SCREEN);
+          });
+        } else if (userViewModel.data.status == Status.ERROR) {
+          // displays error message in dialog box.
+          showDialog(
+            context: context,
+            builder: (context) => InformationDialogBox(
+              contentType: ContentType.ERROR,
+              content: userViewModel.data.message,
+              actionText: AccordLabels.tryAgain,
+            ),
+          );
+        }
+      } else {
+        // shows information dialog if old & new password are same.
+        showDialog(
+          context: context,
+          builder: (context) => InformationDialogBox(
+            contentType: ContentType.INFORMATION,
+            content: "New password cannot be same as old password",
+            actionText: AccordLabels.okay,
+          ),
+        );
+      }
+    }
   }
 }

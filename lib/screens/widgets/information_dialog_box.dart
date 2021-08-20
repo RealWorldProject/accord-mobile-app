@@ -103,7 +103,7 @@ class InformationDialogBox extends StatelessWidget {
                   );
                 } else if (contentType == ContentType.ERROR) {
                   return Icon(
-                    LineIcons.cross,
+                    Icons.warning_amber,
                     color: Colors.red,
                     size: 35,
                   );
