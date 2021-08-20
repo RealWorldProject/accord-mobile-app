@@ -7,6 +7,7 @@ import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class BookTransactionSection extends StatelessWidget {
   const BookTransactionSection({
@@ -66,7 +67,10 @@ class BookTransactionSection extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.white60,
                   onTap: () {
+
                     addOrIncreaseItemQuantity(bookId, context);
+                    Toast.show(AccordLabels.cartSuccessMessage, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

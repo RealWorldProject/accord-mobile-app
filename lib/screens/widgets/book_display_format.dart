@@ -232,7 +232,7 @@ class AddToCart extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          Toast.show(AccordLabels.cartSuccessMessage, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          Toast.show(AccordLabels.cartSuccessMessage, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
           context.read<CartviewModel>().data.status == Status.LOADING
               ? null
               : addOrIncreaseItemQuantity(bookID, context);
