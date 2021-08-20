@@ -92,6 +92,7 @@ class ScreenViewModel extends ChangeNotifier {
     } else {
       return await showDialog(
         context: context,
+        useRootNavigator: false,
         builder: (context) => CustomDialogBox(
           title: "Exit Accord?",
           neglectLabel: "Cancel",

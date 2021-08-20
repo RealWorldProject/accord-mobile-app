@@ -1,5 +1,6 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/order.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/time_calculator.dart';
@@ -216,11 +217,24 @@ class OrderListView extends StatelessWidget {
                 List<Order> orders = orderViewModel.orders;
 
                 return ListView.builder(
-                  itemCount: orders.length,
+                  itemCount: orders.isEmpty ? 1 : orders.length,
                   itemBuilder: (context, index) {
-                    return _orderListView(
-                      order: orders[index],
-                    );
+                    return orders.isNotEmpty
+                        ? _orderListView(
+                            order: orders[index],
+                          )
+                        : Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(top: 20),
+                            width: MediaQuery.of(context).size.width,
+                            child: CustomText(
+                              textToShow: "You have not ordered any books yet.",
+                              fontSize: 18,
+                              letterSpacing: -1,
+                              fontWeight: FontWeight.w500,
+                              textColor: Colors.black45,
+                            ),
+                          );
                   },
                 );
               case Status.ERROR:

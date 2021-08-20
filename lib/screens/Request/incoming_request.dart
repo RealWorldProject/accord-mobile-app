@@ -1,5 +1,6 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/request.dart';
+import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/utils/exposer.dart';
@@ -223,7 +224,7 @@ class _IncomingRequestState extends State<IncomingRequest> {
           builder: (context, requestViewModel, _) {
             final List<Request> incomingRequests =
                 requestViewModel.incomingRequests;
-            switch (requestViewModel.data.status) {
+            switch (requestViewModel.incomingRequestData.status) {
               case Status.LOADING:
                 return Center(
                   child: CircularProgressIndicator(
@@ -260,18 +261,17 @@ class _IncomingRequestState extends State<IncomingRequest> {
                       );
                     } else {
                       return Container(
+                        alignment: Alignment.center,
                         padding: EdgeInsets.only(top: 20),
                         width: MediaQuery.of(context).size.width,
-                        child: Text(
-                          AccordLabels.emptyRequestMessage(
+                        child: CustomText(
+                          textToShow: AccordLabels.emptyRequestMessage(
                             AccordLabels.incomingRequestLabel,
                           ),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 18,
-                              letterSpacing: -1,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black45),
+                          fontSize: 18,
+                          letterSpacing: -1,
+                          fontWeight: FontWeight.w500,
+                          textColor: Colors.black45,
                         ),
                       );
                     }
