@@ -116,9 +116,12 @@ class BookViewModel extends ChangeNotifier {
       _userOwnedBooks = responseObj.result;
 
       _data = ResponseExposer.complete(responseObj.message);
+      print(_data.status);
+
     } catch (e) {
       _userOwnedBooks = [];
       _data = ResponseExposer.error(e.toString());
+      print(_data.status);
     }
 
     notifyListeners();

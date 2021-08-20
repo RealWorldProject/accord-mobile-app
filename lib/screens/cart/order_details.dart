@@ -167,8 +167,17 @@ class _OrderDetailsState extends State<OrderDetails> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: CustomText(
+                          textToShow: AccordLabels.fullName,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       CustomTextField(
-                        designType: DesignType.UNDERLINE,
+                        designType: DesignType.BORDER,
                         hintText: AccordLabels.fullName,
                         fieldController: _fullNameController,
                         fieldValidator: _acquireFullname,
@@ -177,8 +186,17 @@ class _OrderDetailsState extends State<OrderDetails> {
                       SizedBox(
                         height: 10,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: CustomText(
+                          textToShow: AccordLabels.phoneNumber,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       CustomTextField(
-                          designType: DesignType.UNDERLINE,
+                          designType: DesignType.BORDER,
                           hintText: AccordLabels.phoneNumber,
                           fieldController: _phoneNumberController,
                           fieldValidator: _acquirePhoneNumber,
@@ -186,8 +204,17 @@ class _OrderDetailsState extends State<OrderDetails> {
                       SizedBox(
                         height: 10,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: CustomText(
+                          textToShow: AccordLabels.province,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       CustomTextField(
-                        designType: DesignType.UNDERLINE,
+                        designType: DesignType.BORDER,
                         hintText: AccordLabels.province,
                         fieldController: _statecontroller,
                         fieldValidator: _acquireState,
@@ -195,17 +222,36 @@ class _OrderDetailsState extends State<OrderDetails> {
                       SizedBox(
                         height: 10,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: CustomText(
+                          textToShow: AccordLabels.city,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       CustomTextField(
-                        designType: DesignType.UNDERLINE,
+                        designType: DesignType.BORDER,
                         hintText: AccordLabels.city,
                         fieldController: _cityController,
                         fieldValidator: _acquireCity,
                       ),
+
                       SizedBox(
                         height: 10,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: CustomText(
+                          textToShow: AccordLabels.area,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       CustomTextField(
-                        designType: DesignType.UNDERLINE,
+                        designType: DesignType.BORDER,
                         hintText: AccordLabels.area,
                         fieldController: _areaController,
                         fieldValidator: _acquireArea,
@@ -213,8 +259,17 @@ class _OrderDetailsState extends State<OrderDetails> {
                       SizedBox(
                         height: 10,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: CustomText(
+                          textToShow: AccordLabels.physicalAddress,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       CustomTextField(
-                        designType: DesignType.UNDERLINE,
+                        designType: DesignType.BORDER,
                         hintText: AccordLabels.physicalAddress,
                         fieldController: _addressController,
                         fieldValidator: _acquireAddress,
@@ -222,9 +277,18 @@ class _OrderDetailsState extends State<OrderDetails> {
                       SizedBox(
                         height: 10,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: CustomText(
+                          textToShow: AccordLabels.coordinates,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       CustomTextField(
-                        designType: DesignType.UNDERLINE,
-                        hintText: AccordLabels.coordinates,
+                        designType: DesignType.BORDER,
+                        hintText: AccordLabels.coordinatesExample,
                         fieldController: _coordinatesController,
                         fieldType: FieldType.NUMBER,
                         fieldValidator: null,

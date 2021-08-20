@@ -1,16 +1,15 @@
 import 'package:accord/constant/accord_colors.dart';
-import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/screens/cart/cart_screen.dart';
 import 'package:flutter/material.dart';
 
-Widget customSnackbar({
-  @required String content,
+import 'custom_label.dart';
+Widget AddtocartSnackbar({
   @required BuildContext context,
-  MessageType messageType = MessageType.ErrorMessage,
-  String actionLabel = "",
 }) {
   return SnackBar(
     content: CustomText(
-      textToShow: content,
+      textToShow: AccordLabels.cartSuccessMessage,
       textColor: Colors.white,
       fontSize: 16,
       fontStyle: FontStyle.italic,
@@ -18,16 +17,11 @@ Widget customSnackbar({
     ),
     backgroundColor: AccordColors.snackbar_color,
     action: SnackBarAction(
-      label: actionLabel,
+      label: AccordLabels.viewcart,
       textColor: AccordColors.primary_blue_color,
-      onPressed: () {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> CartScreen()));
       },
     ),
   );
-}
-
-enum MessageType {
-  ErrorMessage,
-  InformationMessage,
 }
