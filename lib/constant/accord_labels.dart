@@ -7,6 +7,7 @@ class AccordLabels {
   // All possible dialogbox/snackbar labels
   static const String okay = "Okay";
   static const String cancel = "Cancel";
+  static const String close = "Close";
   static const String delete = "Delete";
   static const String logout = "Log Out";
   static const String tryAgain = "Try Again";
@@ -49,14 +50,15 @@ class AccordLabels {
   static const String requireFullNameMessage = "Please state your full name!";
   static const String requirePhoneNumberMessage =
       "Please insert your phone number!";
-  static const String fullName = "Full Name*";
-  static const String phoneNumber = "Phone Number*";
-  static const String province = "State/Province*";
-  static const String city = "City*";
-  static const String area = "Area*";
-  static const String physicalAddress = "Physical Address*";
+  static const String fullName = "Full Name";
+  static const String phoneNumber = "Phone Number";
+  static const String province = "State/Province";
+  static const String city = "City";
+  static const String area = "Area";
+  static const String physicalAddress = "Physical Address";
   static const String coordinates = "Co-ordinates (Optional)";
-  static const String paymentMethod = "Payment Method*";
+  static const String coordinatesExample = "eg(78.1523,182.16553)";
+  static const String paymentMethod = "Payment Method";
   static const String submitButton = "Submit";
   static const String total = "Total";
 
@@ -149,6 +151,10 @@ class AccordLabels {
   //my request
   static const String myrequestScreenTitle = "My Requests";
 
+  // add to cart snackbar
+  static const String viewcart = "View Cart";
+  static const String cartSuccessMessage = "Successfully added to cart";
+  
   // Error labels
   static const String connectionErrorMessage =
       "Error while connecting to the server";
