@@ -1,15 +1,16 @@
-import 'package:accord/screens/rating/add_review/add_rating_and_review.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class ReviewBottomSheet extends StatelessWidget {
   final String buttonText;
   final ButtonType buttonType;
+  final Color buttonColor;
   final VoidCallback buttonAction;
 
   const ReviewBottomSheet({
     this.buttonText,
     this.buttonType = ButtonType.ROUNDED_EDGE,
+    this.buttonColor,
     this.buttonAction,
   });
 
@@ -38,6 +39,7 @@ class ReviewBottomSheet extends StatelessWidget {
           height: 45,
           buttonLabel: buttonText,
           textSize: 18,
+          buttonColor: buttonColor,
           buttonType: buttonType,
           triggerAction: () => buttonAction(),
         ),

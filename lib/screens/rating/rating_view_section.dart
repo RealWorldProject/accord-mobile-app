@@ -33,8 +33,7 @@ class _RatingSectionState extends State<RatingSection> {
             fontSize: 56,
           ),
           StarRatingSystem(
-            ratingPoint:
-                double.parse(overallRatingsOnActiveBook.toStringAsFixed(1)),
+            ratingPoint: overallRatingsOnActiveBook,
             isEditable: false,
           ),
           CustomText(

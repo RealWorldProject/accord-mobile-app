@@ -1,15 +1,18 @@
 import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/review.dart';
-import 'package:accord/screens/rating/edit_rating_and_review.dart';
+import 'package:accord/screens/rating/add_edit_rating_and_review.dart';
 import 'package:accord/screens/widgets/avatar_displayer.dart';
 import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
 import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/screens/widgets/star_rating_system.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/text_utils.dart';
 import 'package:accord/utils/time_calculator.dart';
 import 'package:accord/viewModel/book_view_model.dart';
+import 'package:accord/viewModel/provider/button_loading_provider.dart';
 import 'package:accord/viewModel/review_view_model.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
@@ -59,17 +62,6 @@ class _ReviewViewSectionState extends State<ReviewViewSection> {
                         SizedBox(
                           height: 10,
                         ),
-                        InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => EditRatingAndReview(),
-                              ));
-                            },
-                            child: CustomText(
-                              textToShow: AccordLabels.editReviewLabel,
-                              textColor: Colors.blue,
-                              fontSize: 12,
-                            )),
                         Divider(
                           color: Colors.grey[900],
                         )
@@ -105,7 +97,9 @@ class _ReviewViewSectionState extends State<ReviewViewSection> {
                       width: MediaQuery.of(context).size.width,
                       child: CustomText(
                         textToShow:
-                            "This book has not received any review yet.",
+                            reviewViewModel.userReviewOnActiveBook == null
+                                ? "This book has not received any review yet."
+                                : "Others have not reviewed this book yet.",
                         fontSize: 18,
                         letterSpacing: -1,
                         fontWeight: FontWeight.w500,
@@ -205,7 +199,17 @@ class ReviewDisplayFormat extends StatelessWidget {
                                     // option 1
                                     option1: AccordLabels.editReviewLabel,
                                     iconOpt1: Icons.edit_rounded,
-                                    action1: () {},
+                                    action1: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            PostOrEditRatingAndReview(
+                                          reviewAction: ReviewAction.UPDATE,
+                                          ratingPoint: review.rating,
+                                          review: review.review,
+                                        ),
+                                      ));
+                                    },
 
                                     //option 2
                                     option2:
@@ -214,12 +218,15 @@ class ReviewDisplayFormat extends StatelessWidget {
                                     action2: () {
                                       showDialog(
                                           context: context,
+                                          useRootNavigator: false,
                                           builder: (context) {
                                             return CustomDialogBox(
                                               content:
-                                                  "Are you sure you want to delete, 'this review'?",
+                                                  "Are you sure you want to delete your review?",
                                               neglectLabel: AccordLabels.keep,
                                               performLabel: AccordLabels.delete,
+                                              performAction: () => deleteReview(
+                                                  context, review.id),
                                             );
                                           });
                                     },
@@ -264,5 +271,48 @@ class ReviewDisplayFormat extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> deleteReview(BuildContext context, String reviewID) async {
+    // [ButtonLoadingProvider] instance.
+    var buttonLoadingProvider = context.read<ButtonLoadingProvider>();
+
+    // sets [isLoading] to true.
+    buttonLoadingProvider.setIsLoading();
+
+    // [BookViewModel] instance.
+    ReviewViewModel reviewViewModel = context.read<ReviewViewModel>();
+
+    // api call to delete book.
+    await reviewViewModel.deleteReview(reviewID: reviewID);
+
+    // dialog box depending on the api result.
+    if (reviewViewModel.data.status == Status.COMPLETE) {
+      // sets [isLoading] to false
+      buttonLoadingProvider.removeIsLoading();
+
+      // closes in-effect dialog box.
+      Navigator.of(context).pop();
+
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.DONE,
+          content: reviewViewModel.data.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    } else {
+      // sets [isLoading] to false
+      buttonLoadingProvider.removeIsLoading();
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.ERROR,
+          content: reviewViewModel.data.message,
+          actionText: AccordLabels.tryAgain,
+        ),
+      );
+    }
   }
 }

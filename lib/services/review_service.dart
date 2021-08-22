@@ -20,7 +20,9 @@ class ReviewService {
         data: review,
         options: Options(
           responseType: ResponseType.plain,
-          headers: {HttpHeaders.authorizationHeader: userToken},
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
         ),
       );
       return res.data;
@@ -52,7 +54,44 @@ class ReviewService {
     }
   }
 
-  Future<String> editReview() {}
+  Future<String> editReview(String reviewID, String updatedReview) async {
+    userToken = await Storage().fetchToken();
+    try {
+      var res = await dio.patch(
+        "$baseUrl/review/$reviewID",
+        data: updatedReview,
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
+    } on DioError catch (e) {
+      return ResponseBase().apiResponse(e.response);
+    }
+  }
 
-  Future<String> deleteReview() {}
+  Future<String> deleteReview(String reviewID) async {
+    userToken = await Storage().fetchToken();
+    try {
+      var res = await dio.delete(
+        "$baseUrl/review/$reviewID",
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
+    } on DioError catch (e) {
+      return ResponseBase().apiResponse(e.response);
+    }
+  }
 }

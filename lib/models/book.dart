@@ -43,7 +43,7 @@ class Book {
       images:
           json['images'] != null ? new List<String>.from(json['images']) : null,
       userId: json['userId'] != null ? User.fromJson(json['userId']) : null,
-      rating: json['rating'] ?? 0,
+      rating: double.parse(json['rating'].toString()),
       isNewBook: json['isNewBook'],
       isAvailableForExchange: json['isAvailableForExchange'],
     );

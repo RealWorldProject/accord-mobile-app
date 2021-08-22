@@ -83,7 +83,7 @@ class BookFeedformat extends StatelessWidget {
               return CustomDialogBox(
                 title: "Action: Book Deletion!!!",
                 content: "Are you sure you want to delete, '${book.name}'?",
-                neglectLabel: "Keep!",
+                neglectLabel: AccordLabels.keep,
                 performLabel: AccordLabels.delete,
                 performAction: () async {
                   // [ButtonLoadingProvider] instance.
