@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,15 +14,12 @@ import 'package:toast/toast.dart';
 class BookTransactionSection extends StatelessWidget {
   const BookTransactionSection({
     Key key,
-    @required this.bookId,
-    @required this.price,
   }) : super(key: key);
-
-  final String bookId;
-  final double price;
 
   @override
   Widget build(BuildContext context) {
+    Book book = context.read<BookViewModel>().activeBook;
+
     return Container(
       height: 80,
       color: Color(0xFF0E3311).withOpacity(0.0),
@@ -48,7 +47,7 @@ class BookTransactionSection extends StatelessWidget {
                   fontSize: 15,
                 ),
                 CustomText(
-                  textToShow: "Rs. ${price}",
+                  textToShow: "Rs. ${book.price}",
                   textColor: AccordColors.semi_dark_blue_color,
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
@@ -67,10 +66,9 @@ class BookTransactionSection extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.white60,
                   onTap: () {
-
-                    addOrIncreaseItemQuantity(bookId, context);
-                    Toast.show(AccordLabels.cartSuccessMessage, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
-
+                    addOrIncreaseItemQuantity(book.id, context);
+                    Toast.show(AccordLabels.cartSuccessMessage, context,
+                        duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

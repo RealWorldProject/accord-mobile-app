@@ -1,28 +1,22 @@
 import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
-import 'package:accord/models/user.dart';
+import 'package:accord/models/book.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/exchange_request_dialog_box.dart';
 import 'package:accord/utils/text_utils.dart';
+import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookOwnerSection extends StatelessWidget {
   const BookOwnerSection({
     Key key,
-    this.owner,
-    this.exchangable,
-    this.bookName,
-    this.bookID,
   }) : super(key: key);
-
-  final User owner;
-  final bool exchangable;
-  final String bookName;
-  final String bookID;
 
   @override
   Widget build(BuildContext context) {
+    Book book = context.read<BookViewModel>().activeBook;
     return Container(
       margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -38,8 +32,8 @@ class BookOwnerSection extends StatelessWidget {
                 radius: 25.0,
                 backgroundImage:
                     // checks if the given image url is valid.
-                    Uri.parse(owner.image).isAbsolute
-                        ? NetworkImage(owner.image)
+                    Uri.parse(book.userId.image).isAbsolute
+                        ? NetworkImage(book.userId.image)
                         : AssetImage("assets/images/user2.png"),
                 backgroundColor: Colors.black12,
               ),
@@ -47,7 +41,7 @@ class BookOwnerSection extends StatelessWidget {
                 width: 8,
               ),
               CustomText(
-                textToShow: TextUtils().capitalizeAll(owner.fullName),
+                textToShow: TextUtils().capitalizeAll(book.userId.fullName),
                 fontWeight: FontWeight.bold,
                 textColor: AccordColors.full_dark_blue_color,
                 fontSize: 16,
@@ -61,8 +55,8 @@ class BookOwnerSection extends StatelessWidget {
             buttonLabel: AccordLabels.requestExchangeBook,
             textSize: 12,
             buttonType: ButtonType.OUTLINED,
-            enable: exchangable,
-            triggerAction: exchangable == false
+            enable: book.isAvailableForExchange,
+            triggerAction: book.isAvailableForExchange == false
                 ? () {}
                 : () {
                     showDialog(
@@ -70,8 +64,8 @@ class BookOwnerSection extends StatelessWidget {
                       useRootNavigator: false,
                       builder: (context) {
                         return ExchangeRequestDialogBox(
-                          requestedBookName: bookName,
-                          requestedBookID: bookID,
+                          requestedBookName: book.name,
+                          requestedBookID: book.id,
                         );
                       },
                     );

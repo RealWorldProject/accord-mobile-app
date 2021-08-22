@@ -47,7 +47,6 @@ class NotificationOptions extends StatelessWidget {
                         textColor: Colors.blue,
                       ),
                 onTap: () {
-                  print(value);
                   markasreadOption();
 
                   Navigator.of(context).pop();

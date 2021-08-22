@@ -1,6 +1,8 @@
-import 'package:accord/screens/home/book_view/rating_stars.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/screens/widgets/star_rating_system.dart';
+import 'package:accord/viewModel/review_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RatingSection extends StatefulWidget {
   const RatingSection({Key key}) : super(key: key);
@@ -12,21 +14,31 @@ class RatingSection extends StatefulWidget {
 class _RatingSectionState extends State<RatingSection> {
   @override
   Widget build(BuildContext context) {
+    // total number of reviews for the give book.
+    int totalReviewsOnActiveBook =
+        context.read<ReviewViewModel>().totalReviewsOnActiveBook;
+
+    // total ratings for the given book.
+    double overallRatingsOnActiveBook =
+        context.read<ReviewViewModel>().overallRatingsOnActiveBook;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.only(top: 22),
       child: Column(
-
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Text("4.0",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 57),),
           CustomText(
-            textToShow: "3.5",
+            textToShow: overallRatingsOnActiveBook.toStringAsFixed(1),
             fontSize: 56,
           ),
-          RatingStars(3.5,60),
+          StarRatingSystem(
+            ratingPoint:
+                double.parse(overallRatingsOnActiveBook.toStringAsFixed(1)),
+            isEditable: false,
+          ),
           CustomText(
-            textToShow: "based on 56 reviews",
+            textToShow: "based on $totalReviewsOnActiveBook reviews",
             fontSize: 14,
             fontWeight: FontWeight.bold,
             textColor: Colors.grey[600],
