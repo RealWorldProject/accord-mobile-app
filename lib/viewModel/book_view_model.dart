@@ -20,8 +20,15 @@ class BookViewModel extends ChangeNotifier {
   List<Book> _userOwnedBooks;
   List<Book> get userOwnedBooks => _userOwnedBooks;
 
+  Book _activeBook;
+  Book get activeBook => _activeBook;
+
   ResponseExposer _data;
   ResponseExposer get data => _data;
+
+  void setActiveBook(Book book) {
+    _activeBook = book;
+  }
 
   // post book
   Future<void> postBook(String book) async {
@@ -116,12 +123,9 @@ class BookViewModel extends ChangeNotifier {
       _userOwnedBooks = responseObj.result;
 
       _data = ResponseExposer.complete(responseObj.message);
-      print(_data.status);
-
     } catch (e) {
       _userOwnedBooks = [];
       _data = ResponseExposer.error(e.toString());
-      print(_data.status);
     }
 
     notifyListeners();

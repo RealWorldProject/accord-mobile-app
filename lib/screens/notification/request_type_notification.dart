@@ -87,8 +87,8 @@ class _RequestTypeNotificationState extends State<RequestTypeNotification> {
                     height: 1.8,
                   ),
                   CustomText(
-                    textToShow: TimeCalculator.dateFormatter(
-                        givenTime: widget.notification.createdAt),
+                    textToShow: TimeCalculator.getTimeDifference(
+                        widget.notification.createdAt),
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
                     textColor: Color(0xff1b98e0),

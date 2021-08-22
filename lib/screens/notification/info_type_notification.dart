@@ -9,13 +9,15 @@ import 'package:flutter/material.dart';
 import 'notification_options.dart';
 
 class InfoTypeNotification extends StatelessWidget {
-  const InfoTypeNotification({Key key, this.notification}) : super(key: key);
+  const InfoTypeNotification({
+    Key key,
+    this.notification,
+  }) : super(key: key);
 
   final accord.Notification notification;
 
   @override
   Widget build(BuildContext context) {
-    print(inspect(notification));
     return Container(
       color: Colors.white,
       margin: EdgeInsets.symmetric(vertical: 10),

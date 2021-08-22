@@ -7,6 +7,7 @@ import 'package:accord/viewModel/provider/button_loading_provider.dart';
 import 'package:accord/viewModel/order_view_model.dart';
 import 'package:accord/viewModel/provider/text_field_value_change_provider.dart';
 import 'package:accord/viewModel/request_view_model.dart';
+import 'package:accord/viewModel/review_view_model.dart';
 import 'package:accord/viewModel/screen_view_model.dart';
 import 'package:accord/viewModel/user_view_model.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           ChangeNotifierProvider(
               create: (context) => TextFieldValueChangeProvider()),
           ChangeNotifierProvider(create: (context) => NotificationViewModel()),
+          ChangeNotifierProvider(create: (context) => ReviewViewModel()),
         ],
         child: Builder(builder: (context) {
           return MaterialApp(

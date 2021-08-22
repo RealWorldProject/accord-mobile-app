@@ -28,7 +28,6 @@ class UserViewModel extends ChangeNotifier {
       // status set to [COMPLETE] with success message
       _data = ResponseExposer.complete(responseObj.message);
     } catch (e) {
-      print("object");
       // status set to [ERROR] with error message
       _data = ResponseExposer.error(e.toString());
     }
