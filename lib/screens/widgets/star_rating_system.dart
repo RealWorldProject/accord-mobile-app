@@ -9,6 +9,7 @@ class StarRatingSystem extends StatelessWidget {
     this.isEditable = true,
     this.ratingPoint = 0,
     this.starSize = 60,
+    this.starClickAction,
   }) : super(key: key);
 
   /// defines if the rating system is editable.
@@ -26,6 +27,9 @@ class StarRatingSystem extends StatelessWidget {
   /// default set to 60.
   final double starSize;
 
+  /// function to call when star is clicked.
+  final VoidCallback starClickAction;
+
   @override
   Widget build(BuildContext context) {
     // differentiate either to send exact number like [3.0, 4.0]
@@ -33,7 +37,7 @@ class StarRatingSystem extends StatelessWidget {
     // gets exact number if decimal point (1 decimal point) is less than 5
     // and half number if it is greater that 5.
     double starRatingPoint =
-        int.parse(ratingPoint.toString().split('.').last) < 5
+        int.parse(ratingPoint.toStringAsFixed(1).split('.').last) < 5
             ? double.parse(ratingPoint.toString().split('.').first + ".0")
             : double.parse(ratingPoint.toString().split('.').first + ".5");
 
@@ -66,46 +70,3 @@ class StarRatingSystem extends StatelessWidget {
     );
   }
 }
-
-// class RateBook extends StatefulWidget {
-//   const RateBook({Key key}) : super(key: key);
-
-//   @override
-//   _RateBookState createState() => _RateBookState();
-// }
-
-// class _RateBookState extends State<RateBook> {
-//   static const bool isEditable = true;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: RatingBar(
-//         ignoreGestures: isEditable,
-//         glowColor: Colors.yellowAccent,
-//         initialRating: 2.5,
-//         direction: Axis.horizontal,
-//         allowHalfRating: true,
-//         itemCount: 5,
-//         ratingWidget: RatingWidget(
-//           full: Icon(
-//             Icons.star_rounded,
-//             color: Color(0xffffbb00),
-//           ),
-//           half: Icon(
-//             Icons.star_half_rounded,
-//             color: Color(0xffffbb00),
-//           ),
-//           empty: Icon(
-//             Icons.star_border_rounded,
-//             color: Color(0xffffbb00),
-//           ),
-//         ),
-//         itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
-//         onRatingUpdate: (rating) {
-//           print(rating);
-//         },
-//         itemSize: 60,
-//       ),
-//     );
-//   }
-// }

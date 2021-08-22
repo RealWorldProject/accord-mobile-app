@@ -60,11 +60,25 @@ class BookRatingSection extends StatelessWidget {
                     padding: EdgeInsets.only(top: 10, left: 0, right: 0),
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: partialReviews.length,
-                    itemBuilder: (context, index) => ReviewDisplayFormat(
-                      review: partialReviews[index],
-                      isActiveUserReview: false,
-                    ),
+                    itemCount:
+                        partialReviews.isEmpty ? 1 : partialReviews.length,
+                    itemBuilder: (context, index) => partialReviews.isEmpty
+                        ? Container(
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width,
+                            child: CustomText(
+                              textToShow:
+                                  "This book has not received any review yet.",
+                              fontSize: 16,
+                              letterSpacing: -1,
+                              fontWeight: FontWeight.w500,
+                              textColor: Colors.black45,
+                            ),
+                          )
+                        : ReviewDisplayFormat(
+                            review: partialReviews[index],
+                            isActiveUserReview: false,
+                          ),
                   );
                 case Status.ERROR:
                   return ErrorDisplayer(
@@ -87,11 +101,19 @@ class BookRatingSection extends StatelessWidget {
                     builder: (context) => ViewRatingsAndReviewsScreen(),
                   ));
             },
-            child: CustomText(
-              textToShow: AccordLabels.viewMore,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              textColor: Colors.blue,
+            child: Consumer<ReviewViewModel>(
+              builder: (context, reviewViewModel, child) {
+                return reviewViewModel.currentBookReviews != null
+                    ? reviewViewModel.currentBookReviews.length >= 3
+                        ? CustomText(
+                            textToShow: AccordLabels.viewMore,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            textColor: Colors.blue,
+                          )
+                        : Container()
+                    : Container();
+              },
             ),
           ),
         ],

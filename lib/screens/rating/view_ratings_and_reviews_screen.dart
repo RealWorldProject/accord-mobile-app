@@ -1,6 +1,6 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
-import 'package:accord/screens/rating/add_review/add_rating_and_review.dart';
+import 'package:accord/screens/rating/add_edit_rating_and_review.dart';
 import 'package:accord/screens/rating/rating_view_section.dart';
 import 'package:accord/screens/rating/review_bottom_sheet.dart';
 import 'package:accord/screens/rating/review_view_section.dart';
@@ -93,12 +93,25 @@ class _ViewRatingsAndReviewsScreenState
         ),
       ),
       bottomSheet: ReviewBottomSheet(
-        buttonText: !isEditable
-            ? AccordLabels.addReviewLabel
-            : AccordLabels.editReviewLabel,
+        buttonText:
+            context.watch<ReviewViewModel>().userReviewOnActiveBook == null
+                ? AccordLabels.addReviewLabel
+                : AccordLabels.editReviewLabel,
         buttonType: ButtonType.OUTLINED,
-        buttonAction: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => PostRatingAndReview())),
+        buttonAction: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  context.watch<ReviewViewModel>().userReviewOnActiveBook ==
+                          null
+                      ? PostOrEditRatingAndReview()
+                      : PostOrEditRatingAndReview(
+                          reviewAction: ReviewAction.UPDATE,
+                          ratingPoint:
+                              reviewViewModel.userReviewOnActiveBook.rating,
+                          review: reviewViewModel.userReviewOnActiveBook.review,
+                        ),
+            )),
       ),
     );
   }

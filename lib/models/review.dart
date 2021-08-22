@@ -2,6 +2,7 @@ import 'package:accord/models/user.dart';
 
 class Review {
   Review({
+    this.id,
     this.review,
     this.rating,
     this.book,
@@ -9,6 +10,7 @@ class Review {
     this.createdAt,
   });
 
+  final String id;
   final String review;
   final double rating;
   final String book;
@@ -16,6 +18,7 @@ class Review {
   final DateTime createdAt;
 
   factory Review.fromJson(Map<String, dynamic> json) => Review(
+        id: json['_id'],
         review: json['review'],
         rating: double.parse(json['rating'].toString()),
         book: json['book'],

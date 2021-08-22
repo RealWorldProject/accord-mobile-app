@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:accord/models/notification.dart' as accord;
 import 'package:accord/screens/widgets/avatar_displayer.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
