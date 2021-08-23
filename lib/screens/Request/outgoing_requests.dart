@@ -59,7 +59,8 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
                           text: "Exchange request sent to, ",
                         ),
                         TextSpan(
-                          text: request.requestedBookOwner.email,
+                          text:
+                              "${request.requestedBookOwner.fullName} (${request.requestedBookOwner.email})",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff13293d),

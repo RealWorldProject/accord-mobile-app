@@ -1,8 +1,13 @@
+import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/notification.dart' as accord;
 import 'package:accord/screens/widgets/avatar_displayer.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/time_calculator.dart';
+import 'package:accord/viewModel/request_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'notification_options.dart';
 
@@ -101,15 +106,14 @@ class _RequestTypeNotificationState extends State<RequestTypeNotification> {
                     children: [
                       Container(
                         width: 120,
-
-                        // width: MediaQuery.of(context).size.width/2.2,
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(5)),
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () => acceptBookExchangeRequest(
+                                widget.notification.request),
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 10),
@@ -136,7 +140,8 @@ class _RequestTypeNotificationState extends State<RequestTypeNotification> {
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () => rejectBookExchangeRequest(
+                                widget.notification.request),
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 10),
@@ -154,7 +159,7 @@ class _RequestTypeNotificationState extends State<RequestTypeNotification> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -185,5 +190,54 @@ class _RequestTypeNotificationState extends State<RequestTypeNotification> {
         ],
       ),
     );
+  }
+
+  Future<void> acceptBookExchangeRequest(String requestID) async {
+    RequestViewModel requestViewModel = context.read<RequestViewModel>();
+
+    await requestViewModel.acceptExchangeRequest(requestID);
+
+    if (requestViewModel.data.status == Status.COMPLETE) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.DONE,
+          content: requestViewModel.data.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    } else if (requestViewModel.data.status == Status.ERROR) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+            contentType: ContentType.ERROR,
+            content: requestViewModel.data.message,
+            actionText: AccordLabels.tryAgain),
+      );
+    }
+  }
+
+  Future<void> rejectBookExchangeRequest(String requestID) async {
+    RequestViewModel requestViewModel = context.read<RequestViewModel>();
+    await requestViewModel.rejectExchangeRequest(requestID);
+
+    if (requestViewModel.data.status == Status.COMPLETE) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.DONE,
+          content: requestViewModel.data.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    } else if (requestViewModel.data.status == Status.ERROR) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+            contentType: ContentType.ERROR,
+            content: requestViewModel.data.message,
+            actionText: AccordLabels.tryAgain),
+      );
+    }
   }
 }
