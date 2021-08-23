@@ -90,4 +90,24 @@ class RequestService {
       return ResponseBase().apiResponse(e.response);
     }
   }
+
+  Future<String> rejectExchangeRequest(String requestID) async {
+    userToken = await Storage().fetchToken();
+    try {
+      var res = await dio.patch(
+        "$baseUrl/request/reject/$requestID",
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
+    } on DioError catch (e) {
+      return ResponseBase().apiResponse(e.response);
+    }
+  }
 }
