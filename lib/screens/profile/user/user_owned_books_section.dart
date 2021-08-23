@@ -1,11 +1,11 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
-import 'package:accord/screens/home/book_view/rating_stars.dart';
 import 'package:accord/screens/shimmer/book_feed_shimmer.dart';
 import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
 import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/information_dialog_box.dart';
+import 'package:accord/screens/widgets/star_rating_system.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/text_utils.dart';
 import 'package:accord/viewModel/book_view_model.dart';
@@ -83,7 +83,7 @@ class BookFeedformat extends StatelessWidget {
               return CustomDialogBox(
                 title: "Action: Book Deletion!!!",
                 content: "Are you sure you want to delete, '${book.name}'?",
-                neglectLabel: "Keep!",
+                neglectLabel: AccordLabels.keep,
                 performLabel: AccordLabels.delete,
                 performAction: () async {
                   // [ButtonLoadingProvider] instance.
@@ -309,7 +309,11 @@ class BookFeedformat extends StatelessWidget {
                                     textColor: Colors.grey[700],
                                     fontStyle: FontStyle.italic,
                                   ),
-                                  RatingStars(5, 18),
+                                  StarRatingSystem(
+                                    isEditable: false,
+                                    ratingPoint: book.rating,
+                                    starSize: 18,
+                                  ),
                                   CustomText(
                                     textToShow: book.isAvailableForExchange
                                         ? AccordLabels.availableForExchange

@@ -1,5 +1,6 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/request.dart';
+import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/screens/widgets/information_dialog_box.dart';
@@ -196,7 +197,52 @@ class _IncomingRequestState extends State<IncomingRequest> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => Wrap(
+                      children: [
+                        Container(
+                        color: Color(0xFF737373),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 5,
+                              ),
+
+                              ListTile(
+                                leading: Icon(
+                                  Icons.delete_forever,
+                                  size: 24,
+                                  color: Colors.red,
+                                ),
+                                title: CustomText(
+                                  textToShow: AccordLabels.deleteIncommingRequestLabel,
+                                  textColor: Colors.red,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        ),
+                  ),
+                      ],
+                    )
+                  );
+                },
                 child: SizedBox(
                   width: 35,
                   height: 35,

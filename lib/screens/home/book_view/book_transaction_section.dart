@@ -2,25 +2,24 @@ import 'dart:convert';
 
 import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
+import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/screens/widgets/custom_snackbar.dart';
+import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
 
 class BookTransactionSection extends StatelessWidget {
   const BookTransactionSection({
     Key key,
-    @required this.bookId,
-    @required this.price,
   }) : super(key: key);
-
-  final String bookId;
-  final double price;
 
   @override
   Widget build(BuildContext context) {
+    Book book = context.read<BookViewModel>().activeBook;
+
     return Container(
       height: 80,
       color: Color(0xFF0E3311).withOpacity(0.0),
@@ -48,7 +47,7 @@ class BookTransactionSection extends StatelessWidget {
                   fontSize: 15,
                 ),
                 CustomText(
-                  textToShow: "Rs. ${price}",
+                  textToShow: "Rs. ${book.price}",
                   textColor: AccordColors.semi_dark_blue_color,
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
@@ -68,15 +67,10 @@ class BookTransactionSection extends StatelessWidget {
                   splashColor: Colors.white60,
                   onTap: () {
 
-                    MotionToast(
-                        icon:  Icons.alarm,
-                        color:  Colors.pink,
-                        title:  "Custom Toast",
-                        titleStyle:  TextStyle(fontWeight:  FontWeight.bold),
-                        description:  "You can customize the toast!",
-                        width:  300
-                    ).show(context);
-                    addOrIncreaseItemQuantity(bookId, context);
+                    addOrIncreaseItemQuantity(book.id, context);
+                    ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
+                        content: AccordLabels.cartSuccessMessage, context: context,actionLabel: "Close"));
+
 
                   },
                   child: Row(

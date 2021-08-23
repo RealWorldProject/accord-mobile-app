@@ -1,28 +1,23 @@
 import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
-import 'package:accord/screens/home/book_view/rating_stars.dart';
+import 'package:accord/models/book.dart';
 import 'package:accord/screens/widgets/back_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_like_button.dart';
+import 'package:accord/screens/widgets/star_rating_system.dart';
 import 'package:accord/utils/text_utils.dart';
+import 'package:accord/viewModel/book_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookDetailSection extends StatelessWidget {
   const BookDetailSection({
     Key key,
-    this.images,
-    this.name,
-    this.author,
-    this.exchangable,
   }) : super(key: key);
-
-  final List<String> images;
-  final String name;
-  final String author;
-  final bool exchangable;
 
   @override
   Widget build(BuildContext context) {
+    Book book = context.read<BookViewModel>().activeBook;
     return Container(
       color: Colors.white,
       child: Column(
@@ -39,7 +34,7 @@ class BookDetailSection extends StatelessWidget {
                     bottomLeft: Radius.circular(20),
                   ),
                   image: DecorationImage(
-                    image: NetworkImage(images[0]),
+                    image: NetworkImage(book.images[0]),
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -60,11 +55,11 @@ class BookDetailSection extends StatelessWidget {
                 left: 15,
                 child: SafeArea(child: CutomeBackButton()),
               ),
-              Positioned(
-                top: 15,
-                right: 15,
-                child: SafeArea(child: CustomLikeButton()),
-              ),
+              // Positioned(
+              //   top: 15,
+              //   right: 15,
+              //   child: SafeArea(child: CustomLikeButton()),
+              // ),
             ],
           ),
           Container(
@@ -74,7 +69,7 @@ class BookDetailSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  textToShow: TextUtils().capitalizeAll(name),
+                  textToShow: TextUtils().capitalizeAll(book.name),
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   textColor: AccordColors.full_dark_blue_color,
@@ -89,7 +84,7 @@ class BookDetailSection extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: TextUtils().capitalizeAll(author),
+                        text: TextUtils().capitalizeAll(book.author),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -105,7 +100,11 @@ class BookDetailSection extends StatelessWidget {
                 SizedBox(
                   height: 3,
                 ),
-                RatingStars(4.5, 20),
+                StarRatingSystem(
+                  isEditable: false,
+                  ratingPoint: book.rating,
+                  starSize: 20,
+                ),
                 Text(
                   AccordLabels.availableForExchange,
                   overflow: TextOverflow.ellipsis,
@@ -113,10 +112,10 @@ class BookDetailSection extends StatelessWidget {
                     fontSize: 12,
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w400,
-                    color: exchangable == true
+                    color: book.isAvailableForExchange == true
                         ? Color(0xff1b98e0)
                         : Colors.grey[600],
-                    decoration: exchangable == false
+                    decoration: book.isAvailableForExchange == false
                         ? (TextDecoration.lineThrough)
                         : (TextDecoration.none),
                   ),

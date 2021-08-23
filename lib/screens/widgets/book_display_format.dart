@@ -3,12 +3,11 @@ import 'dart:convert';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
-import 'package:accord/screens/cart/cart_screen.dart';
 import 'package:accord/screens/home/book_view/book_screen.dart';
-import 'package:accord/screens/home/book_view/rating_stars.dart';
-import 'package:accord/screens/widgets/addtocart_snackbar.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
+import 'package:accord/screens/widgets/star_rating_system.dart';
 import 'package:accord/utils/exposer.dart';
+import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,12 +39,9 @@ class BookDisplayFormat extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.white60,
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BookScreen(
-                              book: book,
-                            )));
+                context.read<BookViewModel>().setActiveBook(book);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BookScreen()));
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,41 +72,41 @@ class BookDisplayFormat extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: -20,
-                        right: 10,
-                        child: Container(
-                          padding: EdgeInsets.zero,
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 3,
-                                offset:
-                                    Offset(0, 2), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: IconButton(
-                            onPressed: () {},
-                            padding: EdgeInsets.only(
-                                top: 4, bottom: 0, left: 0, right: 0),
-                            alignment: Alignment.center,
-                            // icon: book.isLiked == false
-                            //     ? Icon(Icons.favorite_outline_rounded)
-                            icon: Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            ),
-                            iconSize: 25,
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   bottom: -20,
+                      //   right: 10,
+                      //   child: Container(
+                      //     padding: EdgeInsets.zero,
+                      //     height: 40,
+                      //     width: 40,
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.grey[200],
+                      //       shape: BoxShape.circle,
+                      //       boxShadow: [
+                      //         BoxShadow(
+                      //           color: Colors.grey.withOpacity(0.5),
+                      //           spreadRadius: 2,
+                      //           blurRadius: 3,
+                      //           offset:
+                      //               Offset(0, 2), // changes position of shadow
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     child: IconButton(
+                      //       onPressed: () {},
+                      //       padding: EdgeInsets.only(
+                      //           top: 4, bottom: 0, left: 0, right: 0),
+                      //       alignment: Alignment.center,
+                      //       // icon: book.isLiked == false
+                      //       //     ? Icon(Icons.favorite_outline_rounded)
+                      //       icon: Icon(
+                      //         Icons.favorite,
+                      //         color: Colors.red,
+                      //       ),
+                      //       iconSize: 25,
+                      //     ),
+                      //   ),
+                      // ),
                       Positioned(
                         top: 10,
                         right: 10,
@@ -168,7 +164,11 @@ class BookDisplayFormat extends StatelessWidget {
                               color: Colors.grey[800],
                               fontStyle: FontStyle.italic),
                         ),
-                        RatingStars(4.5, 18),
+                        StarRatingSystem(
+                          isEditable: false,
+                          ratingPoint: book.rating,
+                          starSize: 18,
+                        ),
                         Text(
                           "Available for Exchange",
                           overflow: TextOverflow.ellipsis,
@@ -234,6 +234,8 @@ class AddToCart extends StatelessWidget {
           context.read<CartviewModel>().data.status == Status.LOADING
               ? null
               : addOrIncreaseItemQuantity(bookID, context);
+          ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
+              content: AccordLabels.cartSuccessMessage, context: context,actionLabel: "Close"));
         },
         child: Container(
           height: 30,
