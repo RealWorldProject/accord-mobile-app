@@ -12,7 +12,6 @@ import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:toast/toast.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 
 class BookDisplayFormat extends StatelessWidget {
@@ -232,7 +231,6 @@ class AddToCart extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          Toast.show(AccordLabels.cartSuccessMessage, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
           context.read<CartviewModel>().data.status == Status.LOADING
               ? null
               : addOrIncreaseItemQuantity(bookID, context);
