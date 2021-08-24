@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
@@ -10,7 +11,10 @@ import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD
 
+=======
+>>>>>>> af43485d3ca6d2772a698536e05c9473f9d478a0
 import 'package:toast/toast.dart';
 
 class BookDisplayFormat extends StatelessWidget {
@@ -72,41 +76,41 @@ class BookDisplayFormat extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: -20,
-                        right: 10,
-                        child: Container(
-                          padding: EdgeInsets.zero,
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 3,
-                                offset:
-                                    Offset(0, 2), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: IconButton(
-                            onPressed: () {},
-                            padding: EdgeInsets.only(
-                                top: 4, bottom: 0, left: 0, right: 0),
-                            alignment: Alignment.center,
-                            // icon: book.isLiked == false
-                            //     ? Icon(Icons.favorite_outline_rounded)
-                            icon: Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            ),
-                            iconSize: 25,
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   bottom: -20,
+                      //   right: 10,
+                      //   child: Container(
+                      //     padding: EdgeInsets.zero,
+                      //     height: 40,
+                      //     width: 40,
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.grey[200],
+                      //       shape: BoxShape.circle,
+                      //       boxShadow: [
+                      //         BoxShadow(
+                      //           color: Colors.grey.withOpacity(0.5),
+                      //           spreadRadius: 2,
+                      //           blurRadius: 3,
+                      //           offset:
+                      //               Offset(0, 2), // changes position of shadow
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     child: IconButton(
+                      //       onPressed: () {},
+                      //       padding: EdgeInsets.only(
+                      //           top: 4, bottom: 0, left: 0, right: 0),
+                      //       alignment: Alignment.center,
+                      //       // icon: book.isLiked == false
+                      //       //     ? Icon(Icons.favorite_outline_rounded)
+                      //       icon: Icon(
+                      //         Icons.favorite,
+                      //         color: Colors.red,
+                      //       ),
+                      //       iconSize: 25,
+                      //     ),
+                      //   ),
+                      // ),
                       Positioned(
                         top: 10,
                         right: 10,
@@ -231,12 +235,23 @@ class AddToCart extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
+<<<<<<< HEAD
 
           // Toast.show(AccordLabels.cartSuccessMessage, context,
           //     duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+=======
+>>>>>>> af43485d3ca6d2772a698536e05c9473f9d478a0
           context.read<CartviewModel>().data.status == Status.LOADING
               ? null
               : addOrIncreaseItemQuantity(bookID, context);
+          Toast.show(
+            AccordLabels.cartSuccessMessage,
+            context,
+            duration: Toast.LENGTH_SHORT,
+            gravity: Toast.BOTTOM,
+            backgroundColor: AccordColors.snackbar_color,
+            backgroundRadius: 5.0,
+          );
         },
         child: Container(
           height: 30,

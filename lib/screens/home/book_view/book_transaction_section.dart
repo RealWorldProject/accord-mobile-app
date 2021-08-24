@@ -8,8 +8,8 @@ import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class BookTransactionSection extends StatelessWidget {
   const BookTransactionSection({
@@ -67,6 +67,7 @@ class BookTransactionSection extends StatelessWidget {
                   splashColor: Colors.white60,
                   onTap: () {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                     MotionToast(
                         icon:  Icons.alarm,
@@ -83,6 +84,11 @@ class BookTransactionSection extends StatelessWidget {
                     Toast.show(AccordLabels.cartSuccessMessage, context,
                         duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
 >>>>>>> b71bd048fa601c0e284e0144e41c93879e9fef95
+=======
+                    addOrIncreaseItemQuantity(book.id, context);
+                    Toast.show(AccordLabels.cartSuccessMessage, context,
+                        duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+>>>>>>> af43485d3ca6d2772a698536e05c9473f9d478a0
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

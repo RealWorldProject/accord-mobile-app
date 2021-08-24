@@ -55,11 +55,11 @@ class BookDetailSection extends StatelessWidget {
                 left: 15,
                 child: SafeArea(child: CutomeBackButton()),
               ),
-              Positioned(
-                top: 15,
-                right: 15,
-                child: SafeArea(child: CustomLikeButton()),
-              ),
+              // Positioned(
+              //   top: 15,
+              //   right: 15,
+              //   child: SafeArea(child: CustomLikeButton()),
+              // ),
             ],
           ),
           Container(

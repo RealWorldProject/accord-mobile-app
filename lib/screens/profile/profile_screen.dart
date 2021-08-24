@@ -94,12 +94,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                             icon: Icons.person_rounded,
                             label: AccordLabels.myProfile,
                           ),
-                          ActionTab(
-                            action: () {},
-                            icon: Icons.favorite,
-                            iconColor: Colors.red[700],
-                            label: AccordLabels.favorites,
-                          ),
+                          // ActionTab(
+                          //   action: () {},
+                          //   icon: Icons.favorite,
+                          //   iconColor: Colors.red[700],
+                          //   label: AccordLabels.favorites,
+                          // ),
                           ActionTab(
                             action: () => Navigator.push(
                               context,
@@ -127,6 +127,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ),
                             icon: Icons.edit,
                             label: AccordLabels.changePassword,
+                          ),
+                          ActionTab(
+                            action: () =>showLogoutDialog(),
+                            icon: Icons.logout,
+                            label: AccordLabels.logoutLable,
                           ),
                           SizedBox(
                             height: 20,

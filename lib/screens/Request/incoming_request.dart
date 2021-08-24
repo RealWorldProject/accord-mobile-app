@@ -1,5 +1,6 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/request.dart';
+import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/screens/widgets/information_dialog_box.dart';
@@ -179,22 +180,7 @@ class _IncomingRequestState extends State<IncomingRequest> {
               ),
             ),
           ),
-          ClipOval(
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {},
-                child: SizedBox(
-                  width: 35,
-                  height: 35,
-                  child: Icon(
-                    Icons.more_vert,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ),
-            ),
-          ),
+
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +44,7 @@ class CustomDialogBox extends StatelessWidget {
               textToShow: title,
               fontSize: 20,
               fontWeight: FontWeight.w500,
-              textColor: Colors.red.shade400,
+              textColor: AccordColors.primary_blue_color,
               letterSpacing: -1,
             ),
       content: content == null
