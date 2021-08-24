@@ -28,7 +28,7 @@ class NotificationViewModel extends ChangeNotifier {
       var responseObj = NotificationsResponse.fromJson(jsonDecode(res));
 
       // assinging result from response to [notifications]
-      _notifications = responseObj.result.reversed.toList();
+      _notifications = responseObj.result;
 
       // sets status to [COMPLETE]
       _data = ResponseExposer.complete();

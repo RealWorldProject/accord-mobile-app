@@ -110,4 +110,48 @@ class RequestService {
       return ResponseBase().apiResponse(e.response);
     }
   }
+
+  Future<String> editOutgoingExchangeRequest(
+      String requestID, String updatedExchangeRequest) async {
+    userToken = await Storage().fetchToken();
+
+    try {
+      var res = await dio.patch(
+        "$baseUrl/request/$requestID",
+        data: updatedExchangeRequest,
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
+    } on DioError catch (e) {
+      return ResponseBase().apiResponse(e.response);
+    }
+  }
+
+  Future<String> deleteOutgoingExchangeRequest(String requestID) async {
+    userToken = await Storage().fetchToken();
+
+    try {
+      var res = await dio.delete(
+        "$baseUrl/request/$requestID",
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
+    } on DioError catch (e) {
+      return ResponseBase().apiResponse(e.response);
+    }
+  }
 }

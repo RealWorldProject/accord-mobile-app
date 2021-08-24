@@ -41,6 +41,13 @@ class RequestViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// sets books index when changed.
+  void initializeIndexWhenEditing(int selectedIndex) {
+    if (_currentBookIndex != selectedIndex) {
+      _currentBookIndex = selectedIndex;
+    }
+  }
+
   /// calls api to post the request.
   Future<void> requestBook(String requestInfo) async {
     // just sets [data] to [LOADING]
@@ -81,7 +88,7 @@ class RequestViewModel extends ChangeNotifier {
           MultipleRequestResponse.fromJson(jsonDecode(apiResponse));
 
       // assinging result sent by api to [incomingRequests]
-      _incomingRequests = responseObj.result.reversed.toList();
+      _incomingRequests = responseObj.result;
 
       // sets [data] to [COMPLETE] with success message send by api
       _incomingRequestData = ResponseExposer.complete(responseObj.message);
@@ -106,7 +113,7 @@ class RequestViewModel extends ChangeNotifier {
           MultipleRequestResponse.fromJson(jsonDecode(apiResponse));
 
       // assinging result sent by api to [outgoingRequests]
-      _outgoingRequests = responseObj.result.reversed.toList();
+      _outgoingRequests = responseObj.result;
 
       // sets [data] to [COMPLETE] with success message send by api
       _data = ResponseExposer.complete(responseObj.message);
@@ -169,6 +176,67 @@ class RequestViewModel extends ChangeNotifier {
       _data = ResponseExposer.complete(responseObj.message);
     } catch (e) {
       // sets [data] to [ERROR] with error message send by api
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
+  }
+
+  // edit user's exchange request sent to other users.
+  Future<void> editOutgoingExchangeRequest(
+      String requestID, String updatedExchangeRequest) async {
+    // sets [data] to [LOADING]
+    _data = ResponseExposer.loading();
+
+    try {
+      // api call to update PENDING given exchange request.
+      var apiResponse = await RequestService()
+          .editOutgoingExchangeRequest(requestID, updatedExchangeRequest);
+
+      // conversion: json response into response object.
+      var responseObj = RequestResponse.fromJson(jsonDecode(apiResponse));
+
+      // index of the updated outgoing exchnage request.
+      int editedExchangeRequestIndex =
+          _outgoingRequests.indexWhere((request) => requestID == request.id);
+
+      // replacing given exchange request with updated exchange request in [outgoingRequest]
+      _outgoingRequests[editedExchangeRequestIndex] = responseObj.result;
+
+      // sets status to [COMPLETE]
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      // sets status to [ERROR]
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
+  }
+
+  // delete user's exchange request sent to other users.
+  Future<void> deleteOutgoingExchangeRequest(String requestID) async {
+    // sets [data] to [LOADING]
+    _data = ResponseExposer.loading();
+
+    try {
+      // api call to delete PENDING given exchange request.
+      var apiResponse =
+          await RequestService().deleteOutgoingExchangeRequest(requestID);
+
+      // conversion: json response into response object.
+      var responseObj = RequestResponse.fromJson(jsonDecode(apiResponse));
+
+      // index of the deleted outgoing exchnage request.
+      int deletedExchangeRequestIndex =
+          _outgoingRequests.indexWhere((request) => requestID == request.id);
+
+      // removes exchange request from [outgoingRequest]
+      _outgoingRequests.removeAt(deletedExchangeRequestIndex);
+
+      // sets status to [COMPLETE]
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      // sets status to [ERROR]
       _data = ResponseExposer.error(e.toString());
     }
 
