@@ -193,67 +193,7 @@ class _IncomingRequestState extends State<IncomingRequest> {
               ),
             ),
           ),
-          ClipOval(
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => Wrap(
-                      children: [
-                        Container(
-                        color: Color(0xFF737373),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            ),
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: 5,
-                              ),
 
-                              ListTile(
-                                leading: Icon(
-                                  Icons.delete_forever,
-                                  size: 24,
-                                  color: Colors.red,
-                                ),
-                                title: CustomText(
-                                  textToShow: AccordLabels.deleteIncommingRequestLabel,
-                                  textColor: Colors.red,
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                  ),
-                      ],
-                    )
-                  );
-                },
-                child: SizedBox(
-                  width: 35,
-                  height: 35,
-                  child: Icon(
-                    Icons.more_vert,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

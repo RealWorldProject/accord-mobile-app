@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
@@ -11,6 +12,7 @@ import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 
 class BookDisplayFormat extends StatelessWidget {
@@ -234,8 +236,8 @@ class AddToCart extends StatelessWidget {
           context.read<CartviewModel>().data.status == Status.LOADING
               ? null
               : addOrIncreaseItemQuantity(bookID, context);
-          ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
-              content: AccordLabels.cartSuccessMessage, context: context,actionLabel: "Close"));
+          Toast.show(AccordLabels.cartSuccessMessage, context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM, backgroundColor: AccordColors.snackbar_color,backgroundRadius: 5.0);
         },
         child: Container(
           height: 30,

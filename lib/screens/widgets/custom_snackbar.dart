@@ -16,10 +16,10 @@ Widget customSnackbar({
       fontStyle: FontStyle.italic,
       noOfLines: 3,
     ),
-    backgroundColor: AccordColors.snackbar_color,
+    backgroundColor: AccordColors.semi_dark_blue_color,
     action: SnackBarAction(
       label: actionLabel,
-      textColor: AccordColors.primary_blue_color,
+      textColor: Colors.grey[400],
       onPressed: () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
       },

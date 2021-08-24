@@ -162,7 +162,7 @@ class ExchangeRequestDialogBox extends StatelessWidget {
                       ),
                       child: CustomText(
                         textToShow: AccordLabels.cancel,
-                        textColor: Colors.red,
+                        textColor: Colors.grey,
                         fontSize: 16,
                       ),
                       onPressed: () {

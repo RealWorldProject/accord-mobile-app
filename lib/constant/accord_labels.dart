@@ -95,6 +95,7 @@ class AccordLabels {
   static const String editDetails = "Edit details";
   static const String editBook = "Edit book";
   static const String deleteBook = "Delete book";
+  static const String logoutLable = "Logout";
   static const String noBookPostedLabel = "You have not posted any book yet.";
   static const String notAvailableForExchange = "Not available for exchange.";
 
