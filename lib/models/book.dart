@@ -10,6 +10,7 @@ class Book {
   final String description;
   final List<String> images;
   final dynamic userId;
+  final double rating;
   final bool isNewBook;
   final bool isAvailableForExchange;
 
@@ -22,6 +23,7 @@ class Book {
     this.description,
     this.images,
     this.userId,
+    this.rating = 0,
     this.isNewBook,
     this.isAvailableForExchange,
   });
@@ -41,6 +43,7 @@ class Book {
       images:
           json['images'] != null ? new List<String>.from(json['images']) : null,
       userId: json['userId'] != null ? User.fromJson(json['userId']) : null,
+      rating: double.parse(json['rating'].toString()),
       isNewBook: json['isNewBook'],
       isAvailableForExchange: json['isAvailableForExchange'],
     );

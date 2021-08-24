@@ -7,35 +7,17 @@ import 'package:accord/services/handlers/response_base.dart';
 import 'package:accord/services/storage.dart';
 import 'package:dio/dio.dart';
 
-class RequestService {
-  final baseUrl = Constant.baseURL;
-  final Dio dio = new Dio();
+class ReviewService {
+  final Dio dio = Dio();
+  final String baseUrl = Constant.baseURL;
   String userToken;
 
-  Future<String> requestBook(String requestInfo) async {
+  Future<String> postReview(String bookID, String review) async {
     userToken = await Storage().fetchToken();
     try {
       var res = await dio.post(
-        "$baseUrl/request",
-        data: requestInfo,
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {HttpHeaders.authorizationHeader: userToken},
-        ),
-      );
-      return res.data;
-    } on SocketException {
-      throw FetchDataException(AccordLabels.connectionErrorMessage);
-    } on DioError catch (e) {
-      return ResponseBase().apiResponse(e.response);
-    }
-  }
-
-  Future<String> fetchIncomingRequests() async {
-    userToken = await Storage().fetchToken();
-    try {
-      var res = await dio.get(
-        "$baseUrl/request/incoming",
+        "$baseUrl/review/$bookID",
+        data: review,
         options: Options(
           responseType: ResponseType.plain,
           headers: {
@@ -51,11 +33,12 @@ class RequestService {
     }
   }
 
-  Future<String> fetchOutgoingRequests() async {
+  Future<String> fetchCurrentBookReview(String bookID) async {
     userToken = await Storage().fetchToken();
+
     try {
       var res = await dio.get(
-        "$baseUrl/request/my",
+        "$baseUrl/review/$bookID",
         options: Options(
           responseType: ResponseType.plain,
           headers: {
@@ -71,11 +54,12 @@ class RequestService {
     }
   }
 
-  Future<String> acceptExchangeRequest(String requestID) async {
+  Future<String> editReview(String reviewID, String updatedReview) async {
     userToken = await Storage().fetchToken();
     try {
       var res = await dio.patch(
-        "$baseUrl/request/accept/$requestID",
+        "$baseUrl/review/$reviewID",
+        data: updatedReview,
         options: Options(
           responseType: ResponseType.plain,
           headers: {
@@ -91,11 +75,11 @@ class RequestService {
     }
   }
 
-  Future<String> rejectExchangeRequest(String requestID) async {
+  Future<String> deleteReview(String reviewID) async {
     userToken = await Storage().fetchToken();
     try {
-      var res = await dio.patch(
-        "$baseUrl/request/reject/$requestID",
+      var res = await dio.delete(
+        "$baseUrl/review/$reviewID",
         options: Options(
           responseType: ResponseType.plain,
           headers: {

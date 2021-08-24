@@ -17,6 +17,7 @@ class IncomingRequest extends StatefulWidget {
 }
 
 class _IncomingRequestState extends State<IncomingRequest> {
+  //
   _incomingRequestBuilder({Request request}) {
     return Container(
       color: Colors.white,
@@ -56,7 +57,8 @@ class _IncomingRequestState extends State<IncomingRequest> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: request.user.email,
+                          text:
+                              "${request.user.fullName} (${request.user.email})",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff13293d),
@@ -73,7 +75,7 @@ class _IncomingRequestState extends State<IncomingRequest> {
                           ),
                         ),
                         TextSpan(
-                          text: ", for their book,",
+                          text: ", for their book, ",
                         ),
                         TextSpan(
                           text: request.proposedExchangeBook.name,
@@ -104,90 +106,75 @@ class _IncomingRequestState extends State<IncomingRequest> {
                   SizedBox(
                     height: 3,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () async {
-                              RequestViewModel requestViewModel =
-                                  context.read<RequestViewModel>();
-                              await requestViewModel
-                                  .acceptExchangeRequest(request.id);
-
-                              if (requestViewModel.data.status ==
-                                  Status.COMPLETE) {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => InformationDialogBox(
-                                    contentType: ContentType.DONE,
-                                    content: requestViewModel.data.message,
-                                    actionText: AccordLabels.okay,
+                  request.status == "PENDING"
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 120,
+                              decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () =>
+                                      acceptBookExchangeRequest(request.id),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    child: Center(
+                                      child: Text(
+                                        "Accept",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
                                   ),
-                                );
-                              } else if (requestViewModel.data.status ==
-                                  Status.ERROR) {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => InformationDialogBox(
-                                      contentType: ContentType.ERROR,
-                                      content: requestViewModel.data.message,
-                                      actionText: AccordLabels.tryAgain),
-                                );
-                              }
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              child: Center(
-                                child: Text(
-                                  "Accept",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: Color(0xff13293d),
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(5),
-                            onTap: () {
-                              print("decline");
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              child: Center(
-                                child: Text(
-                                  "Decline",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
+                            Container(
+                              width: 120,
+                              decoration: BoxDecoration(
+                                  color: Color(0xff13293d),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(5),
+                                  onTap: () =>
+                                      rejectBookExchangeRequest(request.id),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    child: Center(
+                                      child: Text(
+                                        "Decline",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
+                        )
+                      : CustomText(
+                          textToShow:
+                              "You ${request.status} ${request.user.fullName}'s request.",
+                          fontSize: 14,
+                          noOfLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textColor: request.status == "REJECTED"
+                              ? Colors.red
+                              : Colors.green,
                         ),
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),
@@ -291,5 +278,54 @@ class _IncomingRequestState extends State<IncomingRequest> {
         ),
       ),
     );
+  }
+
+  Future<void> acceptBookExchangeRequest(String requestID) async {
+    RequestViewModel requestViewModel = context.read<RequestViewModel>();
+
+    await requestViewModel.acceptExchangeRequest(requestID);
+
+    if (requestViewModel.data.status == Status.COMPLETE) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.DONE,
+          content: requestViewModel.data.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    } else if (requestViewModel.data.status == Status.ERROR) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+            contentType: ContentType.ERROR,
+            content: requestViewModel.data.message,
+            actionText: AccordLabels.tryAgain),
+      );
+    }
+  }
+
+  Future<void> rejectBookExchangeRequest(String requestID) async {
+    RequestViewModel requestViewModel = context.read<RequestViewModel>();
+    await requestViewModel.rejectExchangeRequest(requestID);
+
+    if (requestViewModel.data.status == Status.COMPLETE) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.DONE,
+          content: requestViewModel.data.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    } else if (requestViewModel.data.status == Status.ERROR) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+            contentType: ContentType.ERROR,
+            content: requestViewModel.data.message,
+            actionText: AccordLabels.tryAgain),
+      );
+    }
   }
 }
