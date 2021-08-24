@@ -67,8 +67,14 @@ class BookTransactionSection extends StatelessWidget {
                   splashColor: Colors.white60,
                   onTap: () {
                     addOrIncreaseItemQuantity(book.id, context);
-                    Toast.show(AccordLabels.cartSuccessMessage, context,
-                        duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+                    Toast.show(
+                      AccordLabels.cartSuccessMessage,
+                      context,
+                      duration: Toast.LENGTH_SHORT,
+                      gravity: Toast.BOTTOM,
+                      backgroundColor: AccordColors.full_dark_blue_color,
+                      backgroundRadius: 5.0,
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

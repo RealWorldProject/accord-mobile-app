@@ -43,6 +43,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ],
         child: Builder(builder: (context) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             home: Consumer<ScreenViewModel>(
               builder: (context, screenViewModel, child) {
                 // possible items in bottom navigation bar.

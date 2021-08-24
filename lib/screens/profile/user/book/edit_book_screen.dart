@@ -338,6 +338,25 @@ class _EditBookScreenState extends State<EditBookScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: CustomText(
+                          textToShow: AccordLabels.qty,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      CustomTextField(
+                        fieldType: FieldType.NUMBER,
+                        // fieldController: _priceController,
+                        hintText: AccordLabels.qty,
+
+                        // fieldValidator: _acquirePrice,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: CustomText(
                           textToShow: AccordLabels.description,
                           fontWeight: FontWeight.w500,
                         ),
