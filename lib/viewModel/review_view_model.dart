@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:accord/models/review.dart';
 import 'package:accord/responses/review_response.dart';

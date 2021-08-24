@@ -1,7 +1,9 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/request.dart';
+import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
+import 'package:accord/screens/widgets/exchange_request_dialog_box.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/text_utils.dart';
 import 'package:accord/utils/time_calculator.dart';
@@ -115,7 +117,37 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => CustomBottomSheet(
+                      // option 1
+                      option1: AccordLabels.editRequestLabel,
+                      iconOpt1: Icons.edit_rounded,
+                      action1: () {
+                        showDialog(
+                          context: context,
+                          useRootNavigator: false,
+                          builder: (context) {
+                            return ExchangeRequestDialogBox(
+                              requestedBookName: "Harry potter",
+                              requestedBookID: "120",
+                            );
+                          },
+                        );
+                      },
+
+                      //option 2
+                      option2:
+                      AccordLabels.deleteRequestLabel,
+                      iconOpt2: Icons.delete_forever_rounded,
+                      action2: (){
+
+                      },
+
+                    ),
+                  );
+                },
                 child: SizedBox(
                   width: 35,
                   height: 35,

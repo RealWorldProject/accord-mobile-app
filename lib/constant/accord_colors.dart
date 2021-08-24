@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AccordColors {
   static final Color base_screen_color = Colors.grey[50];
 
-  static final Color snackbar_color = Colors.grey[800];
+  static final Color snackbar_color = Colors.grey[700];
 
   static final Color shimmer_base_color = Colors.grey.shade400;
   static final Color shimmer_highlight_color = Colors.grey.shade300;

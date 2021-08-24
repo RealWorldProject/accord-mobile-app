@@ -1,3 +1,4 @@
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:flutter/material.dart';
 
@@ -68,11 +69,11 @@ class CustomBottomSheet extends StatelessWidget {
                 leading: Icon(
                   iconOpt2,
                   size: 24,
-                  color: Colors.red,
+                  color: Colors.grey[700],
                 ),
                 title: CustomText(
                   textToShow: option2,
-                  textColor: Colors.red,
+                  textColor: Colors.grey[700],
                 ),
                 onTap: () {
                   Navigator.of(context).pop();

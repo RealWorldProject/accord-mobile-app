@@ -95,6 +95,7 @@ class AccordLabels {
   static const String editDetails = "Edit details";
   static const String editBook = "Edit book";
   static const String deleteBook = "Delete book";
+  static const String logoutLable = "Logout";
   static const String noBookPostedLabel = "You have not posted any book yet.";
   static const String notAvailableForExchange = "Not available for exchange.";
 
@@ -108,7 +109,7 @@ class AccordLabels {
   static const String addReviewLabel = "Write your review";
   static const String editReviewLabel = "Edit your review";
   static const String postReviewButtonLabel = "Post review";
-  static const String deleteReviewButtonTitle = "Delete rour review";
+  static const String deleteReviewButtonTitle = "Delete your review";
 
   static const String addReviewScreenTitle = "Review book";
   static const String rateBookSectionLabel = "Rate this Book";
@@ -154,6 +155,11 @@ class AccordLabels {
 
   //my request
   static const String myrequestScreenTitle = "My requests";
+  static const String editRequestLabel = "Edit your request";
+  static const String deleteRequestLabel = "Delete your request";
+  static const String deleteIncommingRequestLabel = "Delete request";
+  static const String acceptRequestLabel = "Accept request";
+  static const String declineRequestLabel = "Decline request";
 
   // add to cart snackbar
   static const String viewcart = "View cart";
