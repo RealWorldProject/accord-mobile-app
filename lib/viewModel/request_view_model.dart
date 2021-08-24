@@ -55,7 +55,7 @@ class RequestViewModel extends ChangeNotifier {
       // adds latest request to [outgoingRequest]
       // if [outgoingRequest] is not null
       if (_outgoingRequests != null) {
-        _outgoingRequests.add(responseObj.result);
+        _outgoingRequests.insert(0, responseObj.result);
       }
 
       // sets [data] to [COMPLETE] with success message send by api
@@ -81,7 +81,7 @@ class RequestViewModel extends ChangeNotifier {
           MultipleRequestResponse.fromJson(jsonDecode(apiResponse));
 
       // assinging result sent by api to [incomingRequests]
-      _incomingRequests = responseObj.result;
+      _incomingRequests = responseObj.result.reversed.toList();
 
       // sets [data] to [COMPLETE] with success message send by api
       _incomingRequestData = ResponseExposer.complete(responseObj.message);
@@ -106,7 +106,7 @@ class RequestViewModel extends ChangeNotifier {
           MultipleRequestResponse.fromJson(jsonDecode(apiResponse));
 
       // assinging result sent by api to [outgoingRequests]
-      _outgoingRequests = responseObj.result;
+      _outgoingRequests = responseObj.result.reversed.toList();
 
       // sets [data] to [COMPLETE] with success message send by api
       _data = ResponseExposer.complete(responseObj.message);
@@ -129,10 +129,41 @@ class RequestViewModel extends ChangeNotifier {
       // conversion: json to object.
       var responseObj = RequestResponse.fromJson(jsonDecode(apiResponse));
 
-      int currentRequestIndex =
-          _incomingRequests.indexWhere((request) => request.id == requestID);
+      // update [incomingRequests] if it is not null.
+      if (_incomingRequests != null) {
+        int currentRequestIndex =
+            _incomingRequests.indexWhere((request) => request.id == requestID);
 
-      _incomingRequests.removeAt(currentRequestIndex);
+        _incomingRequests[currentRequestIndex] = responseObj.result;
+      }
+
+      // sets [data] to [COMPLETE] with success message send by api
+      _data = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      // sets [data] to [ERROR] with error message send by api
+      _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
+  }
+
+  /// reject/decline book exchange request
+  Future<void> rejectExchangeRequest(String requestID) async {
+    // just sets [data] to [LOADING]
+    _data = ResponseExposer.loading();
+
+    try {
+      var apiResponse = await RequestService().rejectExchangeRequest(requestID);
+
+      // conversion: json to object.
+      var responseObj = RequestResponse.fromJson(jsonDecode(apiResponse));
+
+      if (_incomingRequests != null) {
+        int currentRequestIndex =
+            _incomingRequests.indexWhere((request) => request.id == requestID);
+
+        _incomingRequests[currentRequestIndex] = responseObj.result;
+      }
 
       // sets [data] to [COMPLETE] with success message send by api
       _data = ResponseExposer.complete(responseObj.message);

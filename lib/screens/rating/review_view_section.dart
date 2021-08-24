@@ -14,6 +14,7 @@ import 'package:accord/utils/time_calculator.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/provider/button_loading_provider.dart';
 import 'package:accord/viewModel/review_view_model.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -248,7 +249,14 @@ class ReviewDisplayFormat extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-
+              ExpandableText(
+                TextUtils.capitalize(review.review),
+                expandText: null,
+                animation: true,
+                maxLines: 3,
+                collapseOnTextTap: true,
+                expandOnTextTap: true,
+              ),
               isActiveUserReview
                   ? Container()
                   : Divider(

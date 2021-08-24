@@ -186,11 +186,12 @@ class ReviewViewModel extends ChangeNotifier {
 
       // subtracts user's rating from overallRating
       // then, calculated new overall rating.
-      _overallRatingsOnActiveBook =
-          ((_overallRatingsOnActiveBook * _totalReviewsOnActiveBook) -
-                  _userReviewOnActiveBook.rating) /
-              (_totalReviewsOnActiveBook - 1);
+      _overallRatingsOnActiveBook = ((_overallRatingsOnActiveBook *
+                  _totalReviewsOnActiveBook) -
+              _userReviewOnActiveBook.rating) /
+          (_totalReviewsOnActiveBook > 1 ? (_totalReviewsOnActiveBook - 1) : 1);
 
+      // decrease total number of review by 1
       _totalReviewsOnActiveBook--;
 
       // empty variable that was holding the user's review.

@@ -5,7 +5,6 @@ import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/home/book_view/book_screen.dart';
-import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/screens/widgets/star_rating_system.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/book_view_model.dart';
@@ -13,7 +12,6 @@ import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 
 class BookDisplayFormat extends StatelessWidget {
   const BookDisplayFormat({
@@ -236,8 +234,14 @@ class AddToCart extends StatelessWidget {
           context.read<CartviewModel>().data.status == Status.LOADING
               ? null
               : addOrIncreaseItemQuantity(bookID, context);
-          Toast.show(AccordLabels.cartSuccessMessage, context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM, backgroundColor: AccordColors.snackbar_color,backgroundRadius: 5.0);
+          Toast.show(
+            AccordLabels.cartSuccessMessage,
+            context,
+            duration: Toast.LENGTH_SHORT,
+            gravity: Toast.BOTTOM,
+            backgroundColor: AccordColors.snackbar_color,
+            backgroundRadius: 5.0,
+          );
         },
         child: Container(
           height: 30,

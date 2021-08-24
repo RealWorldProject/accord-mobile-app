@@ -5,11 +5,11 @@ import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
-import 'package:accord/screens/widgets/custom_snackbar.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class BookTransactionSection extends StatelessWidget {
   const BookTransactionSection({
@@ -66,12 +66,9 @@ class BookTransactionSection extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.white60,
                   onTap: () {
-
                     addOrIncreaseItemQuantity(book.id, context);
-                    ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
-                        content: AccordLabels.cartSuccessMessage, context: context,actionLabel: "Close"));
-
-
+                    Toast.show(AccordLabels.cartSuccessMessage, context,
+                        duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
