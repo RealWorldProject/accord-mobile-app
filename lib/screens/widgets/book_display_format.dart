@@ -11,10 +11,7 @@ import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-<<<<<<< HEAD
 
-=======
->>>>>>> af43485d3ca6d2772a698536e05c9473f9d478a0
 import 'package:toast/toast.dart';
 
 class BookDisplayFormat extends StatelessWidget {
@@ -235,12 +232,7 @@ class AddToCart extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-<<<<<<< HEAD
 
-          // Toast.show(AccordLabels.cartSuccessMessage, context,
-          //     duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
-=======
->>>>>>> af43485d3ca6d2772a698536e05c9473f9d478a0
           context.read<CartviewModel>().data.status == Status.LOADING
               ? null
               : addOrIncreaseItemQuantity(bookID, context);
@@ -249,7 +241,7 @@ class AddToCart extends StatelessWidget {
             context,
             duration: Toast.LENGTH_SHORT,
             gravity: Toast.BOTTOM,
-            backgroundColor: AccordColors.snackbar_color,
+            backgroundColor: AccordColors.full_dark_blue_color,
             backgroundRadius: 5.0,
           );
         },

@@ -66,29 +66,15 @@ class BookTransactionSection extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.white60,
                   onTap: () {
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-                    MotionToast(
-                        icon:  Icons.alarm,
-                        color:  Colors.pink,
-                        title:  "Custom Toast",
-                        titleStyle:  TextStyle(fontWeight:  FontWeight.bold),
-                        description:  "You can customize the toast!",
-                        width:  300
-                    ).show(context);
-                    addOrIncreaseItemQuantity(bookId, context);
-
-=======
                     addOrIncreaseItemQuantity(book.id, context);
-                    Toast.show(AccordLabels.cartSuccessMessage, context,
-                        duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
->>>>>>> b71bd048fa601c0e284e0144e41c93879e9fef95
-=======
-                    addOrIncreaseItemQuantity(book.id, context);
-                    Toast.show(AccordLabels.cartSuccessMessage, context,
-                        duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
->>>>>>> af43485d3ca6d2772a698536e05c9473f9d478a0
+                    Toast.show(
+                      AccordLabels.cartSuccessMessage,
+                      context,
+                      duration: Toast.LENGTH_SHORT,
+                      gravity: Toast.BOTTOM,
+                      backgroundColor: AccordColors.full_dark_blue_color,
+                      backgroundRadius: 5.0,
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

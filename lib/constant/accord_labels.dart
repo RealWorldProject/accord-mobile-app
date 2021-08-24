@@ -127,6 +127,7 @@ class AccordLabels {
   static const String ifNoCategory = "No category available.";
   static const String ifCategory = "Select category";
   static const String price = "Price";
+  static const String qty = "Quantity";
   static const String description = "Book description";
   static const String condition = "Condition";
   static const String exhangable = "Exchangable";
