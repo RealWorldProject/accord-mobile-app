@@ -1,15 +1,21 @@
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/request.dart';
 import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
+import 'package:accord/screens/widgets/custom_dialog_box.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/screens/widgets/exchange_request_dialog_box.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/text_utils.dart';
 import 'package:accord/utils/time_calculator.dart';
+import 'package:accord/viewModel/provider/button_loading_provider.dart';
 import 'package:accord/viewModel/request_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class OutgoingRequest extends StatefulWidget {
   const OutgoingRequest({Key key}) : super(key: key);
@@ -101,14 +107,41 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
                   SizedBox(
                     height: 1.8,
                   ),
-                  Text(
-                    TimeCalculator.getTimeDifference(request.createdAt),
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff1b98e0),
-                    ),
+                  CustomText(
+                    textToShow:
+                        TimeCalculator.getTimeDifference(request.createdAt),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    textColor: Color(0xff1b98e0),
                   ),
+                  SizedBox(
+                    height: 1,
+                  ),
+                  Row(
+                    children: [
+                      request.status != "PENDING"
+                          ? Icon(
+                              request.status == "ACCEPTED"
+                                  ? LineIcons.check
+                                  : Icons.close,
+                              color: request.status == "ACCEPTED"
+                                  ? Colors.green
+                                  : Colors.red,
+                              size: 18,
+                            )
+                          : Container(),
+                      CustomText(
+                        textToShow:
+                            " ${request.status}${request.status == "PENDING" ? "..." : ""}",
+                        fontSize: 14,
+                        textColor: request.status == "ACCEPTED"
+                            ? Colors.green
+                            : request.status == "REJECTED"
+                                ? Colors.red
+                                : Colors.grey,
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -118,35 +151,61 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => CustomBottomSheet(
-                      // option 1
-                      option1: AccordLabels.editRequestLabel,
-                      iconOpt1: Icons.edit_rounded,
-                      action1: () {
-                        showDialog(
+                  request.status != "PENDING"
+                      ? Toast.show(
+                          "Request already ${request.status}. Can't perform any action.",
+                          context,
+                          duration: Toast.LENGTH_LONG,
+                          gravity: Toast.BOTTOM,
+                          backgroundColor: AccordColors.snackbar_color,
+                          backgroundRadius: 5.0,
+                        )
+                      : showModalBottomSheet(
                           context: context,
-                          useRootNavigator: false,
-                          builder: (context) {
-                            return ExchangeRequestDialogBox(
-                              requestedBookName: "Harry potter",
-                              requestedBookID: "120",
-                            );
-                          },
+                          builder: (context) => CustomBottomSheet(
+                            // option 1
+                            option1: AccordLabels.editRequestLabel,
+                            iconOpt1: Icons.edit_rounded,
+                            action1: () {
+                              showDialog(
+                                context: context,
+                                useRootNavigator: false,
+                                builder: (context) {
+                                  return ExchangeRequestDialogBox(
+                                    requestedBookName:
+                                        request.requestedBook.name,
+                                    requestedBookID: request.requestedBook.id,
+                                    requestID: request.id,
+                                    requestType: RequestType.UPDATE,
+                                    currentProposedExchangeBookID:
+                                        request.proposedExchangeBook.id,
+                                  );
+                                },
+                              );
+                            },
+
+                            //option 2
+                            option2: AccordLabels.deleteRequestLabel,
+                            iconOpt2: Icons.delete_forever_rounded,
+                            action2: () {
+                              showDialog(
+                                context: context,
+                                useRootNavigator: false,
+                                builder: (context) => CustomDialogBox(
+                                  title: "Exchange Request Deletion!!!",
+                                  content:
+                                      "Delete book exchange request send to ${request.requestedBookOwner.fullName}?",
+                                  neglectLabel: AccordLabels.keep,
+                                  neglectAction: () =>
+                                      Navigator.of(context).pop(),
+                                  performLabel: AccordLabels.delete,
+                                  performAction: () =>
+                                      deleteExchangeRequest(request.id),
+                                ),
+                              );
+                            },
+                          ),
                         );
-                      },
-
-                      //option 2
-                      option2:
-                      AccordLabels.deleteRequestLabel,
-                      iconOpt2: Icons.delete_forever_rounded,
-                      action2: (){
-
-                      },
-
-                    ),
-                  );
                 },
                 child: SizedBox(
                   width: 35,
@@ -162,6 +221,51 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
         ],
       ),
     );
+  }
+
+  Future<void> deleteExchangeRequest(String requestID) async {
+    // instance of [ButtonLoadingProvider]
+    ButtonLoadingProvider buttonLoadingProvider =
+        context.read<ButtonLoadingProvider>();
+
+    // sets [isLoading] to true;
+    buttonLoadingProvider.setIsLoading();
+
+    // instance of [RequestViewModel]
+    RequestViewModel requestViewModel = context.read<RequestViewModel>();
+
+    // api call to delete book exchange request.
+    await requestViewModel.deleteOutgoingExchangeRequest(requestID);
+
+    // if success, displays success dialog
+    // else displays error dialog
+    if (requestViewModel.data.status == Status.COMPLETE) {
+      // sets [isLoading] to false
+      buttonLoadingProvider.removeIsLoading();
+
+      // success dialog
+      Toast.show(
+        requestViewModel.data.message,
+        context,
+        duration: Toast.LENGTH_LONG,
+        gravity: Toast.BOTTOM,
+        backgroundColor: AccordColors.snackbar_color,
+        backgroundRadius: 5.0,
+      );
+    } else {
+      // sets [isLoading] to false
+      buttonLoadingProvider.removeIsLoading();
+
+      // error dialog
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.ERROR,
+          content: requestViewModel.data.message,
+          actionText: AccordLabels.tryAgain,
+        ),
+      );
+    }
   }
 
   @override
