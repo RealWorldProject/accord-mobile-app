@@ -1,3 +1,4 @@
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/order.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
@@ -5,6 +6,7 @@ import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/time_calculator.dart';
 import 'package:accord/viewModel/order_view_model.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -121,22 +123,40 @@ class OrderListView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Order ${order.orderID}",
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: Colors.grey[800]),
-          ),
-          Text(
-            "Placed On ${TimeCalculator.dateFormatter(givenTime: order.createAt)}",
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-                color: Colors.grey[400]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Order ${order.orderID}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Colors.grey[800]),
+                  ),
+                  Text(
+                    "Placed On ${TimeCalculator.dateFormatter(givenTime: order.createAt)}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: Colors.grey[400]),
+                  ),
+                ],
+              ),
+              // IconButton(onPressed: (){}, icon: Icon(Icons.cancel_sharp),iconSize: 16,padding: EdgeInsets.zero,)
+              InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.delete,
+                    size: 18,
+                    color: Colors.grey[600],
+                  ))
+            ],
           ),
           Divider(
-            height: 0,
+            height: 4,
             thickness: 0.5,
             indent: 0,
             endIndent: 0,
@@ -158,35 +178,61 @@ class OrderListView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
-                "${totalItemInOrder} ${totalItemInOrder > 1 ? "Items" : "Item"},",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey[800],
-                ),
-              ),
-              SizedBox(
-                width: 3,
-              ),
-              Text(
-                "${AccordLabels.total}: ",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey[800],
-                ),
-              ),
-              SizedBox(
-                width: 3,
-              ),
-              Text(
-                "Rs. ${overallPriceOfOrder}",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff247BA0),
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Badge(
+                    badgeColor: AccordColors.semi_dark_blue_color,
+                    toAnimate: false,
+                    shape: BadgeShape.square,
+                    elevation: 0,
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                    borderRadius: BorderRadius.circular(10),
+                    badgeContent: CustomText(
+                      textToShow: "Cancelled",
+                      fontSize: 11,
+                      fontStyle: FontStyle.italic,
+                      textColor: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "${totalItemInOrder} ${totalItemInOrder > 1 ? "Items" : "Item"},",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      Text(
+                        "${AccordLabels.total}: ",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      Text(
+                        "Rs. ${overallPriceOfOrder}",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff247BA0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           )
