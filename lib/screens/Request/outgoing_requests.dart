@@ -14,7 +14,6 @@ import 'package:accord/viewModel/provider/button_loading_provider.dart';
 import 'package:accord/viewModel/request_view_model.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
@@ -139,8 +138,8 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
                             request.status == "REJECTED"
                                 ? Icons.clear
                                 : request.status == "ACCEPTED"
-                                ? Icons.check
-                                : Icons.hourglass_empty,
+                                    ? Icons.check
+                                    : Icons.hourglass_empty,
                             color: Colors.white,
                             size: 14,
                           ),
@@ -332,7 +331,7 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
                         width: MediaQuery.of(context).size.width,
                         child: CustomText(
                           textToShow: AccordLabels.emptyRequestMessage(
-                            AccordLabels.incomingRequestLabel,
+                            AccordLabels.outgoingRequestLabel,
                           ),
                           fontSize: 18,
                           letterSpacing: -1,

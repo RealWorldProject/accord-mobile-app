@@ -1,3 +1,5 @@
+import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
@@ -5,6 +7,7 @@ class InformationDialogBox extends StatelessWidget {
   const InformationDialogBox({
     Key key,
     @required this.contentType,
+    this.title,
     @required this.content,
     @required this.actionText,
     this.action,
@@ -12,6 +15,9 @@ class InformationDialogBox extends StatelessWidget {
 
   /// Type of information to be displayed.
   final ContentType contentType;
+
+  /// title for the dialog box (optional)
+  final String title;
 
   /// Message to display in dialog.
   final String content;
@@ -62,10 +68,26 @@ class InformationDialogBox extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              title != null
+                  ? CustomText(
+                      textToShow: TextUtils.capitalize(title),
+                      fontSize: 18,
+                      letterSpacing: -1,
+                      fontWeight: FontWeight.w500,
+                      textColor: Colors.red,
+                    )
+                  : Container(),
+              title != null
+                  ? SizedBox(
+                      height: 5,
+                    )
+                  : Container(),
               Text(
                 content,
                 style: TextStyle(fontSize: 14),
+                maxLines: 5,
                 textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(
                 height: 2,
