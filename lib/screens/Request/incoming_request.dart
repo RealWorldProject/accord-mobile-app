@@ -1,6 +1,5 @@
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/request.dart';
-import 'package:accord/screens/widgets/custom_bottom_sheet.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/screens/widgets/information_dialog_box.dart';
@@ -169,16 +168,16 @@ class _IncomingRequestState extends State<IncomingRequest> {
                           ],
                         )
                       : SizedBox(
-                    width: 90,
-                        child: Badge(
+                          width: 95,
+                          child: Badge(
                             badgeColor: request.status == "REJECTED"
                                 ? Colors.red
                                 : Colors.green,
                             toAnimate: false,
                             shape: BadgeShape.square,
                             elevation: 0,
-                            padding:
-                                EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 3),
                             borderRadius: BorderRadius.circular(10),
                             badgeContent: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -186,7 +185,7 @@ class _IncomingRequestState extends State<IncomingRequest> {
                                 Icon(
                                   request.status == "REJECTED"
                                       ? Icons.clear
-                                      :  Icons.check,
+                                      : Icons.check,
                                   color: Colors.white,
                                   size: 14,
                                 ),
@@ -201,7 +200,7 @@ class _IncomingRequestState extends State<IncomingRequest> {
                               ],
                             ),
                           ),
-                      ),
+                        ),
                 ],
               ),
             ),

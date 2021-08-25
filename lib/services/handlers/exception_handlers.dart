@@ -25,6 +25,10 @@ class UnauthorizedException extends ExceptionHandler {
   UnauthorizedException([String message]) : super(message, "Unauthorized");
 }
 
+class ForbiddenException extends ExceptionHandler {
+  ForbiddenException([String message]) : super(message, "Forbidden");
+}
+
 class InvalidAddressException extends ExceptionHandler {
   InvalidAddressException([String message]) : super(message, "Invalid Address");
 }

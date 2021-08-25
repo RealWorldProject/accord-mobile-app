@@ -6,6 +6,7 @@ import 'package:accord/screens/widgets/custom_label.dart';
 import 'package:accord/screens/widgets/custom_text_field.dart';
 import 'package:accord/screens/bottom_navigation.dart';
 import 'package:accord/screens/widgets/custom_snackbar.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/screens/widgets/loading_indicator.dart';
 import 'package:accord/services/storage.dart';
 import 'package:accord/utils/exposer.dart';
@@ -81,14 +82,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
         // clearing token from viewModel
         userViewModel.clearToken();
-        print(await Storage().fetchToken());
       } else {
         //else displaying error messages.
-        ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
-          context: context,
-          content: userViewModel.data.message.split("\n").last,
-          actionLabel: AccordLabels.tryAgain,
-        ));
+        userViewModel.data.message.split("\n").first == "Unauthorized:"
+            ? showDialog(
+                context: context,
+                useRootNavigator: false,
+                builder: (context) => InformationDialogBox(
+                    contentType: ContentType.INFORMATION,
+                    title: "Account Suspended!!!",
+                    content:
+                        "Suspension Cause: \n${userViewModel.data.message.split("\n").last == "null" ? "Unknown reason. Please report this problem." : userViewModel.data.message.split("\n").last}",
+                    actionText: AccordLabels.okay))
+            : ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
+                context: context,
+                content: userViewModel.data.message.split("\n").last,
+                actionLabel: AccordLabels.tryAgain,
+              ));
       }
     }
   }

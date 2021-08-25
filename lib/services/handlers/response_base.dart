@@ -8,9 +8,12 @@ class ResponseBase {
       case 400:
         final responseData = json.decode(response.data);
         throw BadRequestException(responseData["message"]);
-      case 403:
+      case 401:
         final responseData = json.decode(response.data);
         throw UnauthorizedException(responseData["message"]);
+      case 403:
+        final responseData = json.decode(response.data);
+        throw ForbiddenException(responseData["message"]);
       case 404:
         throw InvalidAddressException("404 Server not found");
       case 500:
