@@ -12,6 +12,7 @@ import 'package:accord/utils/text_utils.dart';
 import 'package:accord/utils/time_calculator.dart';
 import 'package:accord/viewModel/provider/button_loading_provider.dart';
 import 'package:accord/viewModel/request_view_model.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
@@ -115,32 +116,42 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
                     textColor: Color(0xff1b98e0),
                   ),
                   SizedBox(
-                    height: 1,
+                    height: 3,
                   ),
-                  Row(
-                    children: [
-                      request.status != "PENDING"
-                          ? Icon(
-                              request.status == "ACCEPTED"
-                                  ? LineIcons.check
-                                  : Icons.close,
-                              color: request.status == "ACCEPTED"
-                                  ? Colors.green
-                                  : Colors.red,
-                              size: 18,
-                            )
-                          : Container(),
-                      CustomText(
-                        textToShow:
-                            " ${request.status}${request.status == "PENDING" ? "..." : ""}",
-                        fontSize: 14,
-                        textColor: request.status == "ACCEPTED"
-                            ? Colors.green
-                            : request.status == "REJECTED"
-                                ? Colors.red
-                                : Colors.grey,
+                  SizedBox(
+                    width: 95,
+                    child: Badge(
+                      badgeColor: request.status == "REJECTED"
+                          ? Colors.red
+                          : request.status == "ACCEPTED"
+                              ? Colors.green
+                              : AccordColors.full_dark_blue_color,
+                      toAnimate: false,
+                      shape: BadgeShape.square,
+                      elevation: 0,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                      borderRadius: BorderRadius.circular(10),
+                      badgeContent: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            request.status == "REJECTED"
+                                ? Icons.clear
+                                : request.status == "ACCEPTED"
+                                ? Icons.check
+                                : Icons.hourglass_empty,
+                            color: Colors.white,
+                            size: 14,
+                          ),
+                          CustomText(
+                            textToShow: " ${request.status}".toLowerCase(),
+                            fontSize: 12,
+                            textColor: Colors.white,
+                          )
+                        ],
                       ),
-                    ],
+                    ),
                   )
                 ],
               ),

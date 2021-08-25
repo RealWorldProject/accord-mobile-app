@@ -1,3 +1,4 @@
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/screens/shimmer/book_feed_shimmer.dart';
@@ -10,6 +11,7 @@ import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/text_utils.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/provider/button_loading_provider.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -220,43 +222,43 @@ class BookFeedformat extends StatelessWidget {
                                     color: Colors.black26,
                                   ),
                                 ),
-                                Positioned(
-                                  bottom: -20,
-                                  right: 20,
-                                  child: Container(
-                                    padding: EdgeInsets.zero,
-                                    height: 40,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          spreadRadius: 2,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              2), // changes position of shadow
-                                        ),
-                                      ],
-                                    ),
-                                    child: IconButton(
-                                      onPressed: () {},
-                                      padding: EdgeInsets.only(
-                                        top: 4,
-                                        bottom: 0,
-                                        left: 0,
-                                        right: 0,
-                                      ),
-                                      alignment: Alignment.center,
-                                      icon: Icon(
-                                        Icons.favorite,
-                                        color: Colors.red,
-                                      ),
-                                      iconSize: 25,
-                                    ),
-                                  ),
-                                ),
+                                // Positioned(
+                                //   bottom: -20,
+                                //   right: 20,
+                                //   child: Container(
+                                //     padding: EdgeInsets.zero,
+                                //     height: 40,
+                                //     width: 40,
+                                //     decoration: BoxDecoration(
+                                //       color: Colors.grey[200],
+                                //       shape: BoxShape.circle,
+                                //       boxShadow: [
+                                //         BoxShadow(
+                                //           color: Colors.black.withOpacity(0.2),
+                                //           spreadRadius: 2,
+                                //           blurRadius: 3,
+                                //           offset: Offset(0,
+                                //               2), // changes position of shadow
+                                //         ),
+                                //       ],
+                                //     ),
+                                //     child: IconButton(
+                                //       onPressed: () {},
+                                //       padding: EdgeInsets.only(
+                                //         top: 4,
+                                //         bottom: 0,
+                                //         left: 0,
+                                //         right: 0,
+                                //       ),
+                                //       alignment: Alignment.center,
+                                //       icon: Icon(
+                                //         Icons.favorite,
+                                //         color: Colors.red,
+                                //       ),
+                                //       iconSize: 25,
+                                //     ),
+                                //   ),
+                                // ),
                                 Positioned(
                                     top: 6,
                                     left: 6,
@@ -289,58 +291,87 @@ class BookFeedformat extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 15, horizontal: 10),
-                              child: Column(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  CustomText(
-                                    textToShow:
-                                        TextUtils().capitalizeAll(book.name),
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    textColor: Colors.grey[900],
-                                  ),
-                                  CustomText(
-                                    textToShow:
-                                        TextUtils().capitalizeAll(book.author),
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w100,
-                                    textColor: Colors.grey[700],
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                  StarRatingSystem(
-                                    isEditable: false,
-                                    ratingPoint: book.rating,
-                                    starSize: 18,
-                                  ),
-                                  CustomText(
-                                    textToShow: book.isAvailableForExchange
-                                        ? AccordLabels.availableForExchange
-                                        : AccordLabels.notAvailableForExchange,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w100,
-                                    textColor: Colors.blue,
-                                    fontStyle: FontStyle.italic,
-                                  ),
                                   Container(
-                                    padding: EdgeInsets.only(right: 15),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    width: MediaQuery.of(context).size.width/1.3,
+                                    child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         CustomText(
-                                          textToShow:
-                                              "Rs. ${book.price.toString()}",
+                                          textToShow: TextUtils()
+                                              .capitalizeAll(book.name),
+                                          overflow: TextOverflow.ellipsis,
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w800,
-                                          textColor: Color(0xff247BA0),
+                                          fontWeight: FontWeight.bold,
+                                          textColor: Colors.grey[900],
                                         ),
+                                        CustomText(
+                                          textToShow: TextUtils()
+                                              .capitalizeAll(book.author),
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w100,
+                                          textColor: Colors.grey[700],
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                        StarRatingSystem(
+                                          isEditable: false,
+                                          ratingPoint: book.rating,
+                                          starSize: 18,
+                                        ),
+                                        CustomText(
+                                          textToShow: book.isAvailableForExchange
+                                              ? AccordLabels.availableForExchange
+                                              : AccordLabels
+                                                  .notAvailableForExchange,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w100,
+                                          textColor: Colors.blue,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(right: 15),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              CustomText(
+                                                textToShow:
+                                                    "Rs. ${book.price.toString()}",
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w800,
+                                                textColor: Color(0xff247BA0),
+                                              ),
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     ),
+                                  ),
+                                  Badge(
+                                    badgeContent: CustomText(
+                                        textToShow: "Qty: 5",
+                                        fontSize: 12,
+                                        noOfLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textColor: Colors.white),
+                                    borderRadius: BorderRadius.circular(10),
+
+                                    badgeColor:
+                                        AccordColors.semi_dark_blue_color,
+                                    toAnimate: false,
+                                    shape: BadgeShape.square,
+                                    elevation: 0,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 2.5),
                                   )
                                 ],
                               ),

@@ -7,6 +7,8 @@ import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/time_calculator.dart';
 import 'package:accord/viewModel/request_view_model.dart';
+import 'package:badges/badges.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -166,21 +168,43 @@ class _IncomingRequestState extends State<IncomingRequest> {
                             ),
                           ],
                         )
-                      : CustomText(
-                          textToShow:
-                              "You ${request.status} ${request.user.fullName}'s request.",
-                          fontSize: 14,
-                          noOfLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textColor: request.status == "REJECTED"
-                              ? Colors.red
-                              : Colors.green,
-                        ),
+                      : SizedBox(
+                    width: 95,
+                        child: Badge(
+                            badgeColor: request.status == "REJECTED"
+                                ? Colors.red
+                                : Colors.green,
+                            toAnimate: false,
+                            shape: BadgeShape.square,
+                            elevation: 0,
+                            padding:
+                                EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                            borderRadius: BorderRadius.circular(10),
+                            badgeContent: Row(
+                              children: [
+                                Icon(
+                                  request.status == "REJECTED"
+                                      ? Icons.clear
+                                      :  Icons.check,
+                                  color: Colors.white,
+                                  size: 14,
+                                ),
+                                CustomText(
+                                    textToShow:
+                                        // "You ${request.status} ${request.user.fullName}'s request.",
+                                        "${request.status}".toLowerCase(),
+                                    fontSize: 12,
+                                    noOfLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textColor: Colors.white),
+                              ],
+                            ),
+                          ),
+                      ),
                 ],
               ),
             ),
           ),
-
         ],
       ),
     );
