@@ -119,7 +119,7 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
                     height: 3,
                   ),
                   SizedBox(
-                    width: 90,
+                    width: 95,
                     child: Badge(
                       badgeColor: request.status == "REJECTED"
                           ? Colors.red
@@ -134,6 +134,7 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
                       borderRadius: BorderRadius.circular(10),
                       badgeContent: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
                         children: [
                           Icon(
                             request.status == "REJECTED"

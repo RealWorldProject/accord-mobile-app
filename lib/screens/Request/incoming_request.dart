@@ -181,7 +181,8 @@ class _IncomingRequestState extends State<IncomingRequest> {
                                 EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                             borderRadius: BorderRadius.circular(10),
                             badgeContent: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Icon(
                                   request.status == "REJECTED"
