@@ -54,4 +54,25 @@ class OrderService {
       return ResponseBase().apiResponse(e.response);
     }
   }
+
+  /// post user's order to the server.
+  Future<String> cancelOrder(String orderID) async {
+    userToken = await Storage().fetchToken();
+    try {
+      var res = await dio.patch(
+        "$baseUrl/order/$orderID",
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            HttpHeaders.authorizationHeader: userToken,
+          },
+        ),
+      );
+      return res.data;
+    } on SocketException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
+    } on DioError catch (e) {
+      return ResponseBase().apiResponse(e.response);
+    }
+  }
 }
