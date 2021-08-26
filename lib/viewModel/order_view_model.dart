@@ -10,12 +10,17 @@ class OrderViewModel extends ChangeNotifier {
   List<Order> _orders;
   List<Order> get orders => _orders;
 
-  ResponseExposer _data;
+  /// holds responses while fetching orders.
   ResponseExposer get data => _data;
+  ResponseExposer _data;
+
+  /// holds responses while posting & canceling orders.
+  ResponseExposer get orderData => _orderData;
+  ResponseExposer _orderData;
 
   Future<void> checkoutOrder(String orderInfo) async {
     // response status set to loading.
-    _data = ResponseExposer.loading();
+    _orderData = ResponseExposer.loading();
 
     try {
       var apiResponse = await OrderService().checkoutOrder(orderInfo);
@@ -29,10 +34,10 @@ class OrderViewModel extends ChangeNotifier {
       }
 
       // response status set to done.
-      _data = ResponseExposer.complete(responseObj.message);
+      _orderData = ResponseExposer.complete(responseObj.message);
     } catch (e) {
       // response status set to error.
-      _data = ResponseExposer.error(e.toString());
+      _orderData = ResponseExposer.error(e.toString());
     }
 
     notifyListeners();
@@ -56,6 +61,33 @@ class OrderViewModel extends ChangeNotifier {
     } catch (e) {
       // status set to error.
       _data = ResponseExposer.error(e.toString());
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> cancelOrder(String orderID) async {
+    // response status set to loading.
+    _orderData = ResponseExposer.loading();
+
+    try {
+      var apiResponse = await OrderService().cancelOrder(orderID);
+
+      // converts plain response to OrderResponse.
+      var responseObj = OrderResponse.fromJson(jsonDecode(apiResponse));
+
+      // get the index of the cancelled order.
+      final int cancelledOrderIndex =
+          _orders.indexWhere((order) => orderID == order.id);
+
+      // update the data of cancelled order in [List<Order>].
+      _orders[cancelledOrderIndex] = responseObj.result;
+
+      // response status set to done.
+      _orderData = ResponseExposer.complete(responseObj.message);
+    } catch (e) {
+      // response status set to error.
+      _orderData = ResponseExposer.error(e.toString());
     }
 
     notifyListeners();

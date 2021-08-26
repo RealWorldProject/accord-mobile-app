@@ -112,7 +112,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       await orderViewModel.checkoutOrder(_orderJson);
 
       // action in reference to the response status
-      if (orderViewModel.data.status == Status.COMPLETE) {
+      if (orderViewModel.orderData.status == Status.COMPLETE) {
         context.read<CartviewModel>().resetCartItems();
 
         // closes loading screen when the api request to post order is over.
@@ -126,19 +126,19 @@ class _OrderDetailsState extends State<OrderDetails> {
             context: context,
             builder: (context) => InformationDialogBox(
                   contentType: ContentType.INFORMATION,
-                  content: orderViewModel.data.message,
+                  content: orderViewModel.orderData.message,
                   actionText: AccordLabels.okay,
                 ));
         // ScaffoldMessenger.of(context).showSnackBar(MessageHolder()
         //     .popSnackbar(orderViewModel.data.message, "Okay", this.context));
-      } else if (orderViewModel.data.status == Status.ERROR) {
+      } else if (orderViewModel.orderData.status == Status.ERROR) {
         // closes loading screen when the api request to post order is over.
         // enabling rootNavigator makes this pop the dialog screen,
         // else the screen itself is popped from the navigation tree.
         Navigator.of(context, rootNavigator: true).pop();
 
         ScaffoldMessenger.of(context).showSnackBar(customSnackbar(
-          content: orderViewModel.data.message,
+          content: orderViewModel.orderData.message,
           context: context,
           actionLabel: AccordLabels.tryAgain,
         ));
@@ -237,7 +237,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                         fieldController: _cityController,
                         fieldValidator: _acquireCity,
                       ),
-
                       SizedBox(
                         height: 10,
                       ),

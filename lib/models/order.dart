@@ -1,5 +1,6 @@
 class Order {
   Order({
+    this.id,
     this.orderID,
     this.fullName,
     this.phoneNumber,
@@ -10,9 +11,11 @@ class Order {
     this.coordinates,
     this.paymentGateway,
     this.orderItems,
+    this.status,
     this.createAt,
   });
 
+  final String id;
   final String orderID;
   final String fullName;
   final String phoneNumber;
@@ -23,10 +26,12 @@ class Order {
   final String coordinates;
   final String paymentGateway;
   final List<OrderItem> orderItems;
+  final String status;
   final DateTime createAt;
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
+      id: json['_id'],
       orderID: json['orderID'],
       fullName: json['fullName'],
       phoneNumber: json['phoneNumber'],
@@ -39,6 +44,7 @@ class Order {
       orderItems: (json['orderItems'] as List)
           .map((cartItem) => OrderItem.fromJson(cartItem))
           .toList(),
+      status: json['status'],
       createAt: DateTime.parse(json['createdAt']),
     );
   }
