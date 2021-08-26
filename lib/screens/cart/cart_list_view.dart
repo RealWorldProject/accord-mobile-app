@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/shimmer/cart_shimmer.dart';
@@ -289,12 +290,34 @@ class CartItemDesign extends StatelessWidget {
     }
   }
 
-  void deleteCartItem(BuildContext context, String cartItemID) {
+  Future<void> deleteCartItem(BuildContext context, String cartItemID) async {
+    CartviewModel cartviewModel = context.read<CartviewModel>();
     // deletes cart item by its id.
     CartItem cartItem = new CartItem(bookID: cartItemID);
     String cartItemJson = jsonEncode(cartItem);
 
     // api call to delete [CartItem] corresponding to the given id
-    context.read<CartviewModel>().deleteCartItem(cartItemJson);
+    await cartviewModel.deleteCartItem(cartItemJson);
+
+    // performs action according to api response.
+    if (cartviewModel.addToCartData.status == Status.COMPLETE) {
+      Toast.show(
+        cartviewModel.addToCartData.message,
+        context,
+        duration: Toast.LENGTH_LONG,
+        gravity: Toast.BOTTOM,
+        backgroundColor: AccordColors.full_dark_blue_color,
+        backgroundRadius: 5.0,
+      );
+    } else if (cartviewModel.addToCartData.status == Status.ERROR) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.ERROR,
+          content: cartviewModel.addToCartData.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    }
   }
 }

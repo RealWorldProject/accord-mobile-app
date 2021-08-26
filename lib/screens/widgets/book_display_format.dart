@@ -238,8 +238,11 @@ class AddToCart extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          context.read<CartviewModel>().addToCartData.status == Status.LOADING
-              ? null
+          CartviewModel cartviewModel = context.read<CartviewModel>();
+          cartviewModel.addToCartData != null
+              ? cartviewModel.addToCartData.status == Status.LOADING
+                  ? null
+                  : addOrIncreaseItemQuantity(bookID, bookStock, context)
               : addOrIncreaseItemQuantity(bookID, bookStock, context);
         },
         child: Container(
@@ -315,6 +318,7 @@ class AddToCart extends StatelessWidget {
     // calls api to add cartItem(i.e, book) to cart
     await cartviewModel.addToCart(cartItemJson);
 
+    // perform action according to the api response
     if (cartviewModel.addToCartData.status == Status.COMPLETE) {
       Toast.show(
         cartviewModel.addToCartData.message,

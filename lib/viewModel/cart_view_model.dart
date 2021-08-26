@@ -35,7 +35,6 @@ class CartviewModel with ChangeNotifier {
       // set response status to COMPLETE.
       _addToCartData = ResponseExposer.complete(responseObj.message);
     } catch (e) {
-      print("object");
       // set response status to ERROR.
       _addToCartData = ResponseExposer.error(e.toString());
     }
@@ -63,7 +62,7 @@ class CartviewModel with ChangeNotifier {
 
   // delete cart item
   Future<dynamic> deleteCartItem(String cartItem) async {
-    _data = ResponseExposer.loading();
+    _addToCartData = ResponseExposer.loading();
 
     try {
       final apiResponse = await CartService().deleteCartItem(cartItem);
@@ -71,9 +70,9 @@ class CartviewModel with ChangeNotifier {
       var responseObj = CartResponse.fromJson(jsonDecode(apiResponse));
       _cartItems = responseObj.result;
 
-      _data = ResponseExposer.complete(responseObj.message);
+      _addToCartData = ResponseExposer.complete(responseObj.message);
     } catch (e) {
-      _data = ResponseExposer.error(e.toString());
+      _addToCartData = ResponseExposer.error(e.toString());
     }
     notifyListeners();
   }
