@@ -7,6 +7,7 @@ class Book {
   final String author;
   final dynamic category;
   final double price;
+  final int stock;
   final String description;
   final List<String> images;
   final dynamic userId;
@@ -20,6 +21,7 @@ class Book {
     this.author,
     this.category,
     this.price,
+    this.stock,
     this.description,
     this.images,
     this.userId,
@@ -39,6 +41,7 @@ class Book {
       price: json['category'] != null
           ? double.parse(json['price'].toString())
           : null,
+      stock: json['stock'] ?? 0,
       description: json['description'],
       images:
           json['images'] != null ? new List<String>.from(json['images']) : null,
@@ -55,6 +58,7 @@ class Book {
         'author': author,
         'category': category,
         'price': price,
+        'stock': stock,
         'description': description,
         'images': images,
         'isNewBook': isNewBook,

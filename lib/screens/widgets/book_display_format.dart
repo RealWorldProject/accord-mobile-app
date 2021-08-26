@@ -5,6 +5,7 @@ import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/home/book_view/book_screen.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/screens/widgets/star_rating_system.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/book_view_model.dart';
@@ -197,7 +198,7 @@ class BookDisplayFormat extends StatelessWidget {
                                 color: Color(0xff247BA0),
                               ),
                             ),
-                            AddToCart(bookID: book.id),
+                            AddToCart(bookID: book.id, bookStock: book.stock),
                           ],
                         )
                       ],
@@ -214,9 +215,14 @@ class BookDisplayFormat extends StatelessWidget {
 }
 
 class AddToCart extends StatelessWidget {
-  const AddToCart({Key key, this.bookID}) : super(key: key);
+  const AddToCart({
+    Key key,
+    this.bookID,
+    this.bookStock,
+  }) : super(key: key);
 
   final String bookID;
+  final int bookStock;
 
   @override
   Widget build(BuildContext context) {
@@ -232,18 +238,9 @@ class AddToCart extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-
-          context.read<CartviewModel>().data.status == Status.LOADING
+          context.read<CartviewModel>().addToCartData.status == Status.LOADING
               ? null
-              : addOrIncreaseItemQuantity(bookID, context);
-          Toast.show(
-            AccordLabels.cartSuccessMessage,
-            context,
-            duration: Toast.LENGTH_SHORT,
-            gravity: Toast.BOTTOM,
-            backgroundColor: AccordColors.full_dark_blue_color,
-            backgroundRadius: 5.0,
-          );
+              : addOrIncreaseItemQuantity(bookID, bookStock, context);
         },
         child: Container(
           height: 30,
@@ -253,7 +250,9 @@ class AddToCart extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               Icon(
-                Icons.shopping_cart,
+                bookStock > 0
+                    ? Icons.shopping_cart
+                    : Icons.remove_shopping_cart,
                 size: 18,
                 color: Colors.white,
               ),
@@ -283,8 +282,13 @@ class AddToCart extends StatelessWidget {
     );
   }
 
-  addOrIncreaseItemQuantity(String bookID, BuildContext context) {
-    List<CartItem> cartItems = context.read<CartviewModel>().cartItems;
+  void addOrIncreaseItemQuantity(
+    String bookID,
+    int bookStock,
+    BuildContext context,
+  ) async {
+    CartviewModel cartviewModel = context.read<CartviewModel>();
+    List<CartItem> cartItems = cartviewModel.cartItems;
 
     String cartItemJson;
 
@@ -309,6 +313,26 @@ class AddToCart extends StatelessWidget {
     }
 
     // calls api to add cartItem(i.e, book) to cart
-    context.read<CartviewModel>().addToCart(cartItemJson);
+    await cartviewModel.addToCart(cartItemJson);
+
+    if (cartviewModel.addToCartData.status == Status.COMPLETE) {
+      Toast.show(
+        cartviewModel.addToCartData.message,
+        context,
+        duration: Toast.LENGTH_LONG,
+        gravity: Toast.BOTTOM,
+        backgroundColor: AccordColors.full_dark_blue_color,
+        backgroundRadius: 5.0,
+      );
+    } else if (cartviewModel.addToCartData.status == Status.ERROR) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.ERROR,
+          content: cartviewModel.addToCartData.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    }
   }
 }

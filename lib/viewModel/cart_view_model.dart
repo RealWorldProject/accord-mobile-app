@@ -10,6 +10,9 @@ class CartviewModel with ChangeNotifier {
   List<CartItem> _cartItems = [];
   List<CartItem> get cartItems => _cartItems;
 
+  ResponseExposer _addToCartData;
+  ResponseExposer get addToCartData => _addToCartData;
+
   ResponseExposer _data;
   ResponseExposer get data => _data;
 
@@ -20,7 +23,7 @@ class CartviewModel with ChangeNotifier {
   // add to cart
   Future<dynamic> addToCart(String cartItem) async {
     // set response status to LOADING.
-    _data = ResponseExposer.loading();
+    _addToCartData = ResponseExposer.loading();
 
     try {
       final apiResponse = await CartService().addToCart(cartItem);
@@ -30,10 +33,11 @@ class CartviewModel with ChangeNotifier {
       _cartItems = responseObj.result;
 
       // set response status to COMPLETE.
-      _data = ResponseExposer.complete(responseObj.message);
+      _addToCartData = ResponseExposer.complete(responseObj.message);
     } catch (e) {
+      print("object");
       // set response status to ERROR.
-      _data = ResponseExposer.error(e.toString());
+      _addToCartData = ResponseExposer.error(e.toString());
     }
     notifyListeners();
   }

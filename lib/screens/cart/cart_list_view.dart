@@ -4,10 +4,12 @@ import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/shimmer/cart_shimmer.dart';
 import 'package:accord/screens/widgets/error_displayer.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class CartListView extends StatelessWidget {
   const CartListView({Key key}) : super(key: key);
@@ -119,7 +121,6 @@ class CartItemDesign extends StatelessWidget {
                               color: Colors.grey[900]),
                           overflow: TextOverflow.ellipsis,
                         ),
-
                         Text(
                           cartItem.price.toString(),
                           style: TextStyle(
@@ -245,7 +246,7 @@ class CartItemDesign extends StatelessWidget {
     );
   }
 
-  decreaseItemQuantity(BuildContext context, CartItem cartItem) {
+  void decreaseItemQuantity(BuildContext context, CartItem cartItem) {
     // subtracts 1 from the given cartItem quantity
     // then, creates its object (CartItem objects)
     // converts created CartItem object to json, then send to api.
@@ -257,20 +258,43 @@ class CartItemDesign extends StatelessWidget {
     context.read<CartviewModel>().addToCart(decreaseCartItemJson);
   }
 
-  increaseItemQuantity(BuildContext context, CartItem cartItem) {
-    // adds 1 to the given cartItem quantity
+  Future<void> increaseItemQuantity(
+    BuildContext context,
+    CartItem cartItem,
+  ) async {
+    CartviewModel cartviewModel = context.read<CartviewModel>();
+
+    // object with updated/increased quantity.
     CartItem increaseCartItem = new CartItem(
       bookID: cartItem.bookID,
       quantity: cartItem.quantity + 1,
     );
+
+    // json conversion
     String increaseCartItemJson = jsonEncode(increaseCartItem);
-    context.read<CartviewModel>().addToCart(increaseCartItemJson);
+
+    // api call to increase given [CartItem] quantity.
+    await cartviewModel.addToCart(increaseCartItemJson);
+
+    // in case of error, pops up a dialog box to show error.
+    if (cartviewModel.addToCartData.status == Status.ERROR) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.ERROR,
+          content: cartviewModel.addToCartData.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    }
   }
 
-  deleteCartItem(BuildContext context, String cartItemID) {
+  void deleteCartItem(BuildContext context, String cartItemID) {
     // deletes cart item by its id.
     CartItem cartItem = new CartItem(bookID: cartItemID);
     String cartItemJson = jsonEncode(cartItem);
+
+    // api call to delete [CartItem] corresponding to the given id
     context.read<CartviewModel>().deleteCartItem(cartItemJson);
   }
 }
