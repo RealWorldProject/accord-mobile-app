@@ -5,6 +5,7 @@ import 'package:accord/screens/widgets/error_displayer.dart';
 import 'package:accord/screens/widgets/information_dialog_box.dart';
 import 'package:accord/utils/exposer.dart';
 import 'package:accord/utils/time_calculator.dart';
+import 'package:accord/viewModel/notification_view_model.dart';
 import 'package:accord/viewModel/request_view_model.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
@@ -314,6 +315,9 @@ class _IncomingRequestState extends State<IncomingRequest> {
             actionText: AccordLabels.tryAgain),
       );
     }
+
+    // fetchs notification after request actions
+    context.read<NotificationViewModel>().fetchNotifications();
   }
 
   Future<void> rejectBookExchangeRequest(String requestID) async {
@@ -338,5 +342,8 @@ class _IncomingRequestState extends State<IncomingRequest> {
             actionText: AccordLabels.tryAgain),
       );
     }
+
+    // fetchs notification after request actions
+    context.read<NotificationViewModel>().fetchNotifications();
   }
 }

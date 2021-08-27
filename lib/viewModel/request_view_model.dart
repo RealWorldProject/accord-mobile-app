@@ -126,7 +126,10 @@ class RequestViewModel extends ChangeNotifier {
   }
 
   /// accept book exchange request
-  Future<void> acceptExchangeRequest(String requestID) async {
+  Future<void> acceptExchangeRequest(
+    String requestID, {
+    ActionPlace actionPlace = ActionPlace.REQUEST_BODY,
+  }) async {
     // just sets [data] to [LOADING]
     _data = ResponseExposer.loading();
 
@@ -136,8 +139,11 @@ class RequestViewModel extends ChangeNotifier {
       // conversion: json to object.
       var responseObj = RequestResponse.fromJson(jsonDecode(apiResponse));
 
-      // update [incomingRequests] if it is not null.
-      if (_incomingRequests != null) {
+      // since this function is used for two different purpose,
+      // [actionPlace] will restrict the updating of given request only when
+      // the function is called from [REQUEST_BODY] & [incomingRequests] is not null.
+      if (actionPlace == ActionPlace.REQUEST_BODY &&
+          _incomingRequests != null) {
         int currentRequestIndex =
             _incomingRequests.indexWhere((request) => request.id == requestID);
 
@@ -155,7 +161,10 @@ class RequestViewModel extends ChangeNotifier {
   }
 
   /// reject/decline book exchange request
-  Future<void> rejectExchangeRequest(String requestID) async {
+  Future<void> rejectExchangeRequest(
+    String requestID, {
+    ActionPlace actionPlace = ActionPlace.REQUEST_BODY,
+  }) async {
     // just sets [data] to [LOADING]
     _data = ResponseExposer.loading();
 
@@ -165,7 +174,11 @@ class RequestViewModel extends ChangeNotifier {
       // conversion: json to object.
       var responseObj = RequestResponse.fromJson(jsonDecode(apiResponse));
 
-      if (_incomingRequests != null) {
+      // since this function is used for two different purpose,
+      // [actionPlace] will restrict the updating of given request only when
+      // the function is called from [REQUEST_BODY] & [incomingRequests] is not null.
+      if (actionPlace == ActionPlace.REQUEST_BODY &&
+          _incomingRequests != null) {
         int currentRequestIndex =
             _incomingRequests.indexWhere((request) => request.id == requestID);
 
@@ -252,4 +265,10 @@ class RequestViewModel extends ChangeNotifier {
     _incomingRequests = [];
     notifyListeners();
   }
+}
+
+/// defines where the function is being called from
+enum ActionPlace {
+  REQUEST_BODY,
+  NOTIFICATION_BODY,
 }
