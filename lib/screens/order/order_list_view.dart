@@ -193,22 +193,23 @@ class _OrderListViewState extends State<OrderListView> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Badge(
-                    badgeColor: order.status == "PENDING"
-                        ? AccordColors.semi_dark_blue_color
-                        : Colors.red,
-                    toAnimate: false,
-                    shape: BadgeShape.square,
-                    elevation: 0,
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                    borderRadius: BorderRadius.circular(10),
-                    badgeContent: CustomText(
-                      textToShow: order.status.toLowerCase(),
-                      fontSize: 11,
-                      fontStyle: FontStyle.italic,
-                      textColor: Colors.white,
-                    ),
-                  ),
+                  order.status == "PENDING"
+                      ? Container()
+                      : Badge(
+                          badgeColor: Colors.red,
+                          toAnimate: false,
+                          shape: BadgeShape.square,
+                          elevation: 0,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                          borderRadius: BorderRadius.circular(10),
+                          badgeContent: CustomText(
+                            textToShow: order.status.toLowerCase(),
+                            fontSize: 11,
+                            fontStyle: FontStyle.italic,
+                            textColor: Colors.white,
+                          ),
+                        ),
                   SizedBox(
                     height: 3,
                   ),

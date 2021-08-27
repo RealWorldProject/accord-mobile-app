@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:accord/constant/accord_labels.dart';
@@ -15,14 +16,18 @@ class NotificationService {
   Future<String> fetchNotifications() async {
     userToken = await Storage().fetchToken();
     try {
-      var res = await dio.get(
-        "$baseUrl/notifications",
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {HttpHeaders.authorizationHeader: userToken},
-        ),
-      );
+      var res = await dio
+          .get(
+            "$baseUrl/notifications",
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {HttpHeaders.authorizationHeader: userToken},
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {

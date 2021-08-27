@@ -42,12 +42,7 @@ class SearchField extends StatelessWidget {
               ),
               child: Consumer<UserViewModel>(
                 builder: (context, userViewModel, child) {
-                  if (userViewModel.data.status == Status.LOADING) {
-                    return CircleAvatar(
-                      maxRadius: 10,
-                      backgroundColor: Colors.black12,
-                    );
-                  } else {
+                  if (userViewModel.data.status == Status.COMPLETE) {
                     return CircleAvatar(
                       maxRadius: 10,
                       backgroundImage:
@@ -55,6 +50,11 @@ class SearchField extends StatelessWidget {
                           Uri.parse(userViewModel.user.image).isAbsolute
                               ? NetworkImage(userViewModel.user.image)
                               : AssetImage("assets/images/user2.png"),
+                      backgroundColor: Colors.black12,
+                    );
+                  } else {
+                    return CircleAvatar(
+                      maxRadius: 10,
                       backgroundColor: Colors.black12,
                     );
                   }

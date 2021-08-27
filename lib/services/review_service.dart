@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:accord/constant/accord_labels.dart';
@@ -15,17 +16,21 @@ class ReviewService {
   Future<String> postReview(String bookID, String review) async {
     userToken = await Storage().fetchToken();
     try {
-      var res = await dio.post(
-        "$baseUrl/review/$bookID",
-        data: review,
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      var res = await dio
+          .post(
+            "$baseUrl/review/$bookID",
+            data: review,
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -37,16 +42,20 @@ class ReviewService {
     userToken = await Storage().fetchToken();
 
     try {
-      var res = await dio.get(
-        "$baseUrl/review/$bookID",
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      var res = await dio
+          .get(
+            "$baseUrl/review/$bookID",
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -57,17 +66,21 @@ class ReviewService {
   Future<String> editReview(String reviewID, String updatedReview) async {
     userToken = await Storage().fetchToken();
     try {
-      var res = await dio.patch(
-        "$baseUrl/review/$reviewID",
-        data: updatedReview,
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      var res = await dio
+          .patch(
+            "$baseUrl/review/$reviewID",
+            data: updatedReview,
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -78,16 +91,20 @@ class ReviewService {
   Future<String> deleteReview(String reviewID) async {
     userToken = await Storage().fetchToken();
     try {
-      var res = await dio.delete(
-        "$baseUrl/review/$reviewID",
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      var res = await dio
+          .delete(
+            "$baseUrl/review/$reviewID",
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {

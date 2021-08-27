@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:accord/constant/accord_labels.dart';
@@ -16,17 +17,21 @@ class OrderService {
   Future<String> checkoutOrder(String orderInfo) async {
     userToken = await Storage().fetchToken();
     try {
-      var res = await dio.post(
-        "$baseUrl/order",
-        data: orderInfo,
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      var res = await dio
+          .post(
+            "$baseUrl/order",
+            data: orderInfo,
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -38,16 +43,20 @@ class OrderService {
   Future<String> fetchUserOrders() async {
     userToken = await Storage().fetchToken();
     try {
-      var res = await dio.get(
-        "$baseUrl/orders",
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      var res = await dio
+          .get(
+            "$baseUrl/orders",
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -59,16 +68,20 @@ class OrderService {
   Future<String> cancelOrder(String orderID) async {
     userToken = await Storage().fetchToken();
     try {
-      var res = await dio.patch(
-        "$baseUrl/order/$orderID",
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      var res = await dio
+          .patch(
+            "$baseUrl/order/$orderID",
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {

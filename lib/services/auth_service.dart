@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:accord/constant/accord_labels.dart';
@@ -7,18 +8,24 @@ import 'package:accord/services/storage.dart';
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
+import 'handlers/exception_handlers.dart';
+
 class AuthService {
   final dio = new Dio();
   final baseURL = Constant.baseURL;
 
   Future registerUser(String user) async {
     try {
-      final res = await dio.post(
-        '$baseURL/user/register',
-        data: user,
-        options: Options(responseType: ResponseType.plain),
-      );
+      final res = await dio
+          .post(
+            '$baseURL/user/register',
+            data: user,
+            options: Options(responseType: ResponseType.plain),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw Exception(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -28,14 +35,18 @@ class AuthService {
 
   Future loginUser(email, password) async {
     try {
-      final res = await dio.post(
-        '$baseURL/user/login',
-        data: {'email': email, 'password': password},
-        options: Options(responseType: ResponseType.plain),
-      );
+      final res = await dio
+          .post(
+            '$baseURL/user/login',
+            data: {'email': email, 'password': password},
+            options: Options(responseType: ResponseType.plain),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
-      throw Exception(AccordLabels.connectionErrorMessage);
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       return ResponseBase().apiResponse(e.response);
     }
@@ -45,18 +56,22 @@ class AuthService {
     final userToken = await Storage().fetchToken();
     userId = userId ?? JwtDecoder.decode(userToken)['id'];
     try {
-      final res = await dio.get(
-        '$baseURL/user/profile/$userId',
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .get(
+            '$baseURL/user/profile/$userId',
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
-      throw Exception(AccordLabels.connectionErrorMessage);
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       return ResponseBase().apiResponse(e.response);
     }
@@ -65,19 +80,23 @@ class AuthService {
   Future<String> updateUser(String updatedUser) async {
     final userToken = await Storage().fetchToken();
     try {
-      final res = await dio.patch(
-        '$baseURL/user/profile',
-        data: updatedUser,
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .patch(
+            '$baseURL/user/profile',
+            data: updatedUser,
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
-      throw Exception(AccordLabels.connectionErrorMessage);
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       return ResponseBase().apiResponse(e.response);
     }
@@ -87,19 +106,23 @@ class AuthService {
       String currentPassword, String newPassword) async {
     final userToken = await Storage().fetchToken();
     try {
-      final res = await dio.patch(
-        '$baseURL/user/password',
-        data: {'oldPassword': currentPassword, 'newPassword': newPassword},
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .patch(
+            '$baseURL/user/password',
+            data: {'oldPassword': currentPassword, 'newPassword': newPassword},
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
-      throw Exception(AccordLabels.connectionErrorMessage);
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
       return ResponseBase().apiResponse(e.response);
     }
