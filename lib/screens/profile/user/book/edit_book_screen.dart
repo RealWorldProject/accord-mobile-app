@@ -24,6 +24,8 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
 
+import 'non_zero_validator.dart';
+
 class EditBookScreen extends StatefulWidget {
   const EditBookScreen({Key key, this.book}) : super(key: key);
 
@@ -42,6 +44,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
   final _bookNameController = TextEditingController();
   final _authorNameController = TextEditingController();
   final _priceController = TextEditingController();
+  final _stockController = TextEditingController();
   final _descriptionController = TextEditingController();
 
   @override
@@ -57,6 +60,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
     _bookNameController.dispose();
     _authorNameController.dispose();
     _priceController.dispose();
+    _stockController.dispose();
     _descriptionController.dispose();
 
     super.dispose();
@@ -68,6 +72,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
     _bookNameController.text = book.name;
     _authorNameController.text = book.author;
     _priceController.text = book.price.toString();
+    _stockController.text = book.stock.toString();
     _descriptionController.text = book.description;
     _chosenValue = book.category.id;
     _conditionValue = book.isNewBook
@@ -91,7 +96,13 @@ class _EditBookScreenState extends State<EditBookScreen> {
 
   final _acquirePrice = MultiValidator([
     RequiredValidator(
-        errorText: AccordLabels.requireMessage(AccordLabels.price))
+        errorText: AccordLabels.requireMessage(AccordLabels.price)),
+    NonZeroValidator(errorText: "Price cannot be zero or negative!"),
+  ]);
+
+  final _acquireStock = MultiValidator([
+    RequiredValidator(errorText: AccordLabels.requireMessage(AccordLabels.qty)),
+    NonZeroValidator(errorText: "Stock quantity cannot be zero or negative!"),
   ]);
 
   final _acquireDescription = MultiValidator([
@@ -140,6 +151,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
           author: _authorNameController.text,
           category: _chosenValue,
           price: double.parse(_priceController.text),
+          stock: int.parse(_stockController.text),
           description: _descriptionController.text,
           images: imageUrls,
           isNewBook: _conditionValue == AccordLabels.positiveBookConditionValue
@@ -345,11 +357,10 @@ class _EditBookScreenState extends State<EditBookScreen> {
                         height: 4,
                       ),
                       CustomTextField(
-                        fieldType: FieldType.NUMBER,
-                        // fieldController: _priceController,
+                        fieldType: FieldType.NUMBER_ONLY,
+                        fieldController: _stockController,
                         hintText: AccordLabels.qty,
-
-                        // fieldValidator: _acquirePrice,
+                        fieldValidator: _acquireStock,
                       ),
                       SizedBox(
                         height: 10,

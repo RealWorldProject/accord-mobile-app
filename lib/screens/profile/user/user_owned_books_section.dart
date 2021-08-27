@@ -297,7 +297,8 @@ class BookFeedformat extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width: MediaQuery.of(context).size.width/1.3,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.3,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -325,10 +326,12 @@ class BookFeedformat extends StatelessWidget {
                                           starSize: 18,
                                         ),
                                         CustomText(
-                                          textToShow: book.isAvailableForExchange
-                                              ? AccordLabels.availableForExchange
-                                              : AccordLabels
-                                                  .notAvailableForExchange,
+                                          textToShow:
+                                              book.isAvailableForExchange
+                                                  ? AccordLabels
+                                                      .availableForExchange
+                                                  : AccordLabels
+                                                      .notAvailableForExchange,
                                           overflow: TextOverflow.ellipsis,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w100,
@@ -358,13 +361,12 @@ class BookFeedformat extends StatelessWidget {
                                   ),
                                   Badge(
                                     badgeContent: CustomText(
-                                        textToShow: "Qty: 5",
+                                        textToShow: "Qty: ${book.stock}",
                                         fontSize: 12,
                                         noOfLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         textColor: Colors.white),
                                     borderRadius: BorderRadius.circular(10),
-
                                     badgeColor:
                                         AccordColors.semi_dark_blue_color,
                                     toAnimate: false,
