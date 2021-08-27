@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:accord/constant/accord_labels.dart';
@@ -16,17 +17,21 @@ class BookService {
   Future<String> postBook(String book) async {
     userToken = await Storage().fetchToken();
     try {
-      final res = await dio.post(
-        '$baseURL/book',
-        data: book,
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .post(
+            '$baseURL/book',
+            data: book,
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -37,21 +42,25 @@ class BookService {
   Future<String> fetchBooksInCategory(String categoryID) async {
     userToken = await Storage().fetchToken();
     try {
-      final res = await dio.get(
-        '$baseURL/books',
-        queryParameters: {
-          "page": 1,
-          "limit": 0,
-          "categoryID": categoryID,
-        },
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .get(
+            '$baseURL/books',
+            queryParameters: {
+              "page": 1,
+              "limit": 0,
+              "categoryID": categoryID,
+            },
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -62,20 +71,24 @@ class BookService {
   Future<String> fetchAllBooks() async {
     userToken = await Storage().fetchToken();
     try {
-      final res = await dio.get(
-        '$baseURL/books',
-        queryParameters: {
-          "page": 1,
-          "limit": 0,
-        },
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .get(
+            '$baseURL/books',
+            queryParameters: {
+              "page": 1,
+              "limit": 0,
+            },
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -86,21 +99,25 @@ class BookService {
   Future<String> fetchSearchedBooks(String searchTerm) async {
     userToken = await Storage().fetchToken();
     try {
-      final res = await dio.get(
-        '$baseURL/books',
-        queryParameters: {
-          "page": 1,
-          "limit": 0,
-          "searchTerm": searchTerm,
-        },
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .get(
+            '$baseURL/books',
+            queryParameters: {
+              "page": 1,
+              "limit": 0,
+              "searchTerm": searchTerm,
+            },
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -112,21 +129,25 @@ class BookService {
     userToken = await Storage().fetchToken();
     final Map<String, dynamic> user = JwtDecoder.decode(userToken);
     try {
-      final res = await dio.get(
-        '$baseURL/books',
-        queryParameters: {
-          "page": 1,
-          "limit": 0,
-          "userID": user['id'],
-        },
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .get(
+            '$baseURL/books',
+            queryParameters: {
+              "page": 1,
+              "limit": 0,
+              "userID": user['id'],
+            },
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -137,17 +158,21 @@ class BookService {
   Future<String> updateBook(String updatedBookInfo, String bookID) async {
     userToken = await Storage().fetchToken();
     try {
-      final res = await dio.put(
-        '$baseURL/book/$bookID',
-        data: updatedBookInfo,
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .put(
+            '$baseURL/book/$bookID',
+            data: updatedBookInfo,
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -158,16 +183,20 @@ class BookService {
   Future<String> deleteBook(String bookID) async {
     userToken = await Storage().fetchToken();
     try {
-      final res = await dio.delete(
-        '$baseURL/book/$bookID',
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .delete(
+            '$baseURL/book/$bookID',
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {

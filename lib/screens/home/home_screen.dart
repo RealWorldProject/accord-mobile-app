@@ -28,38 +28,46 @@ class _HomeScreenState extends State<HomeScreen>
     context.read<BookViewModel>().fetchAllBooks();
     context.read<CartviewModel>().fetchCartItems;
 
-    return Scaffold(
-      extendBody: true,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: SafeArea(
-          bottom: false,
-          child: Container(
-          margin: EdgeInsets.only(bottom: 80),
-            child: Column(
-              children: [
-                SearchField(),
-                CategoriesSection(),
-                FeaturedBooksSection(),
-              ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<UserViewModel>().fetchUserDetail();
+        context.read<CategoryViewModel>().fetchCategories();
+        context.read<BookViewModel>().fetchAllBooks();
+        context.read<CartviewModel>().fetchCartItems;
+      },
+      child: Scaffold(
+        extendBody: true,
+        body: SingleChildScrollView(
+          // physics: BouncingScrollPhysics(),
+          child: SafeArea(
+            bottom: false,
+            child: Container(
+              margin: EdgeInsets.only(bottom: 80),
+              child: Column(
+                children: [
+                  SearchField(),
+                  CategoriesSection(),
+                  FeaturedBooksSection(),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      floatingActionButton: Align(
-          child: FloatingActionButton(
-            isExtended: true,
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PostBookScreen()));
-            },
-            child: const Icon(
-              Icons.add,
-              size: 32,
+        floatingActionButton: Align(
+            child: FloatingActionButton(
+              isExtended: true,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PostBookScreen()));
+              },
+              child: const Icon(
+                Icons.add,
+                size: 32,
+              ),
+              tooltip: AccordLabels.addBookLabel,
             ),
-            tooltip: AccordLabels.addBookLabel,
-          ),
-          alignment: Alignment(1, 0.81)),
+            alignment: Alignment(1, 0.81)),
+      ),
     );
   }
 

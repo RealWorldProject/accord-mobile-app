@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:accord/constant/accord_labels.dart';
@@ -16,17 +17,21 @@ class CartService {
   Future<String> addToCart(String cartItem) async {
     userToken = await Storage().fetchToken();
     try {
-      final res = await dio.post(
-        "$baseURL/cart",
-        data: cartItem,
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .post(
+            "$baseURL/cart",
+            data: cartItem,
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException("Error while connecting to the server.");
     } on DioError catch (e) {
@@ -37,16 +42,20 @@ class CartService {
   Future<String> fetchCartItems() async {
     userToken = await Storage().fetchToken();
     try {
-      final res = await dio.get(
-        "$baseURL/cart",
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .get(
+            "$baseURL/cart",
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
@@ -57,17 +66,21 @@ class CartService {
   Future<String> deleteCartItem(String cartItem) async {
     userToken = await Storage().fetchToken();
     try {
-      final res = await dio.delete(
-        "$baseURL/cart",
-        data: cartItem,
-        options: Options(
-          responseType: ResponseType.plain,
-          headers: {
-            HttpHeaders.authorizationHeader: userToken,
-          },
-        ),
-      );
+      final res = await dio
+          .delete(
+            "$baseURL/cart",
+            data: cartItem,
+            options: Options(
+              responseType: ResponseType.plain,
+              headers: {
+                HttpHeaders.authorizationHeader: userToken,
+              },
+            ),
+          )
+          .timeout(const Duration(seconds: 10));
       return res.data;
+    } on TimeoutException {
+      throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on SocketException {
       throw FetchDataException(AccordLabels.connectionErrorMessage);
     } on DioError catch (e) {
