@@ -41,16 +41,6 @@ class NotificationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setIsSeen() {
-    _isNotificationSeen = true;
-    notifyListeners();
-  }
-
-  void removeIsSeen() {
-    _isNotificationSeen = false;
-    notifyListeners();
-  }
-
   void resetNotifications() {
     _notifications = [];
     notifyListeners();
