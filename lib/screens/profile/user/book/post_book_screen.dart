@@ -5,6 +5,7 @@ import 'package:accord/constant/accord_colors.dart';
 import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/category.dart';
+import 'package:accord/screens/profile/user/book/non_zero_validator.dart';
 import 'package:accord/screens/widgets/custom_app_bar.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
@@ -37,6 +38,7 @@ class _PostBookScreenState extends State<PostBookScreen> {
   final _bookNameController = TextEditingController();
   final _authorNameController = TextEditingController();
   final _priceController = TextEditingController();
+  final _stockController = TextEditingController();
   final _descriptionController = TextEditingController();
 
   @override
@@ -51,6 +53,7 @@ class _PostBookScreenState extends State<PostBookScreen> {
     _bookNameController.dispose();
     _authorNameController.dispose();
     _priceController.dispose();
+    _stockController.dispose();
     _descriptionController.dispose();
 
     super.dispose();
@@ -69,7 +72,13 @@ class _PostBookScreenState extends State<PostBookScreen> {
 
   final _acquirePrice = MultiValidator([
     RequiredValidator(
-        errorText: AccordLabels.requireMessage(AccordLabels.price))
+        errorText: AccordLabels.requireMessage(AccordLabels.price)),
+    NonZeroValidator(errorText: "Price cannot be zero or negative!"),
+  ]);
+
+  final _acquireStock = MultiValidator([
+    RequiredValidator(errorText: AccordLabels.requireMessage(AccordLabels.qty)),
+    NonZeroValidator(errorText: "Stock quantity cannot be zero or negative!"),
   ]);
 
   final _acquireDescription = MultiValidator([
@@ -114,6 +123,7 @@ class _PostBookScreenState extends State<PostBookScreen> {
           author: _authorNameController.text,
           category: _chosenValue,
           price: double.parse(_priceController.text),
+          stock: int.parse(_stockController.text),
           description: _descriptionController.text,
           images: imageUrls,
           isNewBook:
@@ -303,10 +313,10 @@ class _PostBookScreenState extends State<PostBookScreen> {
                         height: 4,
                       ),
                       CustomTextField(
-                        fieldType: FieldType.NUMBER,
-                        // fieldController: _priceController,
+                        fieldType: FieldType.NUMBER_ONLY,
+                        fieldController: _stockController,
                         hintText: AccordLabels.qty,
-                        // fieldValidator: _acquirePrice,
+                        fieldValidator: _acquireStock,
                       ),
                       SizedBox(
                         height: 10,

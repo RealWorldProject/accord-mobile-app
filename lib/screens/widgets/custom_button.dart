@@ -193,6 +193,8 @@ class CustomButton extends StatelessWidget {
           padding: MaterialStateProperty.all<EdgeInsets>(
             EdgeInsets.all(5),
           ),
+          splashFactory: InkRipple.splashFactory,
+          overlayColor: MaterialStateProperty.all<Color>(Colors.white24),
           backgroundColor: MaterialStateProperty.all<Color>(
               buttonColor ?? AccordColors.default_button_color),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
