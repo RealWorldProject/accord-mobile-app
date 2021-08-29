@@ -5,6 +5,8 @@ import 'package:accord/constant/accord_labels.dart';
 import 'package:accord/models/book.dart';
 import 'package:accord/models/cart_item.dart';
 import 'package:accord/screens/widgets/custom_label.dart';
+import 'package:accord/screens/widgets/information_dialog_box.dart';
+import 'package:accord/utils/exposer.dart';
 import 'package:accord/viewModel/book_view_model.dart';
 import 'package:accord/viewModel/cart_view_model.dart';
 import 'package:flutter/material.dart';
@@ -66,15 +68,12 @@ class BookTransactionSection extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.white60,
                   onTap: () {
-                    addOrIncreaseItemQuantity(book.id, context);
-                    Toast.show(
-                      AccordLabels.cartSuccessMessage,
-                      context,
-                      duration: Toast.LENGTH_SHORT,
-                      gravity: Toast.BOTTOM,
-                      backgroundColor: AccordColors.full_dark_blue_color,
-                      backgroundRadius: 5.0,
-                    );
+                    CartviewModel cartviewModel = context.read<CartviewModel>();
+                    cartviewModel.addToCartData != null
+                        ? cartviewModel.addToCartData.status == Status.LOADING
+                            ? null
+                            : addOrIncreaseItemQuantity(book.id, context)
+                        : addOrIncreaseItemQuantity(book.id, context);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -103,8 +102,9 @@ class BookTransactionSection extends StatelessWidget {
     );
   }
 
-  addOrIncreaseItemQuantity(String bookID, BuildContext context) {
-    List<CartItem> cartItems = context.read<CartviewModel>().cartItems;
+  void addOrIncreaseItemQuantity(String bookID, BuildContext context) async {
+    CartviewModel cartviewModel = context.read<CartviewModel>();
+    List<CartItem> cartItems = cartviewModel.cartItems;
 
     String cartItemJson;
 
@@ -129,6 +129,27 @@ class BookTransactionSection extends StatelessWidget {
     }
 
     // calls api to add cartItem(i.e, book) to cart
-    context.read<CartviewModel>().addToCart(cartItemJson);
+    await cartviewModel.addToCart(cartItemJson);
+
+    // perform action according to the api response
+    if (cartviewModel.addToCartData.status == Status.COMPLETE) {
+      Toast.show(
+        cartviewModel.addToCartData.message,
+        context,
+        duration: Toast.LENGTH_LONG,
+        gravity: Toast.BOTTOM,
+        backgroundColor: AccordColors.full_dark_blue_color,
+        backgroundRadius: 5.0,
+      );
+    } else if (cartviewModel.addToCartData.status == Status.ERROR) {
+      showDialog(
+        context: context,
+        builder: (context) => InformationDialogBox(
+          contentType: ContentType.ERROR,
+          content: cartviewModel.addToCartData.message,
+          actionText: AccordLabels.okay,
+        ),
+      );
+    }
   }
 }

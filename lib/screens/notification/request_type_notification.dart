@@ -12,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
-import 'notification_options.dart';
-
 class RequestTypeNotification extends StatefulWidget {
   const RequestTypeNotification({Key key, this.notification}) : super(key: key);
 
@@ -25,18 +23,10 @@ class RequestTypeNotification extends StatefulWidget {
 }
 
 class _RequestTypeNotificationState extends State<RequestTypeNotification> {
-  bool isSeen = false;
-
-  Future<void> _toggleBookIsSeen() async {
-    setState(() {
-      isSeen = !isSeen;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: isSeen ? Colors.white : Colors.blue[100],
+      color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,29 +158,6 @@ class _RequestTypeNotificationState extends State<RequestTypeNotification> {
                     ],
                   )
                 ],
-              ),
-            ),
-          ),
-          ClipOval(
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) => NotificationOptions(
-                            markasreadOption: _toggleBookIsSeen,
-                            value: isSeen,
-                          ));
-                },
-                child: SizedBox(
-                  width: 35,
-                  height: 35,
-                  child: Icon(
-                    Icons.more_vert,
-                    color: Colors.grey[600],
-                  ),
-                ),
               ),
             ),
           ),
