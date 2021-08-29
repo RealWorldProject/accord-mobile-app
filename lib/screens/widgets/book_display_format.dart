@@ -242,8 +242,8 @@ class AddToCart extends StatelessWidget {
           cartviewModel.addToCartData != null
               ? cartviewModel.addToCartData.status == Status.LOADING
                   ? null
-                  : addOrIncreaseItemQuantity(bookID, bookStock, context)
-              : addOrIncreaseItemQuantity(bookID, bookStock, context);
+                  : addOrIncreaseItemQuantity(bookID, context)
+              : addOrIncreaseItemQuantity(bookID, context);
         },
         child: Container(
           height: 30,
@@ -285,11 +285,7 @@ class AddToCart extends StatelessWidget {
     );
   }
 
-  void addOrIncreaseItemQuantity(
-    String bookID,
-    int bookStock,
-    BuildContext context,
-  ) async {
+  void addOrIncreaseItemQuantity(String bookID, BuildContext context) async {
     CartviewModel cartviewModel = context.read<CartviewModel>();
     List<CartItem> cartItems = cartviewModel.cartItems;
 

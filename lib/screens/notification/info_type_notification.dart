@@ -102,27 +102,6 @@ class InfoTypeNotification extends StatelessWidget {
               ),
             ),
           ),
-          ClipOval(
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => NotificationOptions(),
-                  );
-                },
-                child: SizedBox(
-                  width: 35,
-                  height: 35,
-                  child: Icon(
-                    Icons.more_vert,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

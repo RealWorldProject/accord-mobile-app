@@ -58,7 +58,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                 key: Key("getstarted"),
                 onTap: () {
                   FlutterSecureStorage().write(key: 'firstRun', value: "no");
-                  Navigator.push(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
                 child: Container(

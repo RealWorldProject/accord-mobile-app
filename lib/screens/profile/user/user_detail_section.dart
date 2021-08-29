@@ -276,7 +276,7 @@ class _UserDetailSectionState extends State<UserDetailSection> {
                 child: IconButton(
                   padding: EdgeInsets.only(left: 5),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.of(context, rootNavigator: false).pop();
                   },
                   icon: Icon(
                     Icons.arrow_back_ios,
