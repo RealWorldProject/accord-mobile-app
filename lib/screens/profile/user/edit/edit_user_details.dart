@@ -27,6 +27,7 @@ class EditUserDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
+                key: Key("editfullname"),
                 onTap: () {
                   showModalBottomSheet(
                     context: context,

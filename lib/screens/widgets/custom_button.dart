@@ -33,10 +33,13 @@ class CustomButton extends StatelessWidget {
   /// color for the child in button
   final Color childColor;
 
+  final Key key;
+
   /// action that is triggered on button click
   final VoidCallback triggerAction;
 
   const CustomButton({
+    this.key,
     this.height = 50,
     this.width,
     this.buttonType = ButtonType.ROUNDED_EDGE,
@@ -151,11 +154,11 @@ class CustomButton extends StatelessWidget {
 
     if (buttonType == ButtonType.OUTLINED) {
       return SizedBox(
-        key: key,
         height: height,
         width: width,
         child: OutlinedButton(
           onPressed: () => triggerAction(),
+          key: key,
           child: Text(
             buttonLabel,
             style: TextStyle(

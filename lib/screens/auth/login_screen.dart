@@ -147,6 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         FadeAnimation(
                           1.3,
                           CustomText(
+                            key: Key("loginguide"),
                             textToShow: AccordLabels.loginGuide,
                             textColor: Colors.grey.shade700,
                             fontWeight: FontWeight.w400,
@@ -164,6 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   children: <Widget>[
                                     Container(
                                       child: CustomTextField(
+                                        key:ValueKey("email"),
                                         designType: DesignType.UNDERLINE,
                                         fieldController: _emailController,
                                         hintText: AccordLabels.email,
@@ -174,6 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       alignment: Alignment.centerRight,
                                       children: <Widget>[
                                         CustomTextField(
+                                          key:ValueKey("password"),
                                           designType: DesignType.UNDERLINE,
                                           obscureText: _obscurePassword,
                                           fieldController: _passwordcontroller,
@@ -217,6 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         FadeAnimation(
                           1.6,
                           CustomButton(
+                            key:Key("login"),
                             buttonType: ButtonType.OVAL,
                             buttonLabel: AccordLabels.login,
                             triggerAction: _validateLogin,
@@ -240,6 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             FadeAnimation(
                               1.8,
                               GestureDetector(
+                                key: Key("signup"),
                                 onTap: () {
                                   Navigator.push(
                                       context,

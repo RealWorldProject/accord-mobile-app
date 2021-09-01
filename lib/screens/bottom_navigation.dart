@@ -106,6 +106,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           color: Colors.blue[400],
                           tabs: gButtons,
                           selectedIndex: screenViewModel.currentScreenIndex,
+                          key: Key("buttonButton"),
                           onTabChange: (selectedScreenIndex) {
                             FocusScopeNode currentFocus =
                                 FocusScope.of(context);

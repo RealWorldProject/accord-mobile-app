@@ -16,6 +16,7 @@ class SearchField extends StatelessWidget {
       height: 80,
       padding: EdgeInsets.all(10),
       child: TextField(
+        key:Key("searchField"),
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => SearchPage()),

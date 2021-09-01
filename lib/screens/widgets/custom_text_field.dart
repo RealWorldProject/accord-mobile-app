@@ -34,6 +34,8 @@ class CustomTextField extends StatelessWidget {
   /// action on edit completion.
   final VoidCallback onEditComplete;
 
+  final Key key;
+
   /// starting value to be displayed in the field
   final String initialValue;
 
@@ -42,6 +44,7 @@ class CustomTextField extends StatelessWidget {
   final double contentVerticalPadding;
 
   CustomTextField({
+    this.key,
     this.designType = DesignType.BORDER,
     this.fieldType = FieldType.ALL,
     @required this.fieldController,
@@ -60,6 +63,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: key,
       controller: fieldController,
       obscureText: obscureText,
       maxLines: noOfLines,

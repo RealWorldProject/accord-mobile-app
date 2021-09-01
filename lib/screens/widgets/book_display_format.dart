@@ -39,6 +39,7 @@ class BookDisplayFormat extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
+              key: Key('bookdetail'),
               splashColor: Colors.white60,
               onTap: () {
                 context.read<BookViewModel>().setActiveBook(book);
@@ -236,7 +237,8 @@ class AddToCart extends StatelessWidget {
       borderRadius: BorderRadius.all(
         Radius.circular(5),
       ),
-      child: InkWell(
+      child: GestureDetector(
+        key: Key("addtocart"),
         onTap: () {
           CartviewModel cartviewModel = context.read<CartviewModel>();
           cartviewModel.addToCartData != null

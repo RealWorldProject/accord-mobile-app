@@ -44,6 +44,7 @@ class _UserScreenState extends State<UserScreen> {
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
+                          key: Key("edituser"),
                           onTap: () {
                             Navigator.push(
                                 context,

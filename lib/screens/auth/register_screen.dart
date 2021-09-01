@@ -192,6 +192,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   children: <Widget>[
                                     Container(
                                       child: CustomTextField(
+                                        key:Key("firstName"),
                                         designType: DesignType.UNDERLINE,
                                         fieldType: FieldType.TEXT,
                                         fieldController: _firstNameController,
@@ -202,6 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: CustomTextField(
+                                        key:Key("lastName"),
                                         designType: DesignType.UNDERLINE,
                                         fieldType: FieldType.TEXT,
                                         fieldController: _lastNameController,
@@ -212,6 +214,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5),
                                       child: CustomTextField(
+                                        key:Key("email"),
                                         designType: DesignType.UNDERLINE,
                                         fieldController: _emailController,
                                         hintText: AccordLabels.email,
@@ -222,6 +225,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       alignment: Alignment.centerRight,
                                       children: <Widget>[
                                         CustomTextField(
+                                          key:Key("password"),
                                           designType: DesignType.UNDERLINE,
                                           obscureText: _obscureText,
                                           fieldController: _passwordController,
@@ -248,6 +252,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         FadeAnimation(
                           1.6,
                           CustomButton(
+                            key:Key("register"),
                             buttonType: ButtonType.OVAL,
                             buttonLabel: AccordLabels.register,
                             triggerAction: _registerUser,

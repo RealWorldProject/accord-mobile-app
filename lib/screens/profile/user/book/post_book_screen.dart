@@ -435,6 +435,7 @@ class PostBookImageSelection extends StatelessWidget {
                       ),
                     ),
                     child: InkWell(
+                      key: Key("addImage"),
                       onTap: () {
                         showModalBottomSheet(
                           context: context,

@@ -17,8 +17,10 @@ class CustomText extends StatelessWidget {
   final double letterSpacing;
   final FontStyle fontStyle;
   final TextDecoration textDecoration;
+  final Key key;
 
   CustomText({
+    this.key,
     this.fontSize = 18,
     @required this.textToShow,
     this.textColor,
@@ -43,6 +45,8 @@ class CustomText extends StatelessWidget {
           decoration: textDecoration),
       maxLines: noOfLines,
       overflow: overflow == null ? null : overflow,
+      key:key,
+
     );
   }
 }
