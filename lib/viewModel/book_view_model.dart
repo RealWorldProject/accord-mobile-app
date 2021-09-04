@@ -120,7 +120,7 @@ class BookViewModel extends ChangeNotifier {
       // sending json response to FetchBooksResponse to convert into object
       // then, getting the response object's result
       var responseObj = FetchBooksResponse.fromJson(jsonDecode(apiResponse));
-      _userOwnedBooks = responseObj.result;
+      _userOwnedBooks = responseObj.result.reversed.toList();
 
       _data = ResponseExposer.complete(responseObj.message);
     } catch (e) {
