@@ -26,7 +26,7 @@ class _UserScreenState extends State<UserScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey[200],
         body: SingleChildScrollView(
-          // physics: BouncingScrollPhysics(),
+          physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               UserDetailSection(),
