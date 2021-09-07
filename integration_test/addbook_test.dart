@@ -1,16 +1,14 @@
-import 'package:accord/constant/accord_labels.dart';
-import 'package:accord/screens/profile/user/book/post_book_screen.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:accord/main.dart' as app;
 
-void main(){
-  group('Add Book Test',(){
+void main() {
+  group('Add Book Test', () {
     IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-    testWidgets("Add Book Test", (tester) async{
+    testWidgets("Add Book Test", (tester) async {
       app.main();
       await tester.pumpAndSettle();
 
@@ -23,7 +21,6 @@ void main(){
 
       await tester.tap(getStarted);
       await tester.pumpAndSettle();
-
 
       await tester.enterText(emailFormField, "checkwat7@gmail.com");
       await tester.pumpAndSettle();
@@ -47,10 +44,6 @@ void main(){
       await tester.pumpAndSettle();
 
       // expect()
-
-
-
     });
-
   });
 }

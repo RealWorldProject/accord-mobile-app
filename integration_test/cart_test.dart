@@ -1,17 +1,14 @@
-import 'package:accord/constant/accord_labels.dart';
-import 'package:accord/screens/widgets/book_display_format.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:accord/main.dart' as app;
 
-void main(){
-  group('Signup Test',(){
+void main() {
+  group('Cart Test', () {
     IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-
-    testWidgets("Signup Test", (tester) async{
+    testWidgets("Cart Test", (tester) async {
       app.main();
       await tester.pumpAndSettle();
 
@@ -19,14 +16,11 @@ void main(){
       final emailFormField = find.byKey(Key("email"));
       final passwordFormField = find.byKey(Key("password"));
       final addtocartButton = find.byKey(Key("addtocart")).first;
-      // final addtocartButton = find.byType(InkWell).last;
       final cartButton = find.byKey(Key("buttonButton")).first;
-      final bookDetail = find.byKey(Key("bookdetail")).first;
       final loginButton = find.byType(CustomButton).first;
 
       await tester.tap(getStarted);
       await tester.pumpAndSettle();
-
 
       await tester.enterText(emailFormField, "test@gmail.com");
       await tester.pumpAndSettle();
@@ -42,12 +36,9 @@ void main(){
 // Manual scroll
 //       await gesture.moveBy(const Offset(100, 500));
 
-
       // final gesture = await tester.startGesture(Offset(0, 300)); //Position of the scrollview
       // await gesture.moveBy(Offset(0, -300)); //How much to scroll by
       // await (tester.pump(Duration(milliseconds: 5000)));
-
-
 
       // await tester.tap(bookDetail);
       // // await tester.pump();
@@ -70,7 +61,7 @@ void main(){
       await tester.pumpAndSettle();
 
       await (tester.pump(Duration(milliseconds: 6000)));
-          // await tester.tap(bookDetail);
+      // await tester.tap(bookDetail);
       // await tester.pump();
       await tester.pumpAndSettle();
 
@@ -79,10 +70,6 @@ void main(){
       // await (tester.pump(Duration(milliseconds: 5000)));
 
       // expect()
-
-
-
     });
-
   });
 }
