@@ -55,7 +55,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             ),
             Container(
               child: GestureDetector(
-                key: Key("getstarted"),
+                key: ValueKey("getstarted"),
                 onTap: () {
                   FlutterSecureStorage().write(key: 'firstRun', value: "no");
                   Navigator.pushReplacement(context,

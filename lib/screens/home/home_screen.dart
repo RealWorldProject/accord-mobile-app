@@ -55,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         floatingActionButton: Align(
             child: FloatingActionButton(
+              key: Key("addbook"),
               isExtended: true,
               onPressed: () {
                 Navigator.push(context,

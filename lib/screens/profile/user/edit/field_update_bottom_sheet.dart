@@ -121,6 +121,7 @@ class _FieldUpdateBottomSheetState extends State<FieldUpdateBottomSheet> {
                 Container(
                   height: 50,
                   child: CustomTextField(
+                    key: Key("fullname"),
                     designType: DesignType.UNDERLINE,
                     fieldType: widget.updateField == UpdateField.PHONENUMBER
                         ? FieldType.NUMBER_ONLY
@@ -147,6 +148,7 @@ class _FieldUpdateBottomSheetState extends State<FieldUpdateBottomSheet> {
             Container(
               width: MediaQuery.of(context).size.width,
               child: CustomButton(
+
                 buttonType: ButtonType.LOADING_FORM_BUTTON,
                 buttonLabel: widget.bottomSheetButtonLabel,
                 triggerAction: () => _updateFieldValue(

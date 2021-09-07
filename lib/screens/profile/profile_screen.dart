@@ -85,6 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ActionTab(
+                            key: Key("profile"),
                             action: () => Navigator.push(
                               context,
                               MaterialPageRoute(
