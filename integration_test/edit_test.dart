@@ -1,16 +1,15 @@
 import 'package:accord/constant/accord_labels.dart';
-import 'package:accord/screens/profile/user/user_screen.dart';
 import 'package:accord/screens/widgets/custom_button.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:accord/main.dart' as app;
 
-void main(){
-  group('Signup Test',(){
+void main() {
+  group('Edit Profile Test', () {
     IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-    testWidgets("Signup Test", (tester) async{
+    testWidgets("Edit Profile Test", (tester) async {
       app.main();
       await tester.pumpAndSettle();
 
@@ -25,10 +24,8 @@ void main(){
       final editfullname = find.byKey(Key("editfullname")).first;
       final fullnamefield = find.byKey(Key("fullname")).first;
 
-
       await tester.tap(getStarted);
       await tester.pumpAndSettle();
-
 
       await tester.enterText(emailFormField, "prasanna@gmail.com");
       await tester.pumpAndSettle();
@@ -58,18 +55,12 @@ void main(){
       await tester.tap(editfullnameButton);
       await tester.pumpAndSettle();
 
-
-      expect(find.text(AccordLabels.okay),findsOneWidget);
-
+      expect(find.text(AccordLabels.okay), findsOneWidget);
 
       await (tester.pump(Duration(milliseconds: 5000)));
       await tester.pumpAndSettle();
 
       // expect()
-
-
-
     });
-
   });
 }
